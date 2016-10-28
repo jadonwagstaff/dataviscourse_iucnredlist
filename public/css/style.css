@@ -1,0 +1,21 @@
+.title{
+	text-align: center;
+}
+.views{
+	display:inline-block;
+	float: left;
+	text-align: center;
+}
+.countries {
+    stroke: #999999;
+    fill: #d9d9d9;
+}
+ul{
+  list-style:none;
+  max-height:100px;
+  max-width: 100px;
+  margin:0;
+  overflow:auto;
+  padding:0;
+  text-indent:10px;
+}
