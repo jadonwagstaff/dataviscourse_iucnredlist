@@ -1,21 +1,21 @@
 .title{
 	text-align: center;
+	background-color: #db2525;
 }
+/*note, do we want to add in borders around the two main divisions? */
 .views{
 	display:inline-block;
 	float: left;
-	text-align: center;
 }
-.countries {
-    stroke: #999999;
-    fill: #d9d9d9;
+h3{
+	text-align: center;
 }
 ul{
   list-style:none;
-  max-height:100px;
-  max-width: 100px;
+  max-height:500px;
+  max-width: 140px;
   margin:0;
-  overflow:auto;
+  overflow-y: scroll;
   padding:0;
-  text-indent:10px;
+  /*text-indent:10px; */
 }
