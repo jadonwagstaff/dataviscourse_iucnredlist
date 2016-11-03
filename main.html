@@ -20,32 +20,29 @@
 	</div>
 	<br/>
 	<!--Div containing graph elements -->
-	<div class = "views">
+	<div class = "views padded container" style = "height:600px">
 		<h3>Chart</h3>
 		<br/>
 		<!-- width and height values were set for testing and subject to change -->
-		<svg id = "chart" width = "550" height = "500"></svg>
+		<svg id = "chart" width = "600" height = "1000"></svg>
 	</div>
 	<!--Div containing map and list elements -->
-	<div class = "views">
-		<h3>Map</h3>
-		<input type = "text" Value = "Type in Country">
-		<button type="button">Search</button> 
-		<!--adding list and map with in the same div, may change later-->
-		<ul id = "countryList">
-			<li>List Item</li>
-			<li>text</li>
-			<li>text</li>
-			<li>text</li>
-			<li>text</li>
-			<li>text</li>
-			<li>text</li>
-		</ul>
-		<svg id = "map" width = "500" height = "500"></svg>
+	<div class = "views padded" style = "width:850px">
+		<div class = "views" style = "padding-right:4px">
+			<input type = "text" Value = "Type in Country">
+			<button type="button">Search</button>
+			<ul id = "countryList" class = "container"></ul>
+		</div>
+		<div>
+			<!--Filters svg just a concept at this point-->
+			<svg id = "filters" class = "container" width = "600" height = "279"></svg>
+			<svg id = "map" class = "container" width = "600" height = "315"></svg>
+		</div>
 	</div>
 
 <script type="application/javascript" src="public/js/main.js"></script>
 <script type="application/javascript" src="public/js/chart.js"></script>
+<script type="application/javascript" src="public/js/list.js"></script>
 <script type="application/javascript" src="public/js/map.js"></script>
 </body>
 </html>
