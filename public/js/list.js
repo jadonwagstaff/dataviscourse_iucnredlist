@@ -24,7 +24,13 @@ List.prototype.init = function(){
         })
         .on("click", function(d, i){
             self.chart.update(i);
-            self.map.update(i);
+            self.map.update([d.CC]);
+            if (this.getAttribute("class") == null){
+                this.setAttribute("class", "selectedListItem");
+            }
+            else {
+                this.setAttribute("class", null);
+            }
         })
 }
 

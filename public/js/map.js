@@ -3,7 +3,42 @@ function Map(data){
 }
 
 // updates the map using information from countryList
-Map.prototype.update = function (index){
+Map.prototype.update = function (countryCode){
+    var select = d3.select("#map").selectAll(".countries");
+    var deselect = d3.select("#map").selectAll(".selectedCountries");
+
+    select.attr("class", function (d){
+        for (j = 0; j < countryCode.length; j++)
+        {
+            if (d.id == countryCode[j]){
+                return "selectedCountries";
+            }
+        }
+        return "countries";
+    });
+
+    deselect.attr("class", function (d){
+        for (j = 0; j < countryCode.length; j++)
+        {
+            if (d.id == countryCode[j]){
+                return "countries";
+            }
+        }
+        return "selectedCountries";
+    });
+
+    /*paths.filter(function (d){
+            for (j = 0; j < countryCode.length; j++)
+            {
+                console.log(d.id == countryCode[j])
+                return d.id == countryCode[j];
+            }
+        });
+    var select = paths.selectAll(".countries");
+    var deselect = paths.selectAll(".selectedCountries");
+    select.classed("countries", false)
+        .classed("selectedCountries", true);
+    deselect.attr("class", "countries");*/
 };
 
 

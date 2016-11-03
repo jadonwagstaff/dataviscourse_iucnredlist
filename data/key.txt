@@ -37,6 +37,7 @@ P_LC			plants least concern
 
 mammals.csv
 Country			key, alphabetical order
+CC				country code
 M_SP			mammals total number of native species
 M_ED			mammals total number of endemic species
 M_TH_ED			mammals number of endemics on red list
