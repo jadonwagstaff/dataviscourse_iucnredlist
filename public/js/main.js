@@ -1,11 +1,10 @@
 //loads and initializes data
-d3.csv("data/summary.csv", function (error, data) {
-	console.log(data);
+d3.csv("data/mammals.csv", function (error, data) {
 	
 	//create objects
-	var visChart = new Chart(organizeData(data));
-	visChart.update();
-	//var visMap = new Map();
+	var map = new Map(data);
+    var chart = new Chart(data);
+    var list = new List(map, chart, data);
 });
 
 function organizeData(data){ //will arrange data to fit with desired chart display
