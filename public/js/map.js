@@ -1,3 +1,13 @@
+function Map(data){
+    var self = this;
+}
+
+// updates the map using information from countryList
+Map.prototype.update = function (index){
+};
+
+
+
 //map loaded here
 
 // initial drawing of map
@@ -6,9 +16,7 @@ function drawMap(world) {
     var svg = d3.select("#map");
     var scale0 = (svg.attr("width") - 1) / 2 / Math.PI;
 
-
-
-    var projection = d3.geoNaturalEarth().scale(150).translate([svg.attr("width")/2, svg.attr("height")/2]);
+    var projection = d3.geoNaturalEarth().scale(scale0).translate([svg.attr("width")/2, svg.attr("height")/2]);
 
 
     var path = d3.geoPath()
