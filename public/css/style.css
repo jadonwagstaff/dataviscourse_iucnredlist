@@ -6,14 +6,26 @@
 .views{
 	display:inline-block;
 	float: left;
+    text-align: left;
+    overflow:auto;
+}
+.padded{
+    padding:2px;
+}
+.container{
+    border:2px solid #999999;
 }
 h3{
 	text-align: center;
 }
+.countries {
+    stroke: #999999;
+    fill: #d9d9d9;
+}
 ul{
   list-style:none;
-  max-height:500px;
-  max-width: 140px;
+    max-height:581px;
+    width: 231px;
   margin:0;
   overflow-y: scroll;
   padding:0;
