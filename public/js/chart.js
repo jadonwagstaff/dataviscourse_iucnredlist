@@ -50,7 +50,10 @@ Chart.prototype.init = function(countryData){
 	var ddchart = svg.selectAll(".dd").data(countryData);
 	ddchart.enter()
 		.append("rect")
-		.attr("class", "M_DD")
+		.attr("class", function(d,i){
+			return "index" + i;
+		})
+		.classed("M_DD", true)
 		.attr("x", function(){
 			if (percentage == true){
 				return barScale(1 - DDmin) + margin;
@@ -83,8 +86,11 @@ Chart.prototype.init = function(countryData){
 	for (j = 0; j < category.length; j++){
 		svg.selectAll("."+category[i]).data(countryData)
 			.enter()
-			.append("rect")
-			.attr("class", category[j])
+			.append("rect").attr("class", function(d,i){
+				return "index" + i;
+			})
+			.classed(category[j], true)
+			//.attr("class", category[j])
 			.attr("x", function(d, i){
 				if (percentage == true) {
 					return barScale(1 - DDmin) + margin - placeholder[i] - barScale(parseFloat(d[category[j]]) / parseFloat(d.M_SP));
@@ -115,6 +121,19 @@ Chart.prototype.init = function(countryData){
 // updates the chart based on data from countryList
 Chart.prototype.update = function(index){
 	var self = this;
-
-	console.log("chart: "+index);
+	
+	var cClass = ".index" + index; 
+	d3.selectAll(cClass)
+		.attr("height", "15"); //expands selection
+	
+	for(var i = parseInt(index)+1; i < self.data.length; i++){
+		cClass = ".index" + i;
+		//shifts rest of chart down
+		d3.selectAll(cClass)
+			.attr("y", function(){
+				//console.log(this.getAttribute("y"));
+				return parseInt(this.getAttribute("y")) + 15;
+			});
+	}
+		
 };
