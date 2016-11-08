@@ -115,6 +115,9 @@ Chart.prototype.init = function(countryData){
 			})
 			.attr("fill", color[j]);
 	};
+
+
+
 };
 
 
@@ -137,3 +140,116 @@ Chart.prototype.update = function(index){
 	}
 		
 };
+
+
+function drawKey() {
+	// Make key
+	var key = d3.select("#key");
+	var c = ["#262626", "#666666", "#b22222", "#de5454", "#f3bfbf", "#a3c2db", "#4682b4", "#A59688"];
+
+	key.append("line")
+		.attr("x1", (key.attr("width") * 2) / 8)
+		.attr("y1", 4)
+		.attr("y2", key.attr("height") - 4)
+		.attr("x2", (key.attr("width") * 2) / 8)
+		.attr("stroke", "DimGray");
+	key.append("line")
+		.attr("x1", key.attr("width") - (key.attr("width") * 3) / 8)
+		.attr("y1", 4)
+		.attr("y2", key.attr("height") - 4)
+		.attr("x2", key.attr("width") - (key.attr("width") * 3) / 8)
+		.attr("stroke", "DimGray");
+	key.append("line")
+		.attr("x1", key.attr("width") - key.attr("width") / 8)
+		.attr("y1", 4)
+		.attr("y2", key.attr("height") - 4)
+		.attr("x2", key.attr("width") - key.attr("width") / 8)
+		.attr("stroke", "DimGray");
+
+	var t = key.append("text")
+		.attr("class", "keyText")
+		.attr("x", 18)
+		.attr("y", key.attr("height") / 2 + 5)
+		.text("Extinct");
+	t = key.append("text")
+		.attr("class", "keyText")
+		.attr("x", key.attr("width") / 8 + 18)
+		.attr("y", (key.attr("height")) / 2 - 2);
+	t.append("tspan")
+		.attr("dy", 0)
+		.text("Extinct in");
+	t.append("tspan")
+		.attr("dy", "1em")
+		.attr("x", key.attr("width") / 8 + 18)
+		.text("the Wild");
+	t = key.append("text")
+		.attr("class", "keyText")
+		.attr("x", (key.attr("width") * 2) / 8 + 18)
+		.attr("y", (key.attr("height")) / 2 - 2);
+	t.append("tspan")
+		.attr("dy", 0)
+		.text("Critically");
+	t.append("tspan")
+		.attr("dy", "1em")
+		.attr("x", (key.attr("width") * 2) / 8 + 18)
+		.text("Endangered");
+	t = key.append("text")
+		.attr("class", "keyText")
+		.attr("x", (key.attr("width") * 3) / 8 + 18)
+		.attr("y", key.attr("height") / 2 + 5)
+		.text("Endangered");
+	t = key.append("text")
+		.attr("class", "keyText")
+		.attr("x", (key.attr("width") * 4) / 8 + 18)
+		.attr("y", key.attr("height") / 2 + 5)
+		.text("Threatened");
+	t = key.append("text")
+		.attr("class", "keyText")
+		.attr("x", (key.attr("width") * 5) / 8 + 18)
+		.attr("y", (key.attr("height")) / 2 - 2);
+	t.append("tspan")
+		.attr("dy", 0)
+		.text("Near");
+	t.append("tspan")
+		.attr("dy", "1em")
+		.attr("x", (key.attr("width") * 5) / 8 + 18)
+		.text("Threatened");
+	t = key.append("text")
+		.attr("class", "keyText")
+		.attr("x", (key.attr("width") * 6) / 8 + 18)
+		.attr("y", (key.attr("height")) / 2 - 2);
+	t.append("tspan")
+		.attr("dy", 0)
+		.text("Least");
+	t.append("tspan")
+		.attr("dy", "1em")
+		.attr("x", (key.attr("width") * 6) / 8 + 18)
+		.text("Concern");
+	t = key.append("text")
+		.attr("class", "keyText")
+		.attr("x", (key.attr("width") * 7) / 8 + 18)
+		.attr("y", (key.attr("height")) / 2 - 2);
+	t.append("tspan")
+		.attr("dy", 0)
+		.text("Data");
+	t.append("tspan")
+		.attr("dy", "1em")
+		.attr("x", (key.attr("width") * 7) / 8 + 18)
+		.text("Deficient");
+
+	key.selectAll("rect")
+		.data(["LC", "NT", "VU", "EN", "CR", "EW", "EX", "DD"])
+		.enter()
+		.append("rect")
+		.attr("x", function (d, i) {
+			return 4 + (key.attr("width") * i) / 8;
+		})
+		.attr("y", key.attr("height") / 2 - 5)
+		.attr("width", 10)
+		.attr("height", 10)
+		.attr("fill", function (d, i) {
+			return c[i];
+		});
+}
+
+drawKey();

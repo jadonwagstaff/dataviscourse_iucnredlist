@@ -18,6 +18,12 @@
 h3{
 	text-align: center;
 }
+.keyText{
+    text-anchor:left;
+    font-size: 12px;
+    fill: #565656;
+    stroke-width: 0.1px;
+}
 .countries {
     stroke: #999999;
     fill: #d9d9d9;
