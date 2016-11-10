@@ -18,15 +18,21 @@
 		<p>UID: u0590613, u1111495</p>
 		<p>E-Mail: jadonw@gmail.com, dart.risley@gmail.com</p>
 	</div>
-	<!-- dataset election -->
-	<p>Dataset:<span>
+	<!-- change in data (un-comment Dataset when functioning) -->
+	<p><!-- Dataset:<span>
 	<select id = "dataSelect">
 		<option value= "Summary">Summary</option>
 		<option value= "Mammals">Mammals</option>
 		<option value= "Amphibians">Amphibians</option>
 	</select>
+	</span> -->
+	View:<span>
+	<select onChange = "changeData()" id = "viewSelect">
+		<option value= "true">By Percentage</option>
+		<option value= "false">By Value</option>
+	</select>
 	</span>
-	</p> 
+	</p>
 	<!--Div containing graph elements -->
 	<div class = "padded views container" style = "width:620px">
 		<svg id = "key" width = "600" height = "60"></svg>

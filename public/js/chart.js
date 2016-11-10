@@ -1,16 +1,15 @@
 
-function Chart(data){
+function Chart(data, percentage){
 	self = this;
 	self.data = data;
 
-	self.init(data)
+	self.init(data, percentage)cd
 };
 
 
 // initialises the chart
-Chart.prototype.init = function(countryData){
+Chart.prototype.init = function(countryData, percentage){
 	// percentage will be a future switch that will change the data view from percentages to actual numbers
-	var percentage = false;
 
 	var self = this;
 	var barWidth = 3;
