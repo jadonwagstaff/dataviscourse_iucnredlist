@@ -226,6 +226,46 @@ Chart.prototype.init = function(countryData, percentage){
 	}
 
 
+	// method for updating data to reflect sorting values
+	key.append("rect").data([0])
+		.attr("class", "sort")
+		.attr("x", 0)
+		.attr("y", 0)
+		.attr("width", (key.attr("width")*2)/8)
+		.attr("height", key.attr("height") - 25)
+		.on("click", function(){
+			changeData("extinct");
+		});
+	key.append("rect").data([0])
+		.attr("class", "sort")
+		.attr("x", (key.attr("width")*2)/8)
+		.attr("y", 0)
+		.attr("width", (key.attr("width")*5)/8)
+		.attr("height", key.attr("height") - 25)
+		.on("click", function(){
+			changeData("redList");
+		});
+	key.append("rect").data([0])
+		.attr("class", "sort")
+		.attr("x", (key.attr("width")*5)/8)
+		.attr("y", 0)
+		.attr("width", (key.attr("width")*7)/8)
+		.attr("height", key.attr("height") - 25)
+		.on("click", function(){
+			changeData("unthreatened");
+		});
+	key.append("rect").data([0])
+		.attr("class", "sort")
+		.attr("x", (key.attr("width")*7)/8)
+		.attr("y", 0)
+		.attr("width", key.attr("width"))
+		.attr("height", key.attr("height") - 25)
+		.on("click", function(){
+			changeData("dataDeficient");
+		});
+
+
+
 
 };
 
@@ -262,20 +302,17 @@ function drawKey() {
 		.attr("x1", (key.attr("width") * 2) / 8)
 		.attr("y1", 0)
 		.attr("y2", key.attr("height") - 10 - axisHeight)
-		.attr("x2", (key.attr("width") * 2) / 8)
-		.attr("stroke", "DimGray");
+		.attr("x2", (key.attr("width") * 2) / 8);
 	key.append("line")
 		.attr("x1", key.attr("width") - (key.attr("width") * 3) / 8)
 		.attr("y1", 0)
 		.attr("y2", key.attr("height") - 10 - axisHeight)
-		.attr("x2", key.attr("width") - (key.attr("width") * 3) / 8)
-		.attr("stroke", "DimGray");
+		.attr("x2", key.attr("width") - (key.attr("width") * 3) / 8);
 	key.append("line")
 		.attr("x1", key.attr("width") - key.attr("width") / 8)
 		.attr("y1", 0)
 		.attr("y2", key.attr("height") - 10 - axisHeight)
-		.attr("x2", key.attr("width") - key.attr("width") / 8)
-		.attr("stroke", "DimGray");
+		.attr("x2", key.attr("width") - key.attr("width") / 8);
 
 	var t = key.append("text")
 		.attr("class", "keyText")

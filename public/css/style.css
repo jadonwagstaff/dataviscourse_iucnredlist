@@ -26,6 +26,10 @@ h3{
 .axis{
     font-size:12px;
 }
+.sort{
+    fill:white;
+    opacity:0;
+}
 line{
     stroke: #000000;
 }
