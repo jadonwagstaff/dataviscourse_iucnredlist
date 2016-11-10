@@ -3,7 +3,7 @@ function Chart(data, percentage){
 	self = this;
 	self.data = data;
 
-	self.init(data, percentage)cd
+	self.init(data, percentage)
 };
 
 
