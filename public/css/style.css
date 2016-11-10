@@ -19,10 +19,15 @@ h3{
 	text-align: center;
 }
 .keyText{
-    text-anchor:left;
+    text-anchor:start;
     font-size: 12px;
-    fill: #565656;
     stroke-width: 0.1px;
+}
+.axis{
+    font-size:12px;
+}
+line{
+    stroke: #000000;
 }
 .countries {
     stroke: #999999;

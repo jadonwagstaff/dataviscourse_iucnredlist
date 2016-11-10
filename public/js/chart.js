@@ -30,7 +30,7 @@ Chart.prototype.init = function(countryData){
 			return parseFloat(d.M_DD)/parseFloat(d.M_SP);
 		});
 		var barScale = d3.scaleLinear()
-			.domain([0, 1 + DDmax - DDmin])
+			.domain([0, 2])
 			.range([0, svg.attr("width") - 2*margin]);
 	}
 	else{
@@ -56,7 +56,7 @@ Chart.prototype.init = function(countryData){
 		.classed("M_DD", true)
 		.attr("x", function(){
 			if (percentage == true){
-				return barScale(1 - DDmin) + margin;
+				return barScale(1) + margin;
 			}
 			else{
 				return barScale(SPmax) + margin;
@@ -93,7 +93,7 @@ Chart.prototype.init = function(countryData){
 			//.attr("class", category[j])
 			.attr("x", function(d, i){
 				if (percentage == true) {
-					return barScale(1 - DDmin) + margin - placeholder[i] - barScale(parseFloat(d[category[j]]) / parseFloat(d.M_SP));
+					return barScale(1) + margin - placeholder[i] - barScale(parseFloat(d[category[j]]) / parseFloat(d.M_SP));
 				}
 				else{
 					return barScale(SPmax) + margin - placeholder[i] - barScale(parseFloat(d[category[j]]));
@@ -115,6 +115,116 @@ Chart.prototype.init = function(countryData){
 			})
 			.attr("fill", color[j]);
 	};
+
+
+
+	// create axis
+
+	var key = d3.select("#key");
+
+	key.selectAll(".axis").remove();
+
+	key.append("line")
+		.attr("class", "axis")
+		.attr("x1", margin)
+		.attr("x2", key.attr("width") - margin)
+		.attr("y1", key.attr("height") - 1)
+		.attr("y2", key.attr("height") - 1);
+
+	if(percentage == true){
+		for (j = 0; j <= 2; j = j + .5){
+			key.append("line")
+				.attr("class", "axis")
+				.attr("x1", barScale(j) + margin)
+				.attr("x2", barScale(j) + margin)
+				.attr("y1", key.attr("height") - 7)
+				.attr("y2", key.attr("height"));
+			key.append("text")
+				.attr("class", "axis")
+				.attr("x", barScale(j) + margin)
+				.attr("y", key.attr("height") - 13)
+				.text(function(){
+					if (j == 0 || j == 2){
+						return "100%";
+					}
+					else if (j == 1){
+						return "0%";
+					}
+					else{
+						return "50%";
+					}
+				})
+				.attr("style", function(){
+					if (j == 0){
+						return "text-anchor:beginning";
+					}
+					else if (j == 2){
+						return "text-anchor:end";
+					}
+					else{
+						return "text-anchor:middle";
+					}
+				});
+		}
+	}
+	else{
+
+		var increment = (Math.round(DDmax/Math.pow(10, DDmax.toString().length - 1)) * Math.pow(10, DDmax.toString().length - 1))/2;
+
+		key.append("line")
+			.attr("class", "axis")
+			.attr("x1", barScale(SPmax) + margin)
+			.attr("x2", barScale(SPmax) + margin)
+			.attr("y1", key.attr("height") - 7)
+			.attr("y2", key.attr("height"));
+		key.append("text")
+			.attr("class", "axis")
+			.attr("x", barScale(SPmax) + margin)
+			.attr("y", key.attr("height") - 13)
+			.text("0")
+			.attr("style", "text-anchor:middle");
+
+		for(j = 1; j <= DDmax/increment; j++){
+			key.append("line")
+				.attr("class", "axis")
+				.attr("x1", barScale(SPmax + increment*j) + margin)
+				.attr("x2", barScale(SPmax + increment*j) + margin)
+				.attr("y1", key.attr("height") - 7)
+				.attr("y2", key.attr("height"));
+			key.append("text")
+				.attr("class", "axis")
+				.attr("x", barScale(SPmax + increment*j) + margin)
+				.attr("y", key.attr("height") - 13)
+				.text(increment*j)
+				.attr("style", function(){
+					if (DDmax - increment*j < increment/5){
+						return "text-anchor:end"
+					}
+					return "text-anchor:middle"
+				});
+		}
+
+		for(j = 1; j <= SPmax/increment; j++){
+			key.append("line")
+				.attr("class", "axis")
+				.attr("x1", barScale(SPmax - increment*j) + margin)
+				.attr("x2", barScale(SPmax - increment*j) + margin)
+				.attr("y1", key.attr("height") - 7)
+				.attr("y2", key.attr("height"));
+			key.append("text")
+				.attr("class", "axis")
+				.attr("x", barScale(SPmax - increment*j) + margin)
+				.attr("y", key.attr("height") - 13)
+				.text(increment*j)
+				.attr("style", function(){
+					if (SPmax - increment*j < increment/5){
+						return "text-anchor:beginning"
+					}
+					return "text-anchor:middle"
+				});
+
+		}
+	}
 
 
 
@@ -144,37 +254,39 @@ Chart.prototype.update = function(index){
 
 function drawKey() {
 	// Make key
+	var axisHeight = 15;
+
 	var key = d3.select("#key");
 	var c = ["#262626", "#666666", "#b22222", "#de5454", "#f3bfbf", "#a3c2db", "#4682b4", "#A59688"];
 
 	key.append("line")
 		.attr("x1", (key.attr("width") * 2) / 8)
-		.attr("y1", 4)
-		.attr("y2", key.attr("height") - 4)
+		.attr("y1", 0)
+		.attr("y2", key.attr("height") - 10 - axisHeight)
 		.attr("x2", (key.attr("width") * 2) / 8)
 		.attr("stroke", "DimGray");
 	key.append("line")
 		.attr("x1", key.attr("width") - (key.attr("width") * 3) / 8)
-		.attr("y1", 4)
-		.attr("y2", key.attr("height") - 4)
+		.attr("y1", 0)
+		.attr("y2", key.attr("height") - 10 - axisHeight)
 		.attr("x2", key.attr("width") - (key.attr("width") * 3) / 8)
 		.attr("stroke", "DimGray");
 	key.append("line")
 		.attr("x1", key.attr("width") - key.attr("width") / 8)
-		.attr("y1", 4)
-		.attr("y2", key.attr("height") - 4)
+		.attr("y1", 0)
+		.attr("y2", key.attr("height") - 10 - axisHeight)
 		.attr("x2", key.attr("width") - key.attr("width") / 8)
 		.attr("stroke", "DimGray");
 
 	var t = key.append("text")
 		.attr("class", "keyText")
 		.attr("x", 18)
-		.attr("y", key.attr("height") / 2 + 5)
+		.attr("y", key.attr("height") / 2 + 5 - axisHeight)
 		.text("Extinct");
 	t = key.append("text")
 		.attr("class", "keyText")
 		.attr("x", key.attr("width") / 8 + 18)
-		.attr("y", (key.attr("height")) / 2 - 2);
+		.attr("y", (key.attr("height")) / 2 - 2 - axisHeight);
 	t.append("tspan")
 		.attr("dy", 0)
 		.text("Extinct in");
@@ -185,7 +297,7 @@ function drawKey() {
 	t = key.append("text")
 		.attr("class", "keyText")
 		.attr("x", (key.attr("width") * 2) / 8 + 18)
-		.attr("y", (key.attr("height")) / 2 - 2);
+		.attr("y", (key.attr("height")) / 2 - 2 - axisHeight);
 	t.append("tspan")
 		.attr("dy", 0)
 		.text("Critically");
@@ -196,17 +308,17 @@ function drawKey() {
 	t = key.append("text")
 		.attr("class", "keyText")
 		.attr("x", (key.attr("width") * 3) / 8 + 18)
-		.attr("y", key.attr("height") / 2 + 5)
+		.attr("y", key.attr("height") / 2 + 5 - axisHeight)
 		.text("Endangered");
 	t = key.append("text")
 		.attr("class", "keyText")
 		.attr("x", (key.attr("width") * 4) / 8 + 18)
-		.attr("y", key.attr("height") / 2 + 5)
+		.attr("y", key.attr("height") / 2 + 5 - axisHeight)
 		.text("Threatened");
 	t = key.append("text")
 		.attr("class", "keyText")
 		.attr("x", (key.attr("width") * 5) / 8 + 18)
-		.attr("y", (key.attr("height")) / 2 - 2);
+		.attr("y", (key.attr("height")) / 2 - 2 - axisHeight);
 	t.append("tspan")
 		.attr("dy", 0)
 		.text("Near");
@@ -217,7 +329,7 @@ function drawKey() {
 	t = key.append("text")
 		.attr("class", "keyText")
 		.attr("x", (key.attr("width") * 6) / 8 + 18)
-		.attr("y", (key.attr("height")) / 2 - 2);
+		.attr("y", (key.attr("height")) / 2 - 2 - axisHeight);
 	t.append("tspan")
 		.attr("dy", 0)
 		.text("Least");
@@ -228,7 +340,7 @@ function drawKey() {
 	t = key.append("text")
 		.attr("class", "keyText")
 		.attr("x", (key.attr("width") * 7) / 8 + 18)
-		.attr("y", (key.attr("height")) / 2 - 2);
+		.attr("y", (key.attr("height")) / 2 - 2 - axisHeight);
 	t.append("tspan")
 		.attr("dy", 0)
 		.text("Data");
@@ -244,12 +356,15 @@ function drawKey() {
 		.attr("x", function (d, i) {
 			return 4 + (key.attr("width") * i) / 8;
 		})
-		.attr("y", key.attr("height") / 2 - 5)
+		.attr("y", key.attr("height") / 2 - 5 - axisHeight)
 		.attr("width", 10)
 		.attr("height", 10)
 		.attr("fill", function (d, i) {
 			return c[i];
 		});
+
+
+
 }
 
 drawKey();
