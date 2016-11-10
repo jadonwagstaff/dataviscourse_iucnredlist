@@ -14,6 +14,8 @@ function List(map, chart, countryData) {
 List.prototype.init = function(){
     var self = this;
 
+    d3.select("#countryList").selectAll("li").remove();
+
     var list = d3.select("#countryList").selectAll("li");
     list.data(self.countryData)
         .enter()
