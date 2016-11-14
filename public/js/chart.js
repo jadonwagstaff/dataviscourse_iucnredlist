@@ -287,7 +287,26 @@ Chart.prototype.update = function(index){
 				return parseInt(this.getAttribute("y")) + 15;
 			});
 	}
-		
+	
+	//needed for reuse in text
+	cClass = ".index" + index; 
+	//add country label
+	d3.select("#chart")
+		.append("text")
+		.attr("x", function(){
+			var x = d3.selectAll(cClass);
+			x = x["_groups"][0][0].getAttribute("x");
+			return x;
+		})
+		.attr("y", function(){
+			var y = d3.selectAll(cClass);
+			//console.log(y["_groups"]);
+			y = y["_groups"][0][0].getAttribute("y");
+			return parseInt(y) +15;
+		})
+		.attr("font-size", "10")
+		.text(self.data[index].Country)
+		.attr("class", ("index" + index));
 };
 
 
