@@ -2,7 +2,9 @@
 var dataOrganization;
 
 function changeData(organize) {
-
+    
+    //needed to clear chart for each selection
+	d3.select("#chart").selectAll("*").remove();
 
     var percentage = false;
     if (document.getElementById("viewSelect").value == "true"){
