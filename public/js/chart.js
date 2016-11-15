@@ -306,8 +306,39 @@ Chart.prototype.update = function(index){
 		})
 		.attr("font-size", "10")
 		.text(self.data[index].Country)
-		.attr("class", ("index" + index));
+		.attr("class", ("index" + index))
+		.classed(("textIndex" + index), true);
 };
+
+// deselects bars in chart
+Chart.prototype.unselect = function(index){
+	var self = this;
+	
+	var cClass = ".index" + index; 
+	d3.selectAll(cClass)
+		.attr("height", "3"); //selection returned to normal bar width
+	
+	for(var i = parseInt(index)+1; i < self.data.length; i++){
+		cClass = ".index" + i;
+		//shifts rest of chart down
+		d3.selectAll(cClass)
+			.attr("y", function(){
+				//console.log(this.getAttribute("y"));
+				return parseInt(this.getAttribute("y")) - 15;
+			});
+	}
+	
+	//needed for reuse in text
+	cClass = ".textIndex" + index; 
+	//removes text
+	d3.select(cClass).remove();
+
+};
+
+
+
+
+
 
 
 function drawKey() {
