@@ -37,11 +37,11 @@ List.prototype.update = function(){
 	var items = d3.select("#countryList").selectAll("li");
 	items
 		.on("click", function(){
-			console.log(this.innerHTML);
+			//console.log(this.innerHTML);
 			if (this.getAttribute("class") == ""){
                 this.setAttribute("class", "selectedListItem");
 				var temp = this.getAttribute("id");
-				console.log(temp);
+				//console.log(temp);
 				self.chart.update(temp.slice(3));
 				self.map.update([temp.slice(0, 3)]);
 				//move item to top
@@ -54,10 +54,11 @@ List.prototype.update = function(){
             }
             else {
                 this.setAttribute("class", "");
-				//to do - add unselected back to original place using index
+				//removes bar selection
+				var temp = this.getAttribute("id");
+				self.chart.unselect(temp.slice(3));
 				
-				
-				//update chart and map
+				//need to update map
 				
 				//updates list
 				self.update();
