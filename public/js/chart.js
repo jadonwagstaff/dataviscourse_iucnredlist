@@ -18,7 +18,7 @@ Chart.prototype.init = function(countryData, percentage){
 
 	// find correct svg
 	var svg = d3.select("#chart");
-	svg.selectAll("rect").remove();
+	svg.selectAll("g").remove();
 
 	// create scale
 	if (percentage == true){
@@ -45,10 +45,22 @@ Chart.prototype.init = function(countryData, percentage){
 			.range([0, svg.attr("width") - 2*margin]);
 	}
 
+
+	var g = svg.selectAll(".bar")
+		.data(countryData, function(d){
+			return d.country;
+		});
+	var bars = g.enter().append("g")
+		.attr("class", function(d,i){
+			return "bar index" + i;
+		})
+
+	bars.attr("transform", function(d, i){
+			return "translate(0," + (i*(barWidth + barSpace) + margin) + ")";
+		});
+
 	// create data deficient bars
-	var ddchart = svg.selectAll(".dd").data(countryData);
-	ddchart.enter()
-		.append("rect")
+	bars.append("rect")
 		.attr("class", function(d,i){
 			return "index" + i;
 		})
@@ -61,9 +73,7 @@ Chart.prototype.init = function(countryData, percentage){
 				return barScale(SPmax) + margin;
 			}
 		})
-		.attr("y", function(d, i){
-			return i*(barWidth + barSpace) + margin;
-		})
+		.attr("y", 0)
 		.attr("height", barWidth)
 		.attr("width", function(d){
 			if (percentage == true) {
@@ -83,9 +93,8 @@ Chart.prototype.init = function(countryData, percentage){
 	var category = ["M_LC", "M_NT", "M_VU", "M_EN", "M_CR", "M_EW", "M_EX"];
 	var color = ["#4682b4", "#a3c2db", "#f3bfbf", "#de5454", "#b22222", "#666666", "#262626"];
 	for (j = 0; j < category.length; j++){
-		svg.selectAll("."+category[i]).data(countryData)
-			.enter()
-			.append("rect").attr("class", function(d,i){
+		bars.append("rect")
+			.attr("class", function(d,i){
 				return "index" + i;
 			})
 			.classed(category[j], true)
@@ -98,9 +107,7 @@ Chart.prototype.init = function(countryData, percentage){
 					return barScale(SPmax) + margin - placeholder[i] - barScale(parseFloat(d[category[j]]));
 				}
 			})
-			.attr("y", function(d, i){
-				return i*(barWidth + barSpace) + margin;
-			})
+			.attr("y", 0)
 			.attr("height", barWidth)
 			.attr("width", function(d, i){
 				if (percentage == true) {
