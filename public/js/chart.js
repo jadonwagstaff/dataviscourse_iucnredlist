@@ -2,6 +2,11 @@
 function Chart(data, percentage){
 	self = this;
 	self.data = data;
+	self.barWidth = 3;
+	self.margin = 2;
+	self.barSpace = 1;
+	self.dataOrganization = null;
+
 
 	self.init(data, percentage)
 };
@@ -12,9 +17,6 @@ Chart.prototype.init = function(countryData, percentage){
 	// percentage will be a future switch that will change the data view from percentages to actual numbers
 
 	var self = this;
-	var barWidth = 3;
-	var margin = 2;
-	var barSpace = 1;
 
 	// find correct svg
 	var svg = d3.select("#chart");
@@ -30,7 +32,7 @@ Chart.prototype.init = function(countryData, percentage){
 		});
 		var barScale = d3.scaleLinear()
 			.domain([0, 2])
-			.range([0, svg.attr("width") - 2*margin]);
+			.range([0, svg.attr("width") - 2*self.margin]);
 	}
 	else{
 
@@ -42,7 +44,7 @@ Chart.prototype.init = function(countryData, percentage){
 		});
 		var barScale = d3.scaleLinear()
 			.domain([0, DDmax + SPmax])
-			.range([0, svg.attr("width") - 2*margin]);
+			.range([0, svg.attr("width") - 2*self.margin]);
 	}
 
 
@@ -56,7 +58,7 @@ Chart.prototype.init = function(countryData, percentage){
 		})
 
 	bars.attr("transform", function(d, i){
-			return "translate(0," + (i*(barWidth + barSpace) + margin) + ")";
+			return "translate(0," + (i*(self.barWidth + self.barSpace) + self.margin) + ")";
 		});
 
 	// create data deficient bars
@@ -67,14 +69,14 @@ Chart.prototype.init = function(countryData, percentage){
 		.classed("M_DD", true)
 		.attr("x", function(){
 			if (percentage == true){
-				return barScale(1) + margin;
+				return barScale(1) + self.margin;
 			}
 			else{
-				return barScale(SPmax) + margin;
+				return barScale(SPmax) + self.margin;
 			}
 		})
 		.attr("y", 0)
-		.attr("height", barWidth)
+		.attr("height", self.barWidth)
 		.attr("width", function(d){
 			if (percentage == true) {
 				return barScale(parseFloat(d.M_DD) / parseFloat(d.M_SP))
@@ -101,14 +103,14 @@ Chart.prototype.init = function(countryData, percentage){
 			//.attr("class", category[j])
 			.attr("x", function(d, i){
 				if (percentage == true) {
-					return barScale(1) + margin - placeholder[i] - barScale(parseFloat(d[category[j]]) / parseFloat(d.M_SP));
+					return barScale(1) + self.margin - placeholder[i] - barScale(parseFloat(d[category[j]]) / parseFloat(d.M_SP));
 				}
 				else{
-					return barScale(SPmax) + margin - placeholder[i] - barScale(parseFloat(d[category[j]]));
+					return barScale(SPmax) + self.margin - placeholder[i] - barScale(parseFloat(d[category[j]]));
 				}
 			})
 			.attr("y", 0)
-			.attr("height", barWidth)
+			.attr("height", self.barWidth)
 			.attr("width", function(d, i){
 				if (percentage == true) {
 					placeholder[i] = placeholder[i] + barScale(parseFloat(d[category[j]]) / parseFloat(d.M_SP));
@@ -132,8 +134,8 @@ Chart.prototype.init = function(countryData, percentage){
 
 	key.append("line")
 		.attr("class", "axis")
-		.attr("x1", margin)
-		.attr("x2", key.attr("width") - margin)
+		.attr("x1", self.margin)
+		.attr("x2", key.attr("width") - self.margin)
 		.attr("y1", key.attr("height") - 1)
 		.attr("y2", key.attr("height") - 1);
 
@@ -141,13 +143,13 @@ Chart.prototype.init = function(countryData, percentage){
 		for (j = 0; j <= 2; j = j + .5){
 			key.append("line")
 				.attr("class", "axis")
-				.attr("x1", barScale(j) + margin)
-				.attr("x2", barScale(j) + margin)
+				.attr("x1", barScale(j) + self.margin)
+				.attr("x2", barScale(j) + self.margin)
 				.attr("y1", key.attr("height") - 7)
 				.attr("y2", key.attr("height"));
 			key.append("text")
 				.attr("class", "axis")
-				.attr("x", barScale(j) + margin)
+				.attr("x", barScale(j) + self.margin)
 				.attr("y", key.attr("height") - 13)
 				.text(function(){
 					if (j == 0 || j == 2){
@@ -179,13 +181,13 @@ Chart.prototype.init = function(countryData, percentage){
 
 		key.append("line")
 			.attr("class", "axis")
-			.attr("x1", barScale(SPmax) + margin)
-			.attr("x2", barScale(SPmax) + margin)
+			.attr("x1", barScale(SPmax) + self.margin)
+			.attr("x2", barScale(SPmax) + self.margin)
 			.attr("y1", key.attr("height") - 7)
 			.attr("y2", key.attr("height"));
 		key.append("text")
 			.attr("class", "axis")
-			.attr("x", barScale(SPmax) + margin)
+			.attr("x", barScale(SPmax) + self.margin)
 			.attr("y", key.attr("height") - 13)
 			.text("0")
 			.attr("style", "text-anchor:middle");
@@ -193,13 +195,13 @@ Chart.prototype.init = function(countryData, percentage){
 		for(j = 1; j <= DDmax/increment; j++){
 			key.append("line")
 				.attr("class", "axis")
-				.attr("x1", barScale(SPmax + increment*j) + margin)
-				.attr("x2", barScale(SPmax + increment*j) + margin)
+				.attr("x1", barScale(SPmax + increment*j) + self.margin)
+				.attr("x2", barScale(SPmax + increment*j) + self.margin)
 				.attr("y1", key.attr("height") - 7)
 				.attr("y2", key.attr("height"));
 			key.append("text")
 				.attr("class", "axis")
-				.attr("x", barScale(SPmax + increment*j) + margin)
+				.attr("x", barScale(SPmax + increment*j) + self.margin)
 				.attr("y", key.attr("height") - 13)
 				.text(increment*j)
 				.attr("style", function(){
@@ -213,13 +215,13 @@ Chart.prototype.init = function(countryData, percentage){
 		for(j = 1; j <= SPmax/increment; j++){
 			key.append("line")
 				.attr("class", "axis")
-				.attr("x1", barScale(SPmax - increment*j) + margin)
-				.attr("x2", barScale(SPmax - increment*j) + margin)
+				.attr("x1", barScale(SPmax - increment*j) + self.margin)
+				.attr("x2", barScale(SPmax - increment*j) + self.margin)
 				.attr("y1", key.attr("height") - 7)
 				.attr("y2", key.attr("height"));
 			key.append("text")
 				.attr("class", "axis")
-				.attr("x", barScale(SPmax - increment*j) + margin)
+				.attr("x", barScale(SPmax - increment*j) + self.margin)
 				.attr("y", key.attr("height") - 13)
 				.text(increment*j)
 				.attr("style", function(){
@@ -240,35 +242,67 @@ Chart.prototype.init = function(countryData, percentage){
 		.attr("y", 0)
 		.attr("width", (key.attr("width")*2)/8)
 		.attr("height", key.attr("height") - 25)
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+			d3.select(this).attr("class", "sortSelect");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+			d3.select(this).attr("class", "sort");
+		})
 		.on("click", function(){
-			changeData("extinct");
+			self.sort("extinct");
 		});
 	key.append("rect").data([0])
 		.attr("class", "sort")
 		.attr("x", (key.attr("width")*2)/8)
 		.attr("y", 0)
-		.attr("width", (key.attr("width")*5)/8)
+		.attr("width", (key.attr("width")*3)/8)
 		.attr("height", key.attr("height") - 25)
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+			d3.select(this).attr("class", "sortSelect");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+			d3.select(this).attr("class", "sort");
+		})
 		.on("click", function(){
-			changeData("redList");
+			self.sort("redList");
 		});
 	key.append("rect").data([0])
 		.attr("class", "sort")
 		.attr("x", (key.attr("width")*5)/8)
 		.attr("y", 0)
-		.attr("width", (key.attr("width")*7)/8)
+		.attr("width", (key.attr("width")*2)/8)
 		.attr("height", key.attr("height") - 25)
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+			d3.select(this).attr("class", "sortSelect");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default")
+			d3.select(this).attr("class", "sort");
+		})
 		.on("click", function(){
-			changeData("unthreatened");
+			self.sort("unthreatened");
 		});
 	key.append("rect").data([0])
 		.attr("class", "sort")
 		.attr("x", (key.attr("width")*7)/8)
 		.attr("y", 0)
-		.attr("width", key.attr("width"))
+		.attr("width", (key.attr("width"))/8)
 		.attr("height", key.attr("height") - 25)
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+			d3.select(this).attr("class", "sortSelect");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+			d3.select(this).attr("class", "sort");
+		})
 		.on("click", function(){
-			changeData("dataDeficient");
+			self.sort("dataDeficient");
 		});
 
 
@@ -343,7 +377,72 @@ Chart.prototype.unselect = function(index){
 };
 
 
+Chart.prototype.sort = function(set) {
 
+	var percentage = false;
+	if (document.getElementById("viewSelect").value == "true") {
+		percentage = true;
+	}
+
+	if (self.dataOrganization != set + percentage) {
+
+		self.dataOrganization = set + percentage;
+
+		var bars = d3.select("#chart").selectAll("g");
+
+		// organize based on selected set and percentage
+		if (self.dataOrganization == "extincttrue") {
+			bars.sort(function (a, b) {
+				return d3.descending((parseFloat(a.M_EX) + parseFloat(a.M_EW)) / a.M_SP, (parseFloat(b.M_EX) + parseFloat(b.M_EW)) / b.M_SP)
+			});
+		}
+		else if (self.dataOrganization == "redListtrue") {
+			bars.sort(function (a, b) {
+				return d3.descending((parseFloat(a.M_CR) + parseFloat(a.M_EN) + parseFloat(a.M_VU)) / a.M_SP, (parseFloat(b.M_CR) + parseFloat(b.M_EN) + parseFloat(b.M_VU)) / b.M_SP)
+			});
+		}
+		else if (self.dataOrganization == "unthreatenedtrue") {
+			bars.sort(function (a, b) {
+				return d3.descending((parseFloat(a.M_LC) + parseFloat(a.M_NT)) / a.M_SP, (parseFloat(b.M_LC) + parseFloat(b.M_NT)) / b.M_SP)
+			});
+		}
+		else if (self.dataOrganization == "dataDeficienttrue") {
+			bars.sort(function (a, b) {
+				return d3.descending(a.M_DD / a.M_SP, b.M_DD / b.M_SP)
+			});
+		}
+		else if (self.dataOrganization == "extinctfalse") {
+			bars.sort(function (a, b) {
+				return d3.descending(parseInt(a.M_EX) + parseInt(a.M_EW), parseInt(b.M_EX) + parseInt(b.M_EW))
+			});
+		}
+		else if (self.dataOrganization == "redListfalse") {
+			bars.sort(function (a, b) {
+				return d3.descending(parseInt(a.M_CR) + parseInt(a.M_EN) + parseInt(a.M_VU), parseInt(b.M_CR) + parseInt(b.M_EN) + parseInt(a.M_VU))
+			});
+		}
+		else if (self.dataOrganization == "unthreatenedfalse") {
+			bars.sort(function (a, b) {
+				return d3.descending(parseInt(a.M_LC) + parseInt(a.M_NT), parseInt(b.M_LC) + parseInt(b.M_NT))
+			});
+		}
+		else if (self.dataOrganization == "dataDeficientfalse") {
+			bars.sort(function (a, b) {
+				return d3.descending(parseInt(a.M_DD), parseInt(b.M_DD))
+			});
+		}
+
+		// move the bars (will need to be changed to include proper movement of selections)
+		d3.select("#chart").selectAll("g")
+			.transition()
+			.duration(3000)
+			.attr("transform", function (d, i) {
+				return "translate(0," + (i * (self.barWidth + self.barSpace) + self.margin) + ")";
+			});
+	}
+
+
+}
 
 
 

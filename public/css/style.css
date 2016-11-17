@@ -30,6 +30,10 @@ h3{
     fill:white;
     opacity:0;
 }
+.sortSelect{
+    fill:#dbe4f0;
+    opacity:.5;
+}
 line{
     stroke: #000000;
 }
