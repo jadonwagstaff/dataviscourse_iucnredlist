@@ -1,5 +1,5 @@
 
-function Chart(data, percentage){
+function Chart(data, file){
 	self = this;
 	self.data = data;
 	self.barWidth = 5;
@@ -8,6 +8,7 @@ function Chart(data, percentage){
 	self.dataOrganization = null;
 
 	self.svg = d3.select("#chart");
+	self.originalData = data;
 
 	// create scale
 	self.barScaleP = d3.scaleLinear()
@@ -25,17 +26,20 @@ function Chart(data, percentage){
 
 
 	self.drawKey();
-	self.drawFilters();
-	self.init(data, percentage)
+	self.drawFilters(file);
+	self.init(data)
 };
 
 
 // initialises the chart
-Chart.prototype.init = function(countryData, percentage){
-	// percentage will be a future switch that will change the data view from percentages to actual numbers
+Chart.prototype.init = function(countryData){
 
 	var self = this;
 
+	var percentage = false;
+	if (d3.select("#percentage").attr("class") == "selectedButton") {
+		percentage = true;
+	}
 
 	self.svg.selectAll("g").remove();
 
@@ -166,7 +170,7 @@ Chart.prototype.percentChange = function()
 	var self = this;
 	var percentage;
 
-	var button = d3.select("#Percentage");
+	var button = d3.select("#percentage");
 
 
 	if (button.attr("class") == "selectedButton"){
@@ -209,7 +213,6 @@ Chart.prototype.percentChange = function()
 	var category = ["LC", "NT", "VU", "EN", "CR", "EW", "EX"];
 	for (j = 0; j < category.length; j++){
 		bar = bars.select("." + category[j]);
-		console.log(bar)
 		bar.transition()
 			.duration(2000)
 			.attr("y", function(d, i){
@@ -311,16 +314,18 @@ Chart.prototype.unselect = function(index){
 Chart.prototype.sort = function(set) {
 
 	var percentage = false;
-	if (d3.select("#Percentage").attr("class") == "selectedButton") {
+	if (d3.select("#percentage").attr("class") == "selectedButton") {
 		percentage = true;
 	}
+
+	d3.select("#regions").attr("class", "unselectedButton")
+
 
 	if (self.dataOrganization != set + percentage) {
 
 		self.dataOrganization = set + percentage;
 
 		var bars = d3.select("#chart").selectAll("g");
-		console.log(bars)
 
 		// organize based on selected set and percentage
 		if (self.dataOrganization == "extincttrue") {
@@ -369,6 +374,10 @@ Chart.prototype.sort = function(set) {
 				return d3.descending(parseInt(a.DD), parseInt(b.DD))
 			});
 		}
+		else if (self.dataOrganization == "regionstrue" || self.dataOrganization == "regionsfalse"){
+			d3.select("#regions").attr("class", "selectedButton");
+			// TODO need to add an index number to data in order to go back to original regional order
+		}
 
 
 		d3.select("#chart").selectAll("g")
@@ -388,7 +397,7 @@ Chart.prototype.drawAxis = function(){
 	var self = this;
 
 	var percentage = false;
-	if (d3.select("#Percentage").attr("class") == "selectedButton"){
+	if (d3.select("#percentage").attr("class") == "selectedButton"){
 		percentage = true;
 	}
 	var axis = d3.select("#axis");
@@ -491,6 +500,7 @@ Chart.prototype.drawKey = function() {
 
 
 	var key = d3.select("#key");
+	key.selectAll("*").remove();
 	var c = ["#262626", "#666666", "#b22222", "#de5454", "#f3bfbf", "#a3c2db", "#4682b4", "#A59688"];
 
 	key.append("line")
@@ -674,7 +684,7 @@ Chart.prototype.drawKey = function() {
 
 }
 
-Chart.prototype.drawFilters = function(){
+Chart.prototype.drawFilters = function(file){
 	var self = this;
 	var textHeight = 20;
 	var textWidth = 25;
@@ -685,6 +695,8 @@ Chart.prototype.drawFilters = function(){
 	var filterText = ["Summary", "Mammals", "Amphibians", "Percentage", "Compare", "Regions"]
 
 	var filters = d3.select("#filters");
+
+	filters.selectAll("*").remove();
 
 	filters.append("line")
 		.attr("x1", (filters.attr("width") * 3) / filterLength + 9)
@@ -724,28 +736,37 @@ Chart.prototype.drawFilters = function(){
 		});
 
 	filters.append("rect")
-		.attr("id", "Summary")
-		.attr("class", "selectedButton")
+		.attr("id", "summary")
+		.attr("class", "unselectedButton")
 		.attr("x", textWidth - margin)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 64)
-		.attr("height", boxHeight);
+		.attr("height", boxHeight)
+		.on("click", function(){
+			changeData("summary");
+		});;
 	filters.append("rect")
-		.attr("id", "Mammals")
+		.attr("id", "mammals")
 		.attr("class", "unselectedButton")
 		.attr("x", (filters.attr("width"))/filterLength + textWidth - margin)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 66)
-		.attr("height", boxHeight);
+		.attr("height", boxHeight)
+		.on("click", function(){
+			changeData("mammals");
+		});;
 	filters.append("rect")
-		.attr("id", "Amphibians")
+		.attr("id", "amphibians")
 		.attr("class", "unselectedButton")
 		.attr("x", (filters.attr("width")*2)/filterLength + textWidth - margin)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 78)
-		.attr("height", boxHeight);
+		.attr("height", boxHeight)
+		.on("click", function(){
+			changeData("amphibians");
+		});
 	filters.append("rect")
-		.attr("id", "Percentage")
+		.attr("id", "percentage")
 		.attr("class", "unselectedButton")
 		.attr("x", (filters.attr("width")*3)/filterLength + textWidth - margin)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
@@ -755,19 +776,25 @@ Chart.prototype.drawFilters = function(){
 			self.percentChange();
 		});
 	filters.append("rect")
-		.attr("id", "Compare")
+		.attr("id", "compare")
 		.attr("class", "unselectedButton")
 		.attr("x", (filters.attr("width")*4)/filterLength + textWidth - margin)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 62)
 		.attr("height", boxHeight);
 	filters.append("rect")
-		.attr("id", "Regions")
+		.attr("id", "regions")
 		.attr("class", "selectedButton")
 		.attr("x", (filters.attr("width")*5)/filterLength + textWidth - margin)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 58)
-		.attr("height", boxHeight);
+		.attr("height", boxHeight)
+		.on("click", function(){
+			self.sort("regions")
+		});
+
+	filters.select("#"+file)
+		.attr("class", "selectedButton");
 
 
 }
