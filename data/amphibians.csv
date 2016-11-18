@@ -1,191 +1,202 @@
-Country,AM_SP,AM_ED,AM_TH_ED,AM_EX,AM_EW,AM_CR,AM_EN,AM_VU,AM_NT,AM_LC,AM_DD
-Afghanistan,6,1,1,0,0,1,0,0,0,5,0
-Albania,15,0,0,0,0,0,1,1,0,13,0
-Algeria,12,1,1,0,0,0,1,2,1,8,0
-Andorra,4,0,0,0,0,0,0,0,1,3,0
-Angola,99,21,0,0,0,0,0,0,0,77,22
-Anguilla,1,0,0,0,0,0,0,0,0,1,0
-Antigua and Barbuda,2,0,0,0,0,0,0,0,1,1,0
-Argentina,157,49,24,0,0,2,15,12,9,105,14
-Armenia,8,0,0,0,0,0,0,0,0,8,0
-Australia,223,209,48,3,0,15,18,15,9,152,11
-Austria,20,0,0,0,0,0,0,0,1,19,0
-Azerbaijan,10,0,0,0,0,0,0,0,0,10,0
-Bahamas,3,1,0,0,0,0,0,0,0,2,1
-Bahrain,1,0,0,0,0,0,0,0,0,1,0
-Bangladesh,32,1,0,0,0,0,0,1,0,30,1
-Barbados,1,0,0,0,0,0,0,0,0,1,0
-Belarus,13,0,0,0,0,0,0,0,0,13,0
-Belgium,16,0,0,0,0,0,0,0,0,16,0
-Belize,38,1,0,0,0,1,3,2,6,25,1
-Benin,21,0,0,0,0,0,0,0,0,21,0
-Bhutan,7,1,0,0,0,0,0,1,0,5,1
-Bolivia,230,72,33,0,0,6,5,28,6,165,20
-Bosnia and Herzegovina,18,0,0,0,0,0,0,1,1,16,0
-Botswana,42,0,0,0,0,0,0,0,0,42,0
-Brazil¹,798,534,112,1,0,23,38,55,23,461,197
-Brunei Darussalam,55,0,0,0,0,0,0,3,17,34,1
-Bulgaria,17,0,0,0,0,0,0,0,1,16,0
-Burkina Faso,21,0,0,0,0,0,0,0,0,21,0
-Burundi,26,2,0,0,0,0,0,6,1,16,3
-Cambodia,48,5,0,0,0,0,0,3,2,38,5
-Cameroon,199,58,38,0,0,7,31,15,10,122,14
-Canada,46,0,0,0,0,0,0,1,2,43,0
-Cayman Islands,2,0,0,0,0,0,0,0,0,2,0
-Central African Republic,62,2,0,0,0,0,0,0,0,59,3
-Chad,17,4,0,0,0,0,0,0,0,13,4
-Chile,58,41,17,0,0,9,4,8,4,13,20
-China²,333,217,85,1,0,8,34,50,32,142,69
-Colombia,714,349,162,0,0,52,80,82,46,330,124
-Congo,59,0,0,0,0,0,0,0,0,57,2
-"Congo, D.R.",215,54,4,0,0,0,3,10,2,150,50
-Costa Rica,186,47,27,3,0,22,23,14,10,97,17
-Côte d'Ivoire,90,6,4,0,0,2,5,6,16,56,5
-Croatia,20,0,0,0,0,0,0,2,1,17,0
-Cuba,61,59,49,0,0,16,24,9,2,9,1
-Cyprus,3,0,0,0,0,0,0,0,0,3,0
-Czech Republic,21,0,0,0,0,0,0,0,1,20,0
-Denmark,14,0,0,0,0,0,0,0,0,14,0
-Djibouti,6,0,0,0,0,0,0,0,0,6,0
-Dominica,4,1,1,0,0,1,1,0,1,1,0
-Dominican Republic,36,11,10,0,0,10,15,5,1,5,0
-Ecuador,467,171,106,2,0,36,72,63,22,203,69
-Egypt,9,1,0,0,0,0,0,0,0,9,0
-El Salvador,32,0,0,0,0,3,5,2,1,21,0
-Equatorial Guinea,70,1,0,0,0,0,4,0,1,64,1
-Eritrea,17,1,0,0,0,0,0,0,0,16,1
-Estonia,10,0,0,0,0,0,0,0,0,10,0
-Ethiopia,63,26,9,0,0,0,4,5,2,44,8
-Fiji,2,2,1,0,0,0,1,0,1,0,0
-Finland,4,0,0,0,0,0,0,0,0,4,0
-France,35,3,0,0,0,0,1,1,5,28,0
-French Guiana,104,8,2,0,0,0,0,3,0,97,4
-Gabon,87,4,1,0,0,1,2,0,0,79,5
-Gambia,23,0,0,0,0,0,0,0,0,23,0
-Georgia,12,0,0,0,0,0,0,1,0,11,0
-Germany,21,0,0,0,0,0,0,0,0,21,0
-Ghana,76,4,1,0,0,1,5,4,9,54,3
-Gibraltar,3,0,0,0,0,0,0,0,1,2,0
-Greece,22,3,3,0,0,0,3,2,0,17,0
-Grenada,3,1,1,0,0,0,1,0,0,2,0
-Guadeloupe,5,2,2,0,0,1,2,0,1,1,0
-Guatemala,140,40,31,0,0,32,28,20,11,38,11
-Guinea,74,5,1,0,0,1,3,1,13,46,10
-Guinea-Bissau,15,0,0,0,0,0,0,0,0,15,0
-Guyana,125,27,4,0,0,0,0,7,0,101,17
-Haiti,50,26,26,0,0,31,10,5,0,4,0
-Honduras,125,45,39,2,0,31,24,4,7,54,3
-Hungary,18,0,0,0,0,0,0,0,1,17,0
-India,252,167,62,1,0,13,31,21,9,90,87
-Indonesia,363,175,22,0,0,3,9,21,42,161,127
-Iran,20,6,3,0,0,2,1,1,2,13,1
-Iraq,5,0,0,0,0,0,0,1,1,3,0
-Ireland,3,0,0,0,0,0,0,0,0,3,0
-Israel,8,1,0,1,0,1,0,0,1,5,0
-Italy,39,13,5,0,0,0,2,6,4,27,0
-Jamaica,21,21,17,0,0,7,8,2,2,2,0
-Japan,56,45,18,0,0,2,15,3,2,33,1
-Jordan,5,0,0,0,0,0,0,0,0,5,0
-Kazakhstan,11,0,0,0,0,0,1,0,0,10,0
-Kenya,98,16,5,0,0,2,4,1,1,82,8
-"Korea, D.P.R.",15,0,0,0,0,0,0,1,1,13,2
-"Korea, Republic",17,4,1,0,0,0,1,1,1,12,0
-Kyrgyzstan,4,0,0,0,0,0,0,0,0,4,0
-Lao P.D.R.,79,8,0,0,0,0,0,5,6,55,13
-Latvia,12,0,0,0,0,0,0,0,0,12,0
-Lebanon,7,0,0,0,0,0,0,0,1,6,0
-Lesotho,19,1,0,0,0,0,0,0,0,18,1
-Liberia,56,2,1,0,0,1,2,1,12,34,6
-Libya,4,0,0,0,0,0,0,0,0,4,0
-Liechtenstein,10,0,0,0,0,0,0,0,0,10,0
-Lithuania,11,0,0,0,0,0,0,0,0,11,0
-Luxembourg,14,0,0,0,0,0,0,0,0,14,0
-"Macedonia, F.Y.R.",14,0,0,0,0,0,0,0,0,14,0
-Madagascar,242,241,64,0,0,7,27,30,19,108,51
-Malawi,80,3,3,0,0,0,4,1,1,70,4
-Malaysia,212,63,34,0,0,1,12,34,45,88,32
-Mali,24,2,0,0,0,0,0,0,0,22,2
-Malta,2,0,0,0,0,0,0,0,0,2,0
-Martinique,4,1,1,0,0,1,0,1,1,1,0
-Mauritania,4,0,0,0,0,0,0,0,0,4,0
-Mexico,364,246,171,0,0,88,79,44,21,94,38
-Moldova,12,0,0,0,0,0,0,0,1,11,0
-Monaco,2,0,0,0,0,0,0,0,0,2,0
-Mongolia,6,0,0,0,0,0,0,0,0,6,0
-Montenegro,21,0,0,0,0,0,1,0,1,19,0
-Montserrat,2,0,0,0,0,1,0,0,0,1,0
-Morocco,12,2,1,0,0,0,1,1,3,7,0
-Mozambique,67,0,0,0,0,0,2,1,0,64,0
-Myanmar,79,15,0,0,0,0,0,0,4,54,21
-Namibia,48,4,0,0,0,0,0,1,0,44,3
-Nepal,46,10,2,0,0,0,0,3,3,35,5
-Netherlands,15,0,0,0,0,0,0,0,0,15,0
-Netherlands Antilles,1,0,0,0,0,0,0,0,0,1,0
-New Zealand,4,4,4,0,0,1,1,2,0,0,0
-Nicaragua,73,4,3,0,0,2,3,5,0,61,2
-Niger,8,0,0,0,0,0,0,0,0,8,0
-Nigeria,103,1,1,0,0,0,5,8,6,84,0
-Norway,6,0,0,0,0,0,0,0,0,6,0
-Oman,2,0,0,0,0,0,0,0,0,2,0
-Pakistan,18,1,0,0,0,0,0,0,0,18,0
-Palau,1,1,0,0,0,0,0,0,0,1,0
-Panama,197,33,15,0,0,22,21,6,9,113,26
-Papua New Guinea,266,187,9,0,0,1,0,10,0,141,114
-Paraguay,74,2,0,0,0,0,0,0,3,68,3
-Peru,461,224,69,0,0,22,36,38,11,221,133
-Philippines,100,79,48,0,0,1,15,32,12,26,14
-Poland,16,0,0,0,0,0,0,0,0,16,0
-Portugal,19,0,0,0,0,0,0,1,5,13,0
-Puerto Rico,19,15,13,0,0,7,4,3,0,5,0
-Romania,19,0,0,0,0,0,0,0,1,18,0
-Russian Federation,28,0,0,0,0,0,0,0,1,27,0
-Rwanda,38,1,0,0,0,0,1,7,1,26,3
-St Kitts and Nevis,2,0,0,0,0,1,0,0,0,1,0
-St Lucia,2,0,0,0,0,0,0,0,1,1,0
-St Vincent and the Grenadines,3,1,1,0,0,0,1,0,0,2,0
-San Marino,4,0,0,0,0,0,0,0,0,4,0
-São Tôme and Príncipe,7,7,3,0,0,0,2,1,0,4,0
-Saudi Arabia,7,0,0,0,0,0,0,0,0,7,0
-Senegal,32,0,0,0,0,0,0,0,0,31,1
-Serbia,21,0,0,0,0,0,1,0,1,19,0
-Seychelles,11,11,6,0,0,0,1,5,0,5,0
-Sierra Leone,55,2,1,0,0,0,1,1,11,36,6
-Singapore,27,1,0,0,0,0,0,0,4,22,1
-Slovakia,19,0,0,0,0,0,0,0,1,18,0
-Slovenia,20,0,0,0,0,0,0,2,0,18,0
-Solomon Islands,19,1,0,0,0,0,0,2,0,14,3
-Somalia,30,3,0,0,0,0,0,0,1,29,0
-South Africa,116,50,20,0,0,4,8,9,4,83,8
-Spain,34,4,3,0,0,1,1,4,8,20,0
-Sri Lanka,105,89,52,21,0,11,36,6,5,24,2
-Sudan,23,1,0,0,0,0,0,0,0,22,1
-Suriname,101,5,0,0,0,0,0,1,0,94,6
-Swaziland,45,0,0,0,0,0,0,0,0,44,1
-Sweden,12,0,0,0,0,0,0,0,0,12,0
-Switzerland,21,0,0,0,0,0,0,1,0,20,0
-Syria,7,0,0,0,0,0,0,0,1,6,0
-"Taiwan, Province of China",34,16,8,0,0,0,8,2,2,22,0
-Tajikistan,3,1,0,0,0,0,0,0,0,2,1
-Tanzania,178,78,48,0,0,7,23,20,1,107,20
-Thailand,142,21,2,0,0,0,0,4,11,102,25
-Timor-Leste,6,0,0,0,0,0,0,0,0,5,1
-Togo,22,2,0,0,0,1,2,0,1,16,2
-Trinidad and Tobago,33,7,7,0,0,2,2,5,0,24,0
-Tunisia,7,0,0,0,0,0,0,1,0,6,0
-Turkey,29,9,7,0,0,2,5,3,1,17,1
-Turkmenistan,4,0,0,0,0,0,0,0,0,4,0
-Uganda,65,3,0,0,0,0,1,5,1,52,6
-Ukraine,19,0,0,0,0,0,0,0,1,18,0
-United Arab Emirates,2,0,0,0,0,0,0,0,0,2,0
-United Kingdom,8,0,0,0,0,0,0,0,0,8,0
-United States of America,272,190,50,2,0,2,17,37,32,167,14
-Uruguay,44,2,1,0,0,0,2,2,3,37,0
-Uzbekistan,3,0,0,0,0,0,0,0,0,3,0
-Venezuela,311,172,66,1,0,19,25,28,10,140,88
-Viet Nam,154,43,5,0,0,0,3,14,16,73,48
-Virgin Islands (British),5,0,0,0,0,1,1,0,0,3,0
-Virgin Islands (United States),5,1,1,0,0,0,2,0,0,3,0
-Western Sahara,5,0,0,0,0,0,0,0,1,4,0
-Yemen,6,1,1,0,0,0,0,1,0,5,0
-Zambia,84,2,0,0,0,0,0,1,0,80,3
-Zimbabwe,63,5,4,0,0,1,4,1,0,57,0
+Country,Region,CC,SP,ED,TH_ED,EX,EW,CR,EN,VU,NT,LC,DD
+N/A,North America
+Canada,North America,CAN,46,0,0,0,0,0,0,1,2,43,0
+United States of America,North America,USA,272,190,50,2,0,2,17,37,32,167,14
+N/A,Caribbean Islands,,1,0,0,0,0,0,0,0,0,0,0,0
+Anguilla,Caribbean Islands,AIA,1,0,0,0,0,0,0,0,0,1,0
+Antigua and Barbuda,Caribbean Islands,ATG,2,0,0,0,0,0,0,0,1,1,0
+Bahamas,Caribbean Islands,BHS,3,1,0,0,0,0,0,0,0,2,1
+Barbados,Caribbean Islands,BRB,1,0,0,0,0,0,0,0,0,1,0
+Cayman Islands,Caribbean Islands,CYM,2,0,0,0,0,0,0,0,0,2,0
+Cuba,Caribbean Islands,CUB,61,59,49,0,0,16,24,9,2,9,1
+Dominica,Caribbean Islands,DMA,4,1,1,0,0,1,1,0,1,1,0
+Dominican Republic,Caribbean Islands,DOM,36,11,10,0,0,10,15,5,1,5,0
+Grenada,Caribbean Islands,GRD,3,1,1,0,0,0,1,0,0,2,0
+Guadeloupe,Caribbean Islands,GLP,5,2,2,0,0,1,2,0,1,1,0
+Haiti,Caribbean Islands,HTI,50,26,26,0,0,31,10,5,0,4,0
+Jamaica,Caribbean Islands,JAM,21,21,17,0,0,7,8,2,2,2,0
+Martinique,Caribbean Islands,MTQ,4,1,1,0,0,1,0,1,1,1,0
+Montserrat,Caribbean Islands,MSR,2,0,0,0,0,1,0,0,0,1,0
+Puerto Rico,Caribbean Islands,PRI,19,15,13,0,0,7,4,3,0,5,0
+St Kitts and Nevis,Caribbean Islands,KNA,2,0,0,0,0,1,0,0,0,1,0
+St Lucia,Caribbean Islands,LCA,2,0,0,0,0,0,0,0,1,1,0
+St Vincent and the Grenadines,Caribbean Islands,VCT,3,1,1,0,0,0,1,0,0,2,0
+Trinidad and Tobago,Caribbean Islands,TTO,33,7,7,0,0,2,2,5,0,24,0
+Virgin Islands (British),Caribbean Islands,VGB,5,0,0,0,0,1,1,0,0,3,0
+Virgin Islands (United States),Caribbean Islands,VIR,5,1,1,0,0,0,2,0,0,3,0
+N/A,Mesoamerica,,1,0,0,0,0,0,0,0,0,0,0,0
+Belize,Mesoamerica,BLZ,38,1,0,0,0,1,3,2,6,25,1
+Costa Rica,Mesoamerica,CRI,186,47,27,3,0,22,23,14,10,97,17
+El Salvador,Mesoamerica,SLV,32,0,0,0,0,3,5,2,1,21,0
+Guatemala,Mesoamerica,GTM,140,40,31,0,0,32,28,20,11,38,11
+Honduras,Mesoamerica,HND,125,45,39,2,0,31,24,4,7,54,3
+Mexico,Mesoamerica,MEX,364,246,171,0,0,88,79,44,21,94,38
+Nicaragua,Mesoamerica,NIC,73,4,3,0,0,2,3,5,0,61,2
+Panama,Mesoamerica,PAN,197,33,15,0,0,22,21,6,9,113,26
+N/A,South America,,1,0,0,0,0,0,0,0,0,0,0,0
+Argentina,South America,ARG,157,49,24,0,0,2,15,12,9,105,14
+Bolivia,South America,BOL,230,72,33,0,0,6,5,28,6,165,20
+Brazil¹,South America,BRA,798,534,112,1,0,23,38,55,23,461,197
+Chile,South America,CHL,58,41,17,0,0,9,4,8,4,13,20
+Colombia,South America,COL,714,349,162,0,0,52,80,82,46,330,124
+Ecuador,South America,ECU,467,171,106,2,0,36,72,63,22,203,69
+French Guiana,South America,GUF,104,8,2,0,0,0,0,3,0,97,4
+Guyana,South America,GUY,125,27,4,0,0,0,0,7,0,101,17
+Paraguay,South America,PRY,74,2,0,0,0,0,0,0,3,68,3
+Peru,South America,PER,461,224,69,0,0,22,36,38,11,221,133
+Suriname,South America,SUR,101,5,0,0,0,0,0,1,0,94,6
+Uruguay,South America,URY,44,2,1,0,0,0,2,2,3,37,0
+Venezuela,South America,VEN,311,172,66,1,0,19,25,28,10,140,88
+N/A,Europe,,1,0,0,0,0,0,0,0,0,0,0,0
+Albania,Europe,ALB,15,0,0,0,0,0,1,1,0,13,0
+Andorra,Europe,AND,4,0,0,0,0,0,0,0,1,3,0
+Austria,Europe,AUT,20,0,0,0,0,0,0,0,1,19,0
+Belgium,Europe,BEL,16,0,0,0,0,0,0,0,0,16,0
+Bosnia and Herzegovina,Europe,BIH,18,0,0,0,0,0,0,1,1,16,0
+Bulgaria,Europe,BGR,17,0,0,0,0,0,0,0,1,16,0
+Croatia,Europe,HRV,20,0,0,0,0,0,0,2,1,17,0
+Czech Republic,Europe,CZE,21,0,0,0,0,0,0,0,1,20,0
+Denmark,Europe,DNK,14,0,0,0,0,0,0,0,0,14,0
+Estonia,Europe,EST,10,0,0,0,0,0,0,0,0,10,0
+Finland,Europe,FIN,4,0,0,0,0,0,0,0,0,4,0
+France,Europe,FRA,35,3,0,0,0,0,1,1,5,28,0
+Germany,Europe,DEU,21,0,0,0,0,0,0,0,0,21,0
+Gibraltar,Europe,GIB,3,0,0,0,0,0,0,0,1,2,0
+Greece,Europe,GRC,22,3,3,0,0,0,3,2,0,17,0
+Hungary,Europe,HUN,18,0,0,0,0,0,0,0,1,17,0
+Ireland,Europe,IRL,3,0,0,0,0,0,0,0,0,3,0
+Italy,Europe,ITA,39,13,5,0,0,0,2,6,4,27,0
+Latvia,Europe,LVA,12,0,0,0,0,0,0,0,0,12,0
+Liechtenstein,Europe,LIE,10,0,0,0,0,0,0,0,0,10,0
+Lithuania,Europe,LTU,11,0,0,0,0,0,0,0,0,11,0
+Luxembourg,Europe,LUX,14,0,0,0,0,0,0,0,0,14,0
+"Macedonia, F.Y.R.",Europe,MKD,14,0,0,0,0,0,0,0,0,14,0
+Malta,Europe,MLT,2,0,0,0,0,0,0,0,0,2,0
+Monaco,Europe,MCO,2,0,0,0,0,0,0,0,0,2,0
+Montenegro,Europe,MNE,21,0,0,0,0,0,1,0,1,19,0
+Netherlands,Europe,NLD,15,0,0,0,0,0,0,0,0,15,0
+Norway,Europe,NOR,6,0,0,0,0,0,0,0,0,6,0
+Poland,Europe,POL,16,0,0,0,0,0,0,0,0,16,0
+Portugal,Europe,PRT,19,0,0,0,0,0,0,1,5,13,0
+Romania,Europe,ROU,19,0,0,0,0,0,0,0,1,18,0
+San Marino,Europe,SMR,4,0,0,0,0,0,0,0,0,4,0
+Serbia,Europe,SRB,21,0,0,0,0,0,1,0,1,19,0
+Slovakia,Europe,SVK,19,0,0,0,0,0,0,0,1,18,0
+Slovenia,Europe,SVN,20,0,0,0,0,0,0,2,0,18,0
+Sweden,Europe,SWE,12,0,0,0,0,0,0,0,0,12,0
+Switzerland,Europe,CHE,21,0,0,0,0,0,0,1,0,20,0
+United Kingdom,Europe,GBR,8,0,0,0,0,0,0,0,0,8,0
+N/A,North Africa,,1,0,0,0,0,0,0,0,0,0,0,0
+Algeria,North Africa,DZA,12,1,1,0,0,0,1,2,1,8,0
+Egypt,North Africa,EGY,9,1,0,0,0,0,0,0,0,9,0
+Libya,North Africa,LBY,4,0,0,0,0,0,0,0,0,4,0
+Morocco,North Africa,MAR,12,2,1,0,0,0,1,1,3,7,0
+Western Sahara,North Africa,ESH,5,0,0,0,0,0,0,0,1,4,0
+Tunisia,North Africa,TUN,7,0,0,0,0,0,0,1,0,6,0
+N/A,Sub-Saharan Africa,,1,0,0,0,0,0,0,0,0,0,0,0
+Angola,Sub-Saharan Africa,AGO,99,21,0,0,0,0,0,0,0,77,22
+Benin,Sub-Saharan Africa,BEN,21,0,0,0,0,0,0,0,0,21,0
+Botswana,Sub-Saharan Africa,BWA,42,0,0,0,0,0,0,0,0,42,0
+Burkina Faso,Sub-Saharan Africa,BFA ,21,0,0,0,0,0,0,0,0,21,0
+Burundi,Sub-Saharan Africa,BDI,26,2,0,0,0,0,0,6,1,16,3
+Cameroon,Sub-Saharan Africa,CMR,199,58,38,0,0,7,31,15,10,122,14
+Central African Republic,Sub-Saharan Africa,CAF,62,2,0,0,0,0,0,0,0,59,3
+Chad,Sub-Saharan Africa,TCD,17,4,0,0,0,0,0,0,0,13,4
+Congo,Sub-Saharan Africa,COG,59,0,0,0,0,0,0,0,0,57,2
+"Congo, D.R.",Sub-Saharan Africa,COD,215,54,4,0,0,0,3,10,2,150,50
+Côte d'Ivoire,Sub-Saharan Africa,CIV,90,6,4,0,0,2,5,6,16,56,5
+Djibouti,Sub-Saharan Africa,DJI,6,0,0,0,0,0,0,0,0,6,0
+Equatorial Guinea,Sub-Saharan Africa,GNQ,70,1,0,0,0,0,4,0,1,64,1
+Eritrea,Sub-Saharan Africa,ERI,17,1,0,0,0,0,0,0,0,16,1
+Ethiopia,Sub-Saharan Africa,ETH,63,26,9,0,0,0,4,5,2,44,8
+Gabon,Sub-Saharan Africa,GAB,87,4,1,0,0,1,2,0,0,79,5
+Gambia,Sub-Saharan Africa,GMB,23,0,0,0,0,0,0,0,0,23,0
+Ghana,Sub-Saharan Africa,GHA,76,4,1,0,0,1,5,4,9,54,3
+Guinea,Sub-Saharan Africa,GIN,74,5,1,0,0,1,3,1,13,46,10
+Guinea-Bissau,Sub-Saharan Africa,GNB,15,0,0,0,0,0,0,0,0,15,0
+Kenya,Sub-Saharan Africa,KEN,98,16,5,0,0,2,4,1,1,82,8
+Lesotho,Sub-Saharan Africa,LSO,19,1,0,0,0,0,0,0,0,18,1
+Liberia,Sub-Saharan Africa,LBR,56,2,1,0,0,1,2,1,12,34,6
+Madagascar,Sub-Saharan Africa,MDG,242,241,64,0,0,7,27,30,19,108,51
+Malawi,Sub-Saharan Africa,MWI,80,3,3,0,0,0,4,1,1,70,4
+Mali,Sub-Saharan Africa,MLI,24,2,0,0,0,0,0,0,0,22,2
+Mauritania,Sub-Saharan Africa,MRT,4,0,0,0,0,0,0,0,0,4,0
+Mozambique,Sub-Saharan Africa,MOZ,67,0,0,0,0,0,2,1,0,64,0
+Namibia,Sub-Saharan Africa,NAM,48,4,0,0,0,0,0,1,0,44,3
+Niger,Sub-Saharan Africa,NER,8,0,0,0,0,0,0,0,0,8,0
+Nigeria,Sub-Saharan Africa,NGA,103,1,1,0,0,0,5,8,6,84,0
+Rwanda,Sub-Saharan Africa,RWA,38,1,0,0,0,0,1,7,1,26,3
+Sao Tome and Principe ,Sub-Saharan Africa,STP,7,7,3,0,0,0,2,1,0,4,0
+Senegal,Sub-Saharan Africa,SEN,32,0,0,0,0,0,0,0,0,31,1
+Seychelles,Sub-Saharan Africa,SYC,11,11,6,0,0,0,1,5,0,5,0
+Sierra Leone,Sub-Saharan Africa,SLE,55,2,1,0,0,0,1,1,11,36,6
+Somalia,Sub-Saharan Africa,SOM,30,3,0,0,0,0,0,0,1,29,0
+South Africa,Sub-Saharan Africa,ZAF,116,50,20,0,0,4,8,9,4,83,8
+Spain,Sub-Saharan Africa,ESP,34,4,3,0,0,1,1,4,8,20,0
+Sudan,Sub-Saharan Africa,SDN,23,1,0,0,0,0,0,0,0,22,1
+Swaziland,Sub-Saharan Africa,SWZ,45,0,0,0,0,0,0,0,0,44,1
+Tanzania,Sub-Saharan Africa,TZA,178,78,48,0,0,7,23,20,1,107,20
+Togo,Sub-Saharan Africa,TGO,22,2,0,0,0,1,2,0,1,16,2
+Uganda,Sub-Saharan Africa,UGA,65,3,0,0,0,0,1,5,1,52,6
+Zambia,Sub-Saharan Africa,ZMB,84,2,0,0,0,0,0,1,0,80,3
+Zimbabwe,Sub-Saharan Africa,ZWE,63,5,4,0,0,1,4,1,0,57,0
+N/A,North Asia,,1,0,0,0,0,0,0,0,0,0,0,0
+Belarus,North Asia,BLR,13,0,0,0,0,0,0,0,0,13,0
+Moldova,North Asia,MDA,12,0,0,0,0,0,0,0,1,11,0
+Russian Federation,North Asia,RUS,28,0,0,0,0,0,0,0,1,27,0
+Ukraine,North Asia,UKR,19,0,0,0,0,0,0,0,1,18,0
+N/A,West & Central Asia,,1,0,0,0,0,0,0,0,0,0,0,0
+Afghanistan,West & Central Asia,AFG,6,1,1,0,0,1,0,0,0,5,0
+Armenia,West & Central Asia,ARM,8,0,0,0,0,0,0,0,0,8,0
+Azerbaijan,West & Central Asia,AZE,10,0,0,0,0,0,0,0,0,10,0
+Bahrain,West & Central Asia,BHR,1,0,0,0,0,0,0,0,0,1,0
+Cyprus,West & Central Asia,CYP,3,0,0,0,0,0,0,0,0,3,0
+Georgia,West & Central Asia,GEO,12,0,0,0,0,0,0,1,0,11,0
+Iran,West & Central Asia,IRN,20,6,3,0,0,2,1,1,2,13,1
+Iraq,West & Central Asia,IRQ,5,0,0,0,0,0,0,1,1,3,0
+Israel,West & Central Asia,ISR,8,1,0,1,0,1,0,0,1,5,0
+Jordan,West & Central Asia,JOR,5,0,0,0,0,0,0,0,0,5,0
+Kazakhstan,West & Central Asia,KAZ,11,0,0,0,0,0,1,0,0,10,0
+Kyrgyzstan,West & Central Asia,KGZ,4,0,0,0,0,0,0,0,0,4,0
+Lebanon,West & Central Asia,LBN,7,0,0,0,0,0,0,0,1,6,0
+Oman,West & Central Asia,OMN,2,0,0,0,0,0,0,0,0,2,0
+Pakistan,West & Central Asia,PAK,18,1,0,0,0,0,0,0,0,18,0
+Saudi Arabia,West & Central Asia,SAU,7,0,0,0,0,0,0,0,0,7,0
+Syria,West & Central Asia,SYR,7,0,0,0,0,0,0,0,1,6,0
+Tajikistan,West & Central Asia,TJK,3,1,0,0,0,0,0,0,0,2,1
+Turkey,West & Central Asia,TUR,29,9,7,0,0,2,5,3,1,17,1
+Turkmenistan,West & Central Asia,TKM,4,0,0,0,0,0,0,0,0,4,0
+United Arab Emirates,West & Central Asia,ARE,2,0,0,0,0,0,0,0,0,2,0
+Uzbekistan,West & Central Asia,UZB,3,0,0,0,0,0,0,0,0,3,0
+Yemen,West & Central Asia,YEM,6,1,1,0,0,0,0,1,0,5,0
+N/A,East Asia,,1,0,0,0,0,0,0,0,0,0,0,0
+China²,East Asia,CHN,333,217,85,1,0,8,34,50,32,142,69
+Japan,East Asia,JPN,56,45,18,0,0,2,15,3,2,33,1
+"Korea, D.P.R.",East Asia,PRK,15,0,0,0,0,0,0,1,1,13,2
+"Korea, Republic",East Asia,KOR,17,4,1,0,0,0,1,1,1,12,0
+Mongolia,East Asia,MNG,6,0,0,0,0,0,0,0,0,6,0
+"Taiwan, Province of China",East Asia,TWN,34,16,8,0,0,0,8,2,2,22,0
+N/A,South & Southeast Asia,,1,0,0,0,0,0,0,0,0,0,0,0
+Bangladesh,South & Southeast Asia,BGD,32,1,0,0,0,0,0,1,0,30,1
+Bhutan,South & Southeast Asia,BTN,7,1,0,0,0,0,0,1,0,5,1
+Brunei Darussalam,South & Southeast Asia,BRN,55,0,0,0,0,0,0,3,17,34,1
+Cambodia,South & Southeast Asia,KHM,48,5,0,0,0,0,0,3,2,38,5
+India,South & Southeast Asia,IND,252,167,62,1,0,13,31,21,9,90,87
+Indonesia,South & Southeast Asia,IDN,363,175,22,0,0,3,9,21,42,161,127
+Lao P.D.R.,South & Southeast Asia,LAO,79,8,0,0,0,0,0,5,6,55,13
+Malaysia,South & Southeast Asia,MYS,212,63,34,0,0,1,12,34,45,88,32
+Myanmar,South & Southeast Asia,MMR,79,15,0,0,0,0,0,0,4,54,21
+Nepal,South & Southeast Asia,NPL,46,10,2,0,0,0,0,3,3,35,5
+Philippines,South & Southeast Asia,PHL,100,79,48,0,0,1,15,32,12,26,14
+Singapore,South & Southeast Asia,SGP,27,1,0,0,0,0,0,0,4,22,1
+Sri Lanka,South & Southeast Asia,LKA,105,89,52,21,0,11,36,6,5,24,2
+Thailand,South & Southeast Asia,THA,142,21,2,0,0,0,0,4,11,102,25
+Timor-Leste,South & Southeast Asia,TLS,6,0,0,0,0,0,0,0,0,5,1
+Viet Nam,South & Southeast Asia,VNM,154,43,5,0,0,0,3,14,16,73,48
+N/A,Oceania,,1,0,0,0,0,0,0,0,0,0,0,0
+Australia,Oceania,AUS,223,209,48,3,0,15,18,15,9,152,11
+Fiji,Oceania,FJI,2,2,1,0,0,0,1,0,1,0,0
+New Zealand,Oceania,NZL,4,4,4,0,0,1,1,2,0,0,0
+Palau,Oceania,PLW,1,1,0,0,0,0,0,0,0,1,0
+Papua New Guinea,Oceania,PNG,266,187,9,0,0,1,0,10,0,141,114
+Solomon Islands,Oceania,SLB,19,1,0,0,0,0,0,2,0,14,3

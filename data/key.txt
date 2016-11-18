@@ -1,67 +1,30 @@
 summary.csv
 Country			key, alphabetical order
 Region			Africa: North Africa, Sub-Sahara Africa
-			Antarctic
-			Asia: East Asia, North Asia, South & Southeast Asia, West & Central Asia
-			Europe
-			North & Central America: Mesoamerica, Caribbean Islands, North America
-			South America
-			Oceania
+				Antarctic
+				Asia: East Asia, North Asia, South & Southeast Asia, West & Central Asia
+				Europe
+				North & Central America: Mesoamerica, Caribbean Islands, North America
+				South America
+				Oceania
+CC				country code
 Mammals			(CR+EN+VU) fully assessed (>80%)
 Birds			(CR+EN+VU) fully assessed (>80%)
 Reptiles		(CR+EN+VU) not fully assessed (<80%)
 Amphibians		(CR+EN+VU) fully assessed (>80%)
 Fish			(CR+EN+VU) not fully assessed (<80%)
 Molluscs		(CR+EN+VU) not fully assessed (<80%)
-Other_Inverts		(CR+EN+VU) not fully assessed (<80%)
+Other_Inverts	(CR+EN+VU) not fully assessed (<80%)
 Plants			(CR+EN+VU) not fully assessed (<80%)
-Fungi_Protists		(CR+EN+VU) not fully assessed (<80%)
-A_EX			animals extinct
-A_EW			animals extinct in the wild
-A_CR			animals critically endangered (included in red list)
-A_EN			animals endangered (included in red list)
-A_VU			animals vulnerable (included in red list)
-A_NT			animals near threatened
-A_LR/cd			animals lower risk/conservation dependent
-A_DD			animals data deficient
-A_LC			animals least concern	
-P_EX			plants extinct
-P_EW			plants extinct in the wild
-P_CR			plants critically endangered (included in red list)
-P_EN			plants endangered (included in red list)
-P_VU			plants vulnerable (included in red list)
-P_NT			plants near threatened
-P_LR/cd			plants lower risk/conservation dependent
-P_DD			plants data deficient
-P_LC			plants least concern
-
-mammals.csv
-Country			key, alphabetical order
-CC				country code
-M_SP			mammals total number of native species
-M_ED			mammals total number of endemic species
-M_TH_ED			mammals number of endemics on red list
-M_EX			mammals extinct
-M_EW			mammals extinct in the wild
-M_CR			mammals critically endangered (included in red list)
-M_EN			mammals endangered (included in red list)
-M_VU			mammals vulnerable (included in red list)
-M_NT			mammals near threatened
-M_LR/cd			mammals lower risk/conservation dependent
-M_DD			mammals data deficient
-M_LC			mammals least concern
-
-amphibians.csv
-Country
-A_SP			amphibians total number of native species
-A_ED			amphibians total number of endemic species
-A_TH_ED			amphibians number of endemics on red list
-A_EX			amphibians extinct
-A_EW			amphibians extinct in the wild
-A_CR			amphibians critically endangered (included in red list)
-A_EN			amphibians endangered (included in red list)
-A_VU			amphibians vulnerable (included in red list)
-A_NT			amphibians near threatened
-A_LR/cd			amphibians lower risk/conservation dependent
-A_DD			amphibians data deficient
-A_LC			amphibians least concern
+Fungi_Protists	(CR+EN+VU) not fully assessed (<80%)
+EX		 		extinct
+EW				extinct in the wild
+CR				critically endangered (included in red list)
+EN				endangered (included in red list)
+VU				vulnerable (included in red list)
+NT				near threatened
+DD				data deficient
+LC				least concern	
+SP				total number of native species
+ED				total number of endemic species
+TH_ED			number of endemics on red list
