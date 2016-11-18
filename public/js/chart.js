@@ -7,6 +7,22 @@ function Chart(data, percentage){
 	self.barSpace = 1;
 	self.dataOrganization = null;
 
+	self.svg = d3.select("#chart");
+
+	// create scale
+	self.barScaleP = d3.scaleLinear()
+		.domain([0, 2])
+		.range([0, self.svg.attr("height") - 2*self.margin]);
+	self.DDmax = d3.max(self.data, function(d){
+		return parseFloat(d.DD);
+	});
+	self.SPmax = d3.max(self.data, function(d){
+		return parseFloat(d.SP) - parseFloat(d.DD);
+	});
+	self.barScale = d3.scaleLinear()
+		.domain([0, self.DDmax + self.SPmax])
+		.range([0, self.svg.attr("height") - 2*self.margin]);
+
 
 	self.drawKey();
 	self.drawFilters();
@@ -20,38 +36,11 @@ Chart.prototype.init = function(countryData, percentage){
 
 	var self = this;
 
-	// find correct svg
-	var svg = d3.select("#chart");
 
-	svg.selectAll("g").remove();
-
-	// create scale
-	if (percentage == true){
-		var DDmin = d3.min(countryData, function(d){
-			return parseFloat(d.DD)/parseFloat(d.SP);
-		});
-		var DDmax = d3.max(countryData, function(d){
-			return parseFloat(d.DD)/parseFloat(d.SP);
-		});
-		var barScale = d3.scaleLinear()
-			.domain([0, 2])
-			.range([0, svg.attr("height") - 2*self.margin]);
-	}
-	else{
-
-		var DDmax = d3.max(countryData, function(d){
-			return parseFloat(d.DD);
-		});
-		var SPmax = d3.max(countryData, function(d){
-			return parseFloat(d.SP) - parseFloat(d.DD);
-		});
-		var barScale = d3.scaleLinear()
-			.domain([0, DDmax + SPmax])
-			.range([0, svg.attr("height") - 2*self.margin]);
-	}
+	self.svg.selectAll("g").remove();
 
 
-	var g = svg.selectAll(".bar")
+	var g = self.svg.selectAll(".bar")
 		.data(countryData, function(d){
 			return d.country;
 		});
@@ -71,20 +60,20 @@ Chart.prototype.init = function(countryData, percentage){
 		.classed("DD", true)
 		.attr("y", function(){
 			if (percentage == true){
-				return barScale(1) + self.margin;
+				return self.barScaleP(1) + self.margin;
 			}
 			else{
-				return barScale(SPmax) + self.margin;
+				return self.barScale(self.SPmax) + self.margin;
 			}
 		})
 		.attr("x", self.barSpace)
 		.attr("width", self.barWidth)
 		.attr("height", function(d){
 			if (percentage == true) {
-				return barScale(parseFloat(d.DD) / parseFloat(d.SP))
+				return self.barScaleP(parseFloat(d.DD) / parseFloat(d.SP))
 			}
 			else{
-				return barScale(parseFloat(d.DD));
+				return self.barScale(parseFloat(d.DD));
 			}
 		})
 		.attr("fill", "#A59688");
@@ -105,124 +94,29 @@ Chart.prototype.init = function(countryData, percentage){
 			.attr("class", category[j])
 			.attr("y", function(d, i){
 				if (percentage == true) {
-					return barScale(1) + self.margin - placeholder[i] - barScale(parseFloat(d[category[j]]) / parseFloat(d.SP));
+					return self.barScaleP(1) + self.margin - placeholder[i] - self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
 				}
 				else{
-					return barScale(SPmax) + self.margin - placeholder[i] - barScale(parseFloat(d[category[j]]));
+					return self.barScale(self.SPmax) + self.margin - placeholder[i] - self.barScale(parseFloat(d[category[j]]));
 				}
 			})
 			.attr("x", self.barSpace)
 			.attr("width", self.barWidth)
 			.attr("height", function(d, i){
 				if (percentage == true) {
-					placeholder[i] = placeholder[i] + barScale(parseFloat(d[category[j]]) / parseFloat(d.SP));
-					return barScale(parseFloat(d[category[j]]) / parseFloat(d.SP));
+					placeholder[i] = placeholder[i] + self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
+					return self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
 				}
 				else{
-					placeholder[i] = placeholder[i] + barScale(parseFloat(d[category[j]]));
-					return barScale(parseFloat(d[category[j]]));
+					placeholder[i] = placeholder[i] + self.barScale(parseFloat(d[category[j]]));
+					return self.barScale(parseFloat(d[category[j]]));
 				}
 			})
 			.attr("fill", color[j]);
 	};
 
-
-
-	// create axis
-
-	var axis = d3.select("#axis");
-
-	axis.selectAll(".axis").remove();
-
-	axis.append("line")
-		.attr("class", "axis")
-		.attr("y1", self.margin)
-		.attr("y2", axis.attr("height") - self.margin)
-		.attr("x1", axis.attr("width") - 1)
-		.attr("x2", axis.attr("width") - 1);
-
-	if(percentage == true){
-		for (j = 0; j <= 2; j = j + .5){
-			axis.append("line")
-				.attr("class", "axis")
-				.attr("y1", barScale(j) + self.margin)
-				.attr("y2", barScale(j) + self.margin)
-				.attr("x1", axis.attr("width") - 7)
-				.attr("x2", axis.attr("width"));
-			axis.append("text")
-				.attr("class", "axis")
-				.attr("y", function(){
-					if (j == 0 ){
-						return barScale(j) + 10;
-					}
-					else if (j == 2){
-						return barScale(j) + 2;
-					}
-					else{
-						return barScale(j) + 8;
-					}
-				})
-				.attr("x", axis.attr("width") - 13)
-				.text(function(){
-					if (j == 0 || j == 2){
-						return "100%";
-					}
-					else if (j == 1){
-						return "0%";
-					}
-					else{
-						return "50%";
-					}
-				})
-		}
-	}
-	else{
-
-		var increment = Math.round(DDmax/(2*Math.pow(10, DDmax.toString().length - 1))) * Math.pow(10, DDmax.toString().length - 1);
-
-		axis.append("line")
-			.attr("class", "axis")
-			.attr("y1", barScale(SPmax) + self.margin)
-			.attr("y2", barScale(SPmax) + self.margin)
-			.attr("x1", axis.attr("width") - 7)
-			.attr("x2", axis.attr("width"));
-		axis.append("text")
-			.attr("class", "axis")
-			.attr("y", barScale(SPmax) + 8)
-			.attr("x", axis.attr("width") - 13)
-			.text("0")
-
-		for(j = 1; j <= DDmax/increment; j++){
-			axis.append("line")
-				.attr("class", "axis")
-				.attr("y1", barScale(SPmax + increment*j) + self.margin)
-				.attr("y2", barScale(SPmax + increment*j) + self.margin)
-				.attr("x1", axis.attr("width") - 7)
-				.attr("x2", axis.attr("width"));
-			axis.append("text")
-				.attr("class", "axis")
-				.attr("y", barScale(SPmax + increment*j) + 8)
-				.attr("x", axis.attr("width") - 13)
-				.text(increment*j)
-		}
-
-		for(j = 1; j <= SPmax/increment; j++){
-			axis.append("line")
-				.attr("class", "axis")
-				.attr("y1", barScale(SPmax - increment*j) + self.margin)
-				.attr("y2", barScale(SPmax - increment*j) + self.margin)
-				.attr("x1", axis.attr("width") - 7)
-				.attr("x2", axis.attr("width"));
-			axis.append("text")
-				.attr("class", "axis")
-				.attr("y", barScale(SPmax - increment*j) + 8)
-				.attr("x", axis.attr("width") - 13)
-				.text(increment*j)
-
-		}
-	}
-
-
+	// make axis
+	self.drawAxis();
 
 
 
@@ -234,8 +128,7 @@ Chart.prototype.init = function(countryData, percentage){
 Chart.prototype.update = function(countryCode) {
 	var self = this;
 
-	var svg = d3.select("#chart");
-	var bars = svg.selectAll("g");
+	var bars = self.svg.selectAll("g");
 
 	bars = bars.filter(function (d){
 		for (j = 0; j < countryCode.length; j++)
@@ -258,12 +151,92 @@ Chart.prototype.update = function(countryCode) {
 		.attr("class", "highlight")
 		.attr("y", 1)
 		.attr("x", 0)
-		.attr("height", svg.attr("height") - 1)
+		.attr("height", self.svg.attr("height") - 1)
 		.attr("width", self.barSpace*2 + self.barWidth);
 
 	deselect.attr("class", "bars")
 		.select(".highlight")
 		.remove();
+
+
+}
+
+Chart.prototype.percentChange = function()
+{
+	var self = this;
+	var percentage;
+
+	var button = d3.select("#Percentage");
+
+
+	if (button.attr("class") == "selectedButton"){
+		percentage = false;
+		button.attr("class", "unselectedButton");
+	}
+	else{
+		percentage = true;
+		button.attr("class", "selectedButton");
+	}
+
+	var bars = self.svg.selectAll(".bars");
+
+	// create data deficient bars
+	var bar = bars.select(".DD");
+	bar.transition()
+		.duration(2000)
+		.attr("height", function(d){
+			if (percentage == true) {
+				return self.barScaleP(parseFloat(d.DD) / parseFloat(d.SP))
+			}
+			else{
+				return self.barScale(parseFloat(d.DD));
+			}
+		})
+		.attr("y", function(){
+			if (percentage == true){
+				return self.barScaleP(1) + self.margin;
+			}
+			else{
+				return self.barScale(self.SPmax) + self.margin;
+			}
+		});
+
+	// create all other bars
+	var placeholder = [];
+	for (i = 0; i < self.data.length; i++){
+		placeholder[i] = 0;
+	}
+	var category = ["LC", "NT", "VU", "EN", "CR", "EW", "EX"];
+	for (j = 0; j < category.length; j++){
+		bar = bars.select("." + category[j]);
+		console.log(bar)
+		bar.transition()
+			.duration(2000)
+			.attr("y", function(d, i){
+				if (percentage == true) {
+					//console.log(d);
+					return self.barScaleP(1) + self.margin - placeholder[i] - self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
+				}
+				else{
+					return self.barScale(self.SPmax) + self.margin - placeholder[i] - self.barScale(parseFloat(d[category[j]]));
+				}
+			})
+			.attr("height", function(d, i){
+				if (percentage == true) {
+					placeholder[i] = placeholder[i] + self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
+					return self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
+				}
+				else{
+					placeholder[i] = placeholder[i] + self.barScale(parseFloat(d[category[j]]));
+					return self.barScale(parseFloat(d[category[j]]));
+				}
+			});
+	};
+
+	// make axis
+	self.drawAxis();
+
+
 
 
 }
@@ -338,9 +311,9 @@ Chart.prototype.unselect = function(index){
 Chart.prototype.sort = function(set) {
 
 	var percentage = false;
-	/*if (document.getElementById("viewSelect").value == "true") {
+	if (d3.select("#Percentage").attr("class") == "selectedButton") {
 		percentage = true;
-	}*/
+	}
 
 	if (self.dataOrganization != set + percentage) {
 
@@ -397,7 +370,7 @@ Chart.prototype.sort = function(set) {
 			});
 		}
 
-		// move the bars (will need to be changed to include proper movement of selections)
+
 		d3.select("#chart").selectAll("g")
 			.transition()
 			.duration(3000)
@@ -410,12 +383,112 @@ Chart.prototype.sort = function(set) {
 }
 
 
+Chart.prototype.drawAxis = function(){
 
+	var self = this;
+
+	var percentage = false;
+	if (d3.select("#Percentage").attr("class") == "selectedButton"){
+		percentage = true;
+	}
+	var axis = d3.select("#axis");
+
+	axis.selectAll(".axis").remove();
+
+	axis.append("line")
+		.attr("class", "axis")
+		.attr("y1", self.margin)
+		.attr("y2", axis.attr("height") - self.margin)
+		.attr("x1", axis.attr("width") - 1)
+		.attr("x2", axis.attr("width") - 1);
+
+	if(percentage == true){
+		for (j = 0; j <= 2; j = j + .5){
+			axis.append("line")
+				.attr("class", "axis")
+				.attr("y1", self.barScaleP(j) + self.margin)
+				.attr("y2", self.barScaleP(j) + self.margin)
+				.attr("x1", axis.attr("width") - 7)
+				.attr("x2", axis.attr("width"));
+			axis.append("text")
+				.attr("class", "axis")
+				.attr("y", function(){
+					if (j == 0 ){
+						return self.barScaleP(j) + 10;
+					}
+					else if (j == 2){
+						return self.barScaleP(j) + 2;
+					}
+					else{
+						return self.barScaleP(j) + 8;
+					}
+				})
+				.attr("x", axis.attr("width") - 13)
+				.text(function(){
+					if (j == 0 || j == 2){
+						return "100%";
+					}
+					else if (j == 1){
+						return "0%";
+					}
+					else{
+						return "50%";
+					}
+				})
+		}
+	}
+	else{
+
+		var increment = Math.round(self.DDmax/(2*Math.pow(10, self.DDmax.toString().length - 1))) * Math.pow(10, self.DDmax.toString().length - 1);
+
+		axis.append("line")
+			.attr("class", "axis")
+			.attr("y1", self.barScale(self.SPmax) + self.margin)
+			.attr("y2", self.barScale(self.SPmax) + self.margin)
+			.attr("x1", axis.attr("width") - 7)
+			.attr("x2", axis.attr("width"));
+		axis.append("text")
+			.attr("class", "axis")
+			.attr("y", self.barScale(self.SPmax) + 8)
+			.attr("x", axis.attr("width") - 13)
+			.text("0")
+
+		for(j = 1; j <= self.DDmax/increment; j++){
+			axis.append("line")
+				.attr("class", "axis")
+				.attr("y1", self.barScale(self.SPmax + increment*j) + self.margin)
+				.attr("y2", self.barScale(self.SPmax + increment*j) + self.margin)
+				.attr("x1", axis.attr("width") - 7)
+				.attr("x2", axis.attr("width"));
+			axis.append("text")
+				.attr("class", "axis")
+				.attr("y", self.barScale(self.SPmax + increment*j) + 8)
+				.attr("x", axis.attr("width") - 13)
+				.text(increment*j)
+		}
+
+		for(j = 1; j <= self.SPmax/increment; j++){
+			axis.append("line")
+				.attr("class", "axis")
+				.attr("y1", self.barScale(self.SPmax - increment*j) + self.margin)
+				.attr("y2", self.barScale(self.SPmax - increment*j) + self.margin)
+				.attr("x1", axis.attr("width") - 7)
+				.attr("x2", axis.attr("width"));
+			axis.append("text")
+				.attr("class", "axis")
+				.attr("y", self.barScale(self.SPmax - increment*j) + 8)
+				.attr("x", axis.attr("width") - 13)
+				.text(increment*j)
+
+		}
+	}
+}
 
 Chart.prototype.drawKey = function() {
-	// Make key
+	var self = this;
 	var axisHeight = 5;
 	var textWidth = 18;
+
 
 	var key = d3.select("#key");
 	var c = ["#262626", "#666666", "#b22222", "#de5454", "#f3bfbf", "#a3c2db", "#4682b4", "#A59688"];
@@ -602,6 +675,7 @@ Chart.prototype.drawKey = function() {
 }
 
 Chart.prototype.drawFilters = function(){
+	var self = this;
 	var textHeight = 20;
 	var textWidth = 25;
 	var axisHeight = 5;
@@ -676,7 +750,10 @@ Chart.prototype.drawFilters = function(){
 		.attr("x", (filters.attr("width")*3)/filterLength + textWidth - margin)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 71)
-		.attr("height", boxHeight);
+		.attr("height", boxHeight)
+		.on("click", function(){
+			self.percentChange();
+		});
 	filters.append("rect")
 		.attr("id", "Compare")
 		.attr("class", "unselectedButton")
