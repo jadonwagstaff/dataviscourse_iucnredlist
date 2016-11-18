@@ -6,12 +6,12 @@ function changeData(organize) {
 	d3.select("#chart").selectAll("*").remove();
 
     var percentage = false;
-    if (document.getElementById("viewSelect").value == "true"){
+    /*if (document.getElementById("viewSelect").value == "true"){
         percentage = true;
-    }
+    }*/
 
 
-    d3.csv("data/mammals.csv", function (error, data) {
+    d3.csv("data/summary.csv", function (error, data) {
 
 
         //create objects

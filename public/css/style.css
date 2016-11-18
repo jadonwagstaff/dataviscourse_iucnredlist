@@ -1,8 +1,12 @@
+/* title properties */
 .title{
-	text-align: center;
-	background-color: #db2525;
+    text-align: center;
 }
-/*note, do we want to add in borders around the two main divisions? */
+h1{
+	color: #db2525;
+}
+
+/* div properties */
 .views{
 	display:inline-block;
 	float: left;
@@ -15,16 +19,29 @@
 .container{
     border:2px solid #999999;
 }
-h3{
-	text-align: center;
-}
+
+/*key properties*/
 .keyText{
     text-anchor:start;
     font-size: 12px;
     stroke-width: 0.1px;
 }
+.buttonText{
+    text-anchor:center;
+    font-size: 14px;
+}
+.selectedButton{
+    fill:#dbe4f0;
+    opacity: .3;
+    stroke:#708090;
+}
+.unselectedButton{
+    fill:white;
+    opacity:0;
+}
 .axis{
     font-size:12px;
+    text-anchor:end;
 }
 .sort{
     fill:white;
@@ -37,10 +54,14 @@ h3{
 line{
     stroke: #000000;
 }
+
+/* chart properties */
 .highlight{
     fill:none;
     stroke: #708090;
 }
+
+/* map properties */
 .countries {
     stroke: #999999;
     fill: #d9d9d9;
@@ -49,6 +70,8 @@ line{
     stroke: #999999;
     fill: #a3c2db;
 }
+
+/* list properties */
 .listTitle {
     font-weight: bold;
 }
@@ -56,11 +79,11 @@ line{
     background: #a3c2db;
 }
 ul{
-  list-style:none;
-    max-height:581px;
-    width: 231px;
-  margin:0;
-  overflow-y: scroll;
-  padding:0;
-  /*text-indent:10px; */
+    list-style:none;
+    font-size: 14px;
+    max-height:328px;
+    width: 210px;
+    margin:0;
+    overflow-y: scroll;
+    padding:0;
 }
