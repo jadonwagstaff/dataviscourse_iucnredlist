@@ -2,10 +2,11 @@
 function Chart(data, percentage){
 	self = this;
 	self.data = data;
-	self.barWidth = 3;
+	self.barWidth = 4;
 	self.margin = 2;
 	self.barSpace = 1;
 	self.dataOrganization = null;
+
 
 
 	self.init(data, percentage)
@@ -20,15 +21,16 @@ Chart.prototype.init = function(countryData, percentage){
 
 	// find correct svg
 	var svg = d3.select("#chart");
+
 	svg.selectAll("g").remove();
 
 	// create scale
 	if (percentage == true){
 		var DDmin = d3.min(countryData, function(d){
-			return parseFloat(d.M_DD)/parseFloat(d.M_SP);
+			return parseFloat(d.DD)/parseFloat(d.SP);
 		});
 		var DDmax = d3.max(countryData, function(d){
-			return parseFloat(d.M_DD)/parseFloat(d.M_SP);
+			return parseFloat(d.DD)/parseFloat(d.SP);
 		});
 		var barScale = d3.scaleLinear()
 			.domain([0, 2])
@@ -37,10 +39,10 @@ Chart.prototype.init = function(countryData, percentage){
 	else{
 
 		var DDmax = d3.max(countryData, function(d){
-			return parseFloat(d.M_DD);
+			return parseFloat(d.DD);
 		});
 		var SPmax = d3.max(countryData, function(d){
-			return parseFloat(d.M_SP) - parseFloat(d.M_DD);
+			return parseFloat(d.SP) - parseFloat(d.DD);
 		});
 		var barScale = d3.scaleLinear()
 			.domain([0, DDmax + SPmax])
@@ -52,10 +54,13 @@ Chart.prototype.init = function(countryData, percentage){
 		.data(countryData, function(d){
 			return d.country;
 		});
+
+	svg.attr("height", function(){
+		return countryData.length*(self.barWidth + self.barSpace) + 2*self.margin
+	});
+
 	var bars = g.enter().append("g")
-		.attr("class", function(d,i){
-			return "bar index" + i;
-		})
+		.attr("class", "bars");
 
 	bars.attr("transform", function(d, i){
 			return "translate(0," + (i*(self.barWidth + self.barSpace) + self.margin) + ")";
@@ -63,10 +68,10 @@ Chart.prototype.init = function(countryData, percentage){
 
 	// create data deficient bars
 	bars.append("rect")
-		.attr("class", function(d,i){
+		/*.attr("class", function(d,i){
 			return "index" + i;
-		})
-		.classed("M_DD", true)
+		})*/
+		.classed("DD", true)
 		.attr("x", function(){
 			if (percentage == true){
 				return barScale(1) + self.margin;
@@ -75,14 +80,14 @@ Chart.prototype.init = function(countryData, percentage){
 				return barScale(SPmax) + self.margin;
 			}
 		})
-		.attr("y", 0)
+		.attr("y", self.barSpace)
 		.attr("height", self.barWidth)
 		.attr("width", function(d){
 			if (percentage == true) {
-				return barScale(parseFloat(d.M_DD) / parseFloat(d.M_SP))
+				return barScale(parseFloat(d.DD) / parseFloat(d.SP))
 			}
 			else{
-				return barScale(parseFloat(d.M_DD));
+				return barScale(parseFloat(d.DD));
 			}
 		})
 		.attr("fill", "#A59688");
@@ -92,29 +97,29 @@ Chart.prototype.init = function(countryData, percentage){
 	for (i = 0; i < countryData.length; i++){
 		placeholder[i] = 0;
 	}
-	var category = ["M_LC", "M_NT", "M_VU", "M_EN", "M_CR", "M_EW", "M_EX"];
-	var color = ["#4682b4", "#a3c2db", "#f3bfbf", "#de5454", "#b22222", "#666666", "#262626"];
+	var category = ["LC", "NT", "VU", "EN", "CR", "EW", "EX"];
+	var color = ["#5a91bf", "#a3c2db", "#f7d4d4", "#e77e7e", "#d62929", "#8c8c8c", "#666666"];
 	for (j = 0; j < category.length; j++){
 		bars.append("rect")
-			.attr("class", function(d,i){
+			/*.attr("class", function(d,i){
 				return "index" + i;
 			})
-			.classed(category[j], true)
-			//.attr("class", category[j])
+			.classed(category[j], true)*/
+			.attr("class", category[j])
 			.attr("x", function(d, i){
 				if (percentage == true) {
-					return barScale(1) + self.margin - placeholder[i] - barScale(parseFloat(d[category[j]]) / parseFloat(d.M_SP));
+					return barScale(1) + self.margin - placeholder[i] - barScale(parseFloat(d[category[j]]) / parseFloat(d.SP));
 				}
 				else{
 					return barScale(SPmax) + self.margin - placeholder[i] - barScale(parseFloat(d[category[j]]));
 				}
 			})
-			.attr("y", 0)
+			.attr("y", self.barSpace)
 			.attr("height", self.barWidth)
 			.attr("width", function(d, i){
 				if (percentage == true) {
-					placeholder[i] = placeholder[i] + barScale(parseFloat(d[category[j]]) / parseFloat(d.M_SP));
-					return barScale(parseFloat(d[category[j]]) / parseFloat(d.M_SP));
+					placeholder[i] = placeholder[i] + barScale(parseFloat(d[category[j]]) / parseFloat(d.SP));
+					return barScale(parseFloat(d[category[j]]) / parseFloat(d.SP));
 				}
 				else{
 					placeholder[i] = placeholder[i] + barScale(parseFloat(d[category[j]]));
@@ -311,8 +316,50 @@ Chart.prototype.init = function(countryData, percentage){
 };
 
 
+
+Chart.prototype.update = function(countryCode) {
+	var self = this;
+	var category = [".DD", ".LC", ".NT", ".VU", ".EN", ".CR", ".EW", ".EX"];
+	var color = ["#A59688", "#5a91bf", "#a3c2db", "#f7d4d4", "#e77e7e", "#d62929", "#8c8c8c", "#666666"];
+	var selectedColor = ["#917f6e","#325d81", "#5a91bf", "#e26969", "#c12525", "#811818", "#666666", "#262626"];
+
+	var svg = d3.select("#chart");
+	var bars = svg.selectAll("g");
+
+	bars = bars.filter(function (d){
+		for (j = 0; j < countryCode.length; j++)
+		{
+			return d.CC == countryCode[j];
+		}
+	});
+
+	var selected = bars.filter(function (){
+			return d3.select(this).attr("class") == "bars";
+		});
+
+	var deselect = bars.filter(function (){
+			return d3.select(this).attr("class") == "selectedBars";
+		});
+
+
+	selected.attr("class", "selectedBars")
+		.append("rect")
+		.attr("class", "highlight")
+		.attr("x", 1)
+		.attr("y", 0)
+		.attr("width", svg.attr("width") - 1)
+		.attr("height", self.barSpace*2 + self.barWidth);
+
+	deselect.attr("class", "bars")
+		.select(".highlight")
+		.remove();
+
+
+}
+
+
 // updates the chart based on data from countryList
-Chart.prototype.update = function(index){
+/*Chart.prototype.update = function(index){
 	var self = this;
 	
 	var cClass = ".index" + index; 
@@ -374,7 +421,7 @@ Chart.prototype.unselect = function(index){
 	//removes text
 	d3.select(cClass).remove();
 
-};
+};*/
 
 
 Chart.prototype.sort = function(set) {
@@ -389,46 +436,53 @@ Chart.prototype.sort = function(set) {
 		self.dataOrganization = set + percentage;
 
 		var bars = d3.select("#chart").selectAll("g");
+		console.log(bars)
 
 		// organize based on selected set and percentage
 		if (self.dataOrganization == "extincttrue") {
 			bars.sort(function (a, b) {
-				return d3.descending((parseFloat(a.M_EX) + parseFloat(a.M_EW)) / a.M_SP, (parseFloat(b.M_EX) + parseFloat(b.M_EW)) / b.M_SP)
+				return d3.descending((parseFloat(a.EX) + parseFloat(a.EW)) / a.SP, (parseFloat(b.EX) + parseFloat(b.EW)) / b.SP)
 			});
+			bars.filter(function (d) {
+				return parseFloat(d.EX) + parseFloat(d.EW) == 0;
+			})
+				.sort(function (a, b) {
+					return d3.descending((parseFloat(a.CR) + parseFloat(a.EN) + parseFloat(a.VU)) / a.SP, (parseFloat(b.CR) + parseFloat(b.EN) + parseFloat(b.VU)) / b.SP)
+				});
 		}
 		else if (self.dataOrganization == "redListtrue") {
 			bars.sort(function (a, b) {
-				return d3.descending((parseFloat(a.M_CR) + parseFloat(a.M_EN) + parseFloat(a.M_VU)) / a.M_SP, (parseFloat(b.M_CR) + parseFloat(b.M_EN) + parseFloat(b.M_VU)) / b.M_SP)
+				return d3.descending((parseFloat(a.CR) + parseFloat(a.EN) + parseFloat(a.VU)) / a.SP, (parseFloat(b.CR) + parseFloat(b.EN) + parseFloat(b.VU)) / b.SP)
 			});
 		}
 		else if (self.dataOrganization == "unthreatenedtrue") {
 			bars.sort(function (a, b) {
-				return d3.descending((parseFloat(a.M_LC) + parseFloat(a.M_NT)) / a.M_SP, (parseFloat(b.M_LC) + parseFloat(b.M_NT)) / b.M_SP)
+				return d3.descending((parseFloat(a.LC) + parseFloat(a.NT)) / a.SP, (parseFloat(b.LC) + parseFloat(b.NT)) / b.SP)
 			});
 		}
 		else if (self.dataOrganization == "dataDeficienttrue") {
 			bars.sort(function (a, b) {
-				return d3.descending(a.M_DD / a.M_SP, b.M_DD / b.M_SP)
+				return d3.descending(a.DD / a.SP, b.DD / b.SP)
 			});
 		}
 		else if (self.dataOrganization == "extinctfalse") {
 			bars.sort(function (a, b) {
-				return d3.descending(parseInt(a.M_EX) + parseInt(a.M_EW), parseInt(b.M_EX) + parseInt(b.M_EW))
+				return d3.descending(parseInt(a.EX) + parseInt(a.EW), parseInt(b.EX) + parseInt(b.EW))
 			});
 		}
 		else if (self.dataOrganization == "redListfalse") {
 			bars.sort(function (a, b) {
-				return d3.descending(parseInt(a.M_CR) + parseInt(a.M_EN) + parseInt(a.M_VU), parseInt(b.M_CR) + parseInt(b.M_EN) + parseInt(a.M_VU))
+				return d3.descending(parseInt(a.CR) + parseInt(a.EN) + parseInt(a.VU), parseInt(b.CR) + parseInt(b.EN) + parseInt(a.VU))
 			});
 		}
 		else if (self.dataOrganization == "unthreatenedfalse") {
 			bars.sort(function (a, b) {
-				return d3.descending(parseInt(a.M_LC) + parseInt(a.M_NT), parseInt(b.M_LC) + parseInt(b.M_NT))
+				return d3.descending(parseInt(a.LC) + parseInt(a.NT), parseInt(b.LC) + parseInt(b.NT))
 			});
 		}
 		else if (self.dataOrganization == "dataDeficientfalse") {
 			bars.sort(function (a, b) {
-				return d3.descending(parseInt(a.M_DD), parseInt(b.M_DD))
+				return d3.descending(parseInt(a.DD), parseInt(b.DD))
 			});
 		}
 

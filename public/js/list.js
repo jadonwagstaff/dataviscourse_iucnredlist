@@ -20,17 +20,35 @@ List.prototype.init = function(){
     list.data(self.countryData)
         .enter()
         .append("li")
-        .text(function (d){
-            return d.Country
-        })
-		.attr("id", function(d,i){ 
-			return d.CC + i; //this stores the cc and index for future use
+		.attr("class", function(d){
+			if (d.Country == "N/A"){
+				return "listTitle"}
+			else {return "list"}
+		});
+
+	d3.select("#countryList").selectAll(".listTitle")
+		.style("cursor", "default")
+		.text(function(d) {return d.Region;});
+
+	d3.select("#countryList").selectAll(".list")
+		.style("cursor", "pointer")
+		.text(function(d) {return d.Country;})
+		.on("click", function(d){
+			//console.log(this.innerHTML);
+			if (this.getAttribute("class") == "list"){
+				this.setAttribute("class", "selectedListItem");
+				self.chart.update([d.CC]);
+				self.map.update([d.CC]);
+			}
+			else {
+				this.setAttribute("class", "list");
+				self.chart.update([d.CC]);
+				self.map.update([d.CC]);
+			}
 		})
-		.attr("class", ""); //allows update function to run smoother
-		self.update();
 }
 
-List.prototype.update = function(){
+/*List.prototype.update = function(){
 	var self = this;
 	
 	//allows highlighted list items to move up to the top
@@ -66,4 +84,4 @@ List.prototype.update = function(){
 			
         })
 	
-}
+}*/

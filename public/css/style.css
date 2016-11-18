@@ -37,6 +37,10 @@ h3{
 line{
     stroke: #000000;
 }
+.highlight{
+    fill:none;
+    stroke: #708090;
+}
 .countries {
     stroke: #999999;
     fill: #d9d9d9;
@@ -44,6 +48,9 @@ line{
 .selectedCountries {
     stroke: #999999;
     fill: #a3c2db;
+}
+.listTitle {
+    font-weight: bold;
 }
 .selectedListItem {
     background: #a3c2db;

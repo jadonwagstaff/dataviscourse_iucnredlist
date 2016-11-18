@@ -4,10 +4,11 @@ function Map(data){
 
 // updates the map using information from countryList
 Map.prototype.update = function (countryCode){
-    var select = d3.select("#map").selectAll(".countries");
-    var deselect = d3.select("#map").selectAll(".selectedCountries");
+    var self = this;
 
-    select.attr("class", function (d){
+    var paths = d3.select("#map").selectAll("path");
+
+    /*select.attr("class", function (d){
         for (j = 0; j < countryCode.length; j++)
         {
             if (d.id == countryCode[j]){
@@ -25,20 +26,24 @@ Map.prototype.update = function (countryCode){
             }
         }
         return "selectedCountries";
-    });
+    });*/
 
-    /*paths.filter(function (d){
+    paths = paths.filter(function (d){
             for (j = 0; j < countryCode.length; j++)
             {
-                console.log(d.id == countryCode[j])
                 return d.id == countryCode[j];
             }
         });
-    var select = paths.selectAll(".countries");
-    var deselect = paths.selectAll(".selectedCountries");
-    select.classed("countries", false)
-        .classed("selectedCountries", true);
-    deselect.attr("class", "countries");*/
+
+    var selected = paths.filter(function (){
+        return d3.select(this).attr("class") == "countries"
+    });
+    var deselect = paths.filter(function (){
+        return d3.select(this).attr("class") == "selectedCountries"
+    });
+
+    selected.attr("class", "selectedCountries");
+    deselect.attr("class", "countries");
 };
 
 
