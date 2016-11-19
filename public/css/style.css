@@ -2,18 +2,28 @@
 	text-align: center;
 	background-color: #db2525;
 }
-/*note, do we want to add in borders around the two main divisions? */
+
 .views{
 	display:inline-block;
 	float: left;
     text-align: left;
-    overflow:auto;
+    /*overflow:auto; */
 }
+
+.viewList{
+	display:inline-block;
+	float: left;
+    text-align: left;
+	height: 600px;
+	width: 235px;
+    /*overflow:auto;*/
+}
+
 .padded{
     padding:2px;
 }
 .container{
-    border:2px solid #999999;
+    border:2px solid #ddd /* old color #999999; */
 }
 h3{
 	text-align: center;
@@ -59,10 +69,10 @@ ul{
   list-style:none;
     max-height:581px;
     width: 231px;
-  margin:0;
-  overflow-y: scroll;
-  padding:0;
-  /*text-indent:10px; */
+	margin:0;
+	overflow-y: scroll;
+	padding:0;
+	/*text-indent:10px; */
 }
 /* //source: http://bl.ocks.org/d3noob/a22c42db65eb00d4e369 */
 div.tooltip {	
@@ -76,4 +86,12 @@ div.tooltip {
     border: 0px;		
     border-radius: 8px;			
     pointer-events: none;			
+}
+/* source: http://www.w3schools.com/howto/howto_js_filter_lists.asp */
+#search {
+    width: 200px; /* Full-width */
+    font-size: 14px; /* Increase font-size */
+    padding: 10px 10px 10px 10px; /* Add some padding */
+    border: 2px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
 }
