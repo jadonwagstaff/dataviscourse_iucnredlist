@@ -157,7 +157,7 @@ Chart.prototype.init = function(countryData, percentage){
 		.on("click", function(d){
 			//initiates bar transition
 			console.log(d);
-		})
+		});
 	
 
 	// create axis
