@@ -49,7 +49,15 @@ Chart.prototype.init = function(countryData, percentage){
 			.range([0, svg.attr("width") - 2*self.margin]);
 	}
 
-
+	
+	//creating tool tip functionality
+	var tip = d3.select("body").append("div")	
+		.attr("class", "tooltip")				
+		.style("opacity", 0)
+		.style("position", "absolute");
+	
+	
+	//grouping bars
 	var g = svg.selectAll(".bar")
 		.data(countryData, function(d){
 			return d.country;
@@ -128,8 +136,25 @@ Chart.prototype.init = function(countryData, percentage){
 			})
 			.attr("fill", color[j]);
 	};
-
-
+	
+	//tool tip events
+	bars
+		.on("mouseover", function(d){
+			console.log(d);
+			d3.select(this)
+				.style("fill", "red");
+			tip
+				.style("opacity", .9)
+				.html(d.Country)
+				.style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");
+		})
+		.on("mouseout", function(){
+			d3.select(this)
+				.style("fill", "steelblue");
+			tip.style("opacity", 0)
+		})
+	
 
 	// create axis
 
