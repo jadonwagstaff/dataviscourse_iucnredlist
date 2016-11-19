@@ -140,7 +140,7 @@ Chart.prototype.init = function(countryData, percentage){
 	//tool tip events
 	bars
 		.on("mouseover", function(d){
-			console.log(d);
+			//console.log(d);
 			d3.select(this)
 				.style("fill", "red");
 			tip
@@ -153,6 +153,10 @@ Chart.prototype.init = function(countryData, percentage){
 			d3.select(this)
 				.style("fill", "steelblue");
 			tip.style("opacity", 0)
+		})
+		.on("click", function(d){
+			//initiates bar transition
+			console.log(d);
 		})
 	
 
