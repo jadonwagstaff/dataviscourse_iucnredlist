@@ -1,12 +1,15 @@
 
 
-function List(map, chart, countryData) {
+function List(map, chart, data) {
     var self = this;
+	self.svg = d3.select("#countryList");
 
     self.map = map;
     self.chart = chart;
-    self.countryData = countryData;
+    self.data = data;
+
     self.init();
+	self.changingChart();
 }
 
 
@@ -17,7 +20,7 @@ List.prototype.init = function(){
     d3.select("#countryList").selectAll("li").remove();
 
     var list = d3.select("#countryList").selectAll("li");
-    list.data(self.countryData)
+    list.data(self.data)
         .enter()
         .append("li")
 		.attr("class", function(d){
@@ -46,6 +49,46 @@ List.prototype.init = function(){
 				self.map.update([d.CC]);
 			}
 		})
+}
+
+List.prototype.changingChart = function(){
+	var self = this;
+
+	d3.select("#summary")
+		.on("click", function(){
+			self.chart.dataChange("summary");
+			self.dataChange("T_")
+		});
+
+	d3.select("#mammals")
+		.on("click", function(){
+			self.chart.dataChange("mammals");
+			self.dataChange("M_")
+		});
+
+	d3.select("#amphibians")
+		.on("click", function(){
+			self.chart.dataChange("amphibians");
+			self.dataChange("A_")
+		});
+
+}
+
+List.prototype.dataChange = function(set){
+
+	var list = d3.select("#countryList").selectAll("li");
+
+	list.style("color", "black")
+
+
+	var remove = list;
+
+	remove = remove.filter(function(d){
+		return d.CC != "N/A" && d[set+"SP"] == "?";
+	});
+
+	remove.style("color", "#999999")
+
 }
 
 /*List.prototype.update = function(){

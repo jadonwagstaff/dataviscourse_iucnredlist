@@ -60,6 +60,9 @@ line{
     fill:none;
     stroke: #708090;
 }
+.division{
+    fill:white;
+}
 
 /* map properties */
 .countries {
@@ -76,7 +79,7 @@ line{
     font-weight: bold;
 }
 .selectedListItem {
-    background: #a3c2db;
+    background: #dae7f1;
 }
 ul{
     list-style:none;

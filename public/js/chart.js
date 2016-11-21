@@ -1,52 +1,70 @@
 
-function Chart(data, file){
+function Chart(data){
 	self = this;
 	self.data = data;
+
+	self.labelHeight = 55;
 	self.barWidth = 5;
 	self.margin = 4;
 	self.barSpace = 1;
 	self.dataOrganization = null;
+	self.set = "T_";
+	self.percentage = false;
+	self.regions = true;
+	self.previousSet = "T_";
 
 	self.svg = d3.select("#chart");
-	self.originalData = data;
 
-	// create scale
+	self.svgHeight = self.svg.attr("height") - self.labelHeight
+
+
+	self.scale();
+	self.drawKey();
+	self.drawFilters("summary");
+	self.init()
+
+};
+
+// makes a new scale for the axis
+Chart.prototype.scale = function(){
+
+	var scaleData = self.data.filter(function(d){
+		return d.CC != "N/A";
+	});
+
 	self.barScaleP = d3.scaleLinear()
 		.domain([0, 2])
-		.range([0, self.svg.attr("height") - 2*self.margin]);
-	self.DDmax = d3.max(self.data, function(d){
-		return parseFloat(d.DD);
+		.range([0, self.svgHeight - 2*self.margin]);
+	self.DDmax = d3.max(scaleData, function(d){
+		return parseFloat(d[self.set+"DD"]);
 	});
-	self.SPmax = d3.max(self.data, function(d){
-		return parseFloat(d.SP) - parseFloat(d.DD);
+	self.SPmax = d3.max(scaleData, function(d){
+		return parseFloat(d[self.set+"SP"]) - parseFloat(d[self.set+"DD"]);
 	});
 	self.barScale = d3.scaleLinear()
 		.domain([0, self.DDmax + self.SPmax])
-		.range([0, self.svg.attr("height") - 2*self.margin]);
+		.range([0, self.svgHeight - 2*self.margin]);
 
-
-	self.drawKey();
-	self.drawFilters(file);
-	self.init(data)
-};
+}
 
 
 // initialises the chart
-Chart.prototype.init = function(countryData){
+Chart.prototype.init = function(){
 
 	var self = this;
 
+
 	var percentage = false;
-	if (d3.select("#percentage").attr("class") == "selectedButton") {
+	/*if (d3.select("#percentage").attr("class") == "selectedButton") {
 		percentage = true;
-	}
+	}*/
 
-	self.svg.selectAll("g").remove();
+	// self.svg.selectAll("g").remove();
 
 
-	var g = self.svg.selectAll(".bar")
-		.data(countryData, function(d){
-			return d.country;
+	var g = self.svg.selectAll(".bars")
+		.data(self.data, function(d){
+			return d.Index;
 		});
 
 	var bars = g.enter().append("g")
@@ -55,6 +73,45 @@ Chart.prototype.init = function(countryData){
 	bars.attr("transform", function(d, i){
 			return "translate(" + (i*(self.barWidth + self.barSpace) + self.margin) + ",0)";
 		});
+
+	// add lines by through regions
+
+	var regions = bars.filter(function(d){
+		return d.CC == "N/A"
+	});
+
+	/*regions.append("rect")
+		.attr("class", "region")
+		.attr("x", self.barWidth/2 + 2)
+		.attr("width", 1)
+		.attr("y", 0)
+		.attr("height", self.svgHeight)
+		.attr("style", "fill:#999999");*/
+
+	regions.append("path")
+		.attr("d", "M"+ (self.barWidth/2 + 2) +" 0 V"+ (self.svgHeight + 5) + "L"+ (self.labelHeight*2) + " " + self.svg.attr("height"))
+		.attr("style", "stroke:#999999; fill:none");
+
+	regions.append("text")
+		.attr("class", "keyText")
+		//.attr("x", self.barWidth/2 + 2)
+		//.attr("y", self.svgHeight)
+		.attr("transform", function(d){
+			if (d.Region == "North America" || d.Region == "Antarctic"){
+				return "translate("+ (self.barWidth) + ", "+ (self.svgHeight + 17) +")rotate(25)"
+			}
+			return "translate("+ (self.barWidth) + ", "+ (self.svgHeight + 3) +")rotate(25)"
+		})
+		.text(function(d){
+			return d.Region;
+		})
+
+
+	// create bars
+
+	bars = bars.filter(function(d){
+		return d.CC != "N/A";
+	});
 
 	// create data deficient bars
 	bars.append("rect")
@@ -74,17 +131,17 @@ Chart.prototype.init = function(countryData){
 		.attr("width", self.barWidth)
 		.attr("height", function(d){
 			if (percentage == true) {
-				return self.barScaleP(parseFloat(d.DD) / parseFloat(d.SP))
+				return self.barScaleP(parseFloat(d.T_DD) / parseFloat(d.T_SP))
 			}
 			else{
-				return self.barScale(parseFloat(d.DD));
+				return self.barScale(parseFloat(d.T_DD));
 			}
 		})
 		.attr("fill", "#A59688");
 
 	// create all other bars
 	var placeholder = [];
-	for (i = 0; i < countryData.length; i++){
+	for (i = 0; i < self.data.length; i++){
 		placeholder[i] = 0;
 	}
 	var category = ["LC", "NT", "VU", "EN", "CR", "EW", "EX"];
@@ -98,22 +155,22 @@ Chart.prototype.init = function(countryData){
 			.attr("class", category[j])
 			.attr("y", function(d, i){
 				if (percentage == true) {
-					return self.barScaleP(1) + self.margin - placeholder[i] - self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
+					return self.barScaleP(1) + self.margin - placeholder[i] - self.barScaleP(parseFloat(d["T_"+category[j]]) / parseFloat(d.T_SP));
 				}
 				else{
-					return self.barScale(self.SPmax) + self.margin - placeholder[i] - self.barScale(parseFloat(d[category[j]]));
+					return self.barScale(self.SPmax) + self.margin - placeholder[i] - self.barScale(parseFloat(d["T_"+category[j]]));
 				}
 			})
 			.attr("x", self.barSpace)
 			.attr("width", self.barWidth)
 			.attr("height", function(d, i){
 				if (percentage == true) {
-					placeholder[i] = placeholder[i] + self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
-					return self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
+					placeholder[i] = placeholder[i] + self.barScaleP(parseFloat(d["T_"+category[j]]) / parseFloat(d.T_SP));
+					return self.barScaleP(parseFloat(d["T_"+category[j]]) / parseFloat(d.T_SP));
 				}
 				else{
-					placeholder[i] = placeholder[i] + self.barScale(parseFloat(d[category[j]]));
-					return self.barScale(parseFloat(d[category[j]]));
+					placeholder[i] = placeholder[i] + self.barScale(parseFloat(d["T_"+category[j]]));
+					return self.barScale(parseFloat(d["T_"+category[j]]));
 				}
 			})
 			.attr("fill", color[j]);
@@ -131,6 +188,8 @@ Chart.prototype.init = function(countryData){
 
 Chart.prototype.update = function(countryCode) {
 	var self = this;
+
+	self.separate();
 
 	var bars = self.svg.selectAll("g");
 
@@ -151,53 +210,73 @@ Chart.prototype.update = function(countryCode) {
 
 
 	selected.attr("class", "selectedBars")
-		.append("rect")
+
+	selected.append("line")
+		.attr("class", "highlight left")
+		.attr("y1", 1)
+		.attr("x1", 0)
+		.attr("y2", self.svgHeight - 1)
+		.attr("x2", 0);
+	selected.append("line")
 		.attr("class", "highlight")
-		.attr("y", 1)
-		.attr("x", 0)
-		.attr("height", self.svg.attr("height") - 1)
-		.attr("width", self.barSpace*2 + self.barWidth);
+		.attr("y1", self.svgHeight - 1)
+		.attr("x1", 0)
+		.attr("y2", self.svgHeight - 1)
+		.attr("x2", self.barSpace*2 + self.barWidth);
+	selected.append("line")
+		.attr("class", "highlight")
+		.attr("y1", 1)
+		.attr("x1", 0)
+		.attr("y2", 1)
+		.attr("x2", self.barSpace*2 + self.barWidth);
+	selected.append("line")
+		.attr("class", "highlight right")
+		.attr("y1", 1)
+		.attr("x1", self.barSpace*2 + self.barWidth)
+		.attr("y2", self.svgHeight - 1)
+		.attr("x2", self.barSpace*2 + self.barWidth);
 
 	deselect.attr("class", "bars")
-		.select(".highlight")
+		.selectAll(".highlight")
 		.remove();
+
+	self.combine(false);
 
 
 }
 
-Chart.prototype.percentChange = function()
-{
+Chart.prototype.percentChange = function() {
 	var self = this;
-	var percentage;
 
 	var button = d3.select("#percentage");
 
-
 	if (button.attr("class") == "selectedButton"){
-		percentage = false;
+		self.percentage = false;
 		button.attr("class", "unselectedButton");
 	}
 	else{
-		percentage = true;
+		self.percentage = true;
 		button.attr("class", "selectedButton");
 	}
 
-	var bars = self.svg.selectAll(".bars");
+
+
+	var bars = self.svg.selectAll("g");
 
 	// create data deficient bars
 	var bar = bars.select(".DD");
 	bar.transition()
 		.duration(2000)
 		.attr("height", function(d){
-			if (percentage == true) {
-				return self.barScaleP(parseFloat(d.DD) / parseFloat(d.SP))
+			if (self.percentage == true) {
+				return self.barScaleP(parseFloat(d[self.set+"DD"]) / parseFloat(d[self.set+"SP"]))
 			}
 			else{
-				return self.barScale(parseFloat(d.DD));
+				return self.barScale(parseFloat(d[self.set+"DD"]));
 			}
 		})
 		.attr("y", function(){
-			if (percentage == true){
+			if (self.percentage == true){
 				return self.barScaleP(1) + self.margin;
 			}
 			else{
@@ -216,22 +295,22 @@ Chart.prototype.percentChange = function()
 		bar.transition()
 			.duration(2000)
 			.attr("y", function(d, i){
-				if (percentage == true) {
+				if (self.percentage == true) {
 					//console.log(d);
-					return self.barScaleP(1) + self.margin - placeholder[i] - self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
+					return self.barScaleP(1) + self.margin - placeholder[i] - self.barScaleP(parseFloat(d[self.set+category[j]]) / parseFloat(d[self.set + "SP"]));
 				}
 				else{
-					return self.barScale(self.SPmax) + self.margin - placeholder[i] - self.barScale(parseFloat(d[category[j]]));
+					return self.barScale(self.SPmax) + self.margin - placeholder[i] - self.barScale(parseFloat(d[self.set+category[j]]));
 				}
 			})
 			.attr("height", function(d, i){
-				if (percentage == true) {
-					placeholder[i] = placeholder[i] + self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
-					return self.barScaleP(parseFloat(d[category[j]]) / parseFloat(d.SP));
+				if (self.percentage == true) {
+					placeholder[i] = placeholder[i] + self.barScaleP(parseFloat(d[self.set+category[j]]) / parseFloat(d[self.set+"SP"]));
+					return self.barScaleP(parseFloat(d[self.set+category[j]]) / parseFloat(d[self.set+"SP"]));
 				}
 				else{
-					placeholder[i] = placeholder[i] + self.barScale(parseFloat(d[category[j]]));
-					return self.barScale(parseFloat(d[category[j]]));
+					placeholder[i] = placeholder[i] + self.barScale(parseFloat(d[self.set+category[j]]));
+					return self.barScale(parseFloat(d[self.set+category[j]]));
 				}
 			});
 	};
@@ -242,6 +321,335 @@ Chart.prototype.percentChange = function()
 
 
 
+}
+
+Chart.prototype.regionChange = function() {
+
+	self.separate();
+
+
+	if (d3.select("#regions").attr("class") == "selectedButton") {
+		d3.select("#regions").attr("class", "unselectedButton");
+		self.regions = false;
+
+		// remove region lines
+		var removeLines = self.svg.selectAll("g").filter(function (d) {
+			return d.CC == "N/A"
+		});
+
+		removeLines.transition()
+			.duration(700)
+			.style("opacity", 0);
+
+
+		// reorder lines
+		var closeSpaces = self.svg.selectAll("g")
+			.filter(function (d) {
+				return d.CC != "N/A" && d[self.set + "SP"] != "?";
+			});
+
+		closeSpaces.transition()
+			.duration(700)
+			.attr("transform", function (d, i) {
+				return "translate(" + (i * (self.barWidth + self.barSpace) + self.margin) + ",0)";
+			});
+
+		self.combine(false);
+
+	}
+	else {
+		self.regions = true;
+		d3.select("#regions").attr("class", "selectedButton")
+
+		// add the region lines back
+		var lines = self.svg.selectAll("g").filter(function (d) {
+			return d.CC == "N/A"
+		});
+
+		lines.style("opacity", 1);
+
+		// reorder lines
+		var resort = self.svg.selectAll("g");
+
+		resort.sort(function (a, b) {
+				return parseInt(a.Index) - parseInt(b.Index);
+			});
+
+		var reorder = self.svg.selectAll("g")
+			.filter(function (d) {
+				return d[self.set + "SP"] != "?";
+			});
+
+		reorder.transition()
+			.duration(2000)
+			.attr("transform", function (d, i) {
+				return "translate(" + (i * (self.barWidth + self.barSpace) + self.margin) + ",0)";
+			});
+
+		self.combine(true);
+
+	}
+
+}
+
+
+Chart.prototype.dataChange = function (file) {
+
+	self.separate();
+
+	var category = ["LC", "NT", "VU", "EN", "CR", "EW", "EX"];
+	var color = ["#5a91bf", "#a3c2db", "#f7d4d4", "#e77e7e", "#d62929", "#8c8c8c", "#666666"];
+
+	var summary = d3.select("#summary");
+	var mammals = d3.select("#mammals");
+	var amphibians = d3.select("#amphibians");
+
+
+	if (file == "summary" && summary.attr("class") == "unselectedButton"){
+		summary.attr("class", "selectedButton");
+		mammals.attr("class", "unselectedButton");
+		amphibians.attr("class", "unselectedButton");
+
+		self.set = "T_";
+	}
+	if (file == "mammals" && mammals.attr("class") == "unselectedButton"){
+		summary.attr("class", "unselectedButton");
+		mammals.attr("class", "selectedButton");
+		amphibians.attr("class", "unselectedButton");
+
+		self.set = "M_";
+	}
+	if (file == "amphibians" && amphibians.attr("class") == "unselectedButton"){
+		summary.attr("class", "unselectedButton");
+		mammals.attr("class", "unselectedButton");
+		amphibians.attr("class", "selectedButton");
+
+		self.set = "A_";
+	}
+
+
+	var bars = self.svg.selectAll("g");
+
+
+
+	// remove bars with no data
+	var remove = bars.filter(function(d){
+		return d.CC != "N/A" && d[self.set+"SP"] == "?";
+	});
+
+	remove.style("opacity", 0);
+
+	remove.select(".DD")
+		.remove();
+
+	for (j = 0; j < category.length; j++){
+		remove.select("."+category[j])
+			.remove();
+	}
+
+	bars = bars.filter(function(d){
+		return d.CC != "N/A" && d[self.set+"SP"] != "?";
+	});
+
+
+
+
+	self.scale();
+	self.drawAxis();
+
+
+
+	// update data deficient bars
+	var bar = bars.select(".DD");
+	bar.transition()
+		.duration(2000)
+		.attr("height", function(d){
+			if (self.percentage == true) {
+				return self.barScaleP(parseFloat(d[self.set+"DD"]) / parseFloat(d[self.set+"SP"]))
+			}
+			else{
+				return self.barScale(parseFloat(d[self.set+"DD"]));
+			}
+		})
+		.attr("y", function(){
+			if (self.percentage == true){
+				return self.barScaleP(1) + self.margin;
+			}
+			else{
+				return self.barScale(self.SPmax) + self.margin;
+			}
+		});
+
+	// update all other bars
+	var placeholder = [];
+	for (i = 0; i < self.data.length; i++){
+		placeholder[i] = 0;
+	}
+	for (j = 0; j < category.length; j++){
+		bar = bars.select("." + category[j]);
+		bar.transition()
+			.duration(2000)
+			.attr("y", function(d, i){
+				if (self.percentage == true) {
+					//console.log(d);
+					return self.barScaleP(1) + self.margin - placeholder[i] - self.barScaleP(parseFloat(d[self.set+category[j]]) / parseFloat(d[self.set + "SP"]));
+				}
+				else{
+					return self.barScale(self.SPmax) + self.margin - placeholder[i] - self.barScale(parseFloat(d[self.set+category[j]]));
+				}
+			})
+			.attr("height", function(d, i){
+				if (self.percentage == true) {
+					placeholder[i] = placeholder[i] + self.barScaleP(parseFloat(d[self.set+category[j]]) / parseFloat(d[self.set+"SP"]));
+					return self.barScaleP(parseFloat(d[self.set+category[j]]) / parseFloat(d[self.set+"SP"]));
+				}
+				else{
+					placeholder[i] = placeholder[i] + self.barScale(parseFloat(d[self.set+category[j]]));
+					return self.barScale(parseFloat(d[self.set+category[j]]));
+				}
+			});
+	}
+
+	// order bars before adding new ones
+	if (self.regions == true) {
+		var reorder = self.svg.selectAll("g")
+			.filter(function (d) {
+				return d[self.set + "SP"] != "?";
+			})
+
+		reorder.transition()
+			.duration(2000)
+			.attr("transform", function (d, i) {
+				return "translate(" + (i * (self.barWidth + self.barSpace) + self.margin) + ",0)";
+			});
+	}
+	else {
+		var reorder = self.svg.selectAll("g")
+			.filter(function (d) {
+				return d.CC != "N/A" && d[self.set + "SP"] != "?";
+			})
+
+		reorder.transition()
+			.duration(2000)
+			.attr("transform", function (d, i) {
+				return "translate(" + (i * (self.barWidth + self.barSpace) + self.margin) + ",0)";
+			});
+	}
+
+
+
+	// add bars with a newly functional dataset
+	if(self.set == "T_" && self.previousSet == "A_"){
+		var enter = bars.filter(function(d){
+			return d.CC != "N/A" && d.A_SP == "?";
+		})
+	}
+	if(self.set == "T_" && self.previousSet == "M_"){
+		var enter = bars.filter(function(d){
+			return d.CC != "N/A" && d.M_SP == "?"
+		})
+	}
+	else if(self.set == "M_" && self.previousSet == "A_"){
+		var enter = bars.filter(function(d){
+			return d.CC != "N/A" && d.A_SP == "?";
+		})
+	}
+	else if(self.set == "A_" && self.previousSet == "M_"){
+		var enter = bars.filter(function(d){
+			return d.CC != "N/A" && d.M_SP == "?";
+		})
+	}
+
+	if(enter != undefined) {
+
+		enter.append("rect")
+			.classed("DD", true)
+			.attr("x", self.barSpace)
+			.attr("width", self.barWidth)
+			.attr("y", function () {
+				if (self.percentage == true) {
+					return self.barScaleP(1) + self.margin;
+				}
+				else {
+					return self.barScale(self.SPmax) + self.margin;
+				}
+			})
+			.attr("fill", "#A59688");
+
+		for (j = 0; j < category.length; j++) {
+			enter.append("rect")
+				.attr("class", category[j])
+				.attr("x", self.barSpace)
+				.attr("y", function () {
+					if (self.percentage == true) {
+						return self.barScaleP(1) + self.margin;
+					}
+					else {
+						return self.barScale(self.SPmax) + self.margin;
+					}
+				})
+				.attr("width", self.barWidth)
+				.attr("fill", color[j]);
+		}
+
+		// update data deficient bars
+		var bar = enter.select(".DD");
+		bar.transition()
+			.delay(1500)
+			.duration(2000)
+			.attr("height", function (d) {
+				if (self.percentage == true) {
+					return self.barScaleP(parseFloat(d[self.set + "DD"]) / parseFloat(d[self.set + "SP"]))
+				}
+				else {
+					return self.barScale(parseFloat(d[self.set + "DD"]));
+				}
+			})
+			.attr("y", function () {
+				if (self.percentage == true) {
+					return self.barScaleP(1) + self.margin;
+				}
+				else {
+					return self.barScale(self.SPmax) + self.margin;
+				}
+			});
+
+		// update all other bars
+		var placeholder = [];
+		for (i = 0; i < self.data.length; i++) {
+			placeholder[i] = 0;
+		}
+		for (j = 0; j < category.length; j++) {
+			bar = enter.select("." + category[j]);
+			bar.transition()
+				.delay(1500)
+				.duration(2000)
+				.attr("y", function (d, i) {
+					if (self.percentage == true) {
+						//console.log(d);
+						return self.barScaleP(1) + self.margin - placeholder[i] - self.barScaleP(parseFloat(d[self.set + category[j]]) / parseFloat(d[self.set + "SP"]));
+					}
+					else {
+						return self.barScale(self.SPmax) + self.margin - placeholder[i] - self.barScale(parseFloat(d[self.set + category[j]]));
+					}
+				})
+				.attr("height", function (d, i) {
+					if (self.percentage == true) {
+						placeholder[i] = placeholder[i] + self.barScaleP(parseFloat(d[self.set + category[j]]) / parseFloat(d[self.set + "SP"]));
+						return self.barScaleP(parseFloat(d[self.set + category[j]]) / parseFloat(d[self.set + "SP"]));
+					}
+					else {
+						placeholder[i] = placeholder[i] + self.barScale(parseFloat(d[self.set + category[j]]));
+						return self.barScale(parseFloat(d[self.set + category[j]]));
+					}
+				});
+
+			enter.style("opacity", 1);
+		}
+	}
+
+	self.previousSet = self.set;
+	self.combine(true);
 }
 
 
@@ -311,83 +719,202 @@ Chart.prototype.unselect = function(index){
 };*/
 
 
-Chart.prototype.sort = function(set) {
+Chart.prototype.sort = function(order) {
+	var bars;
+	self.separate();
 
-	var percentage = false;
-	if (d3.select("#percentage").attr("class") == "selectedButton") {
-		percentage = true;
-	}
+	if (self.dataOrganization != order + self.percentage + self.regions + self.set) {
 
-	d3.select("#regions").attr("class", "unselectedButton")
+		self.dataOrganization = order + self.percentage + self.regions + self.set;
 
 
-	if (self.dataOrganization != set + percentage) {
+		if (self.regions == true){
 
-		self.dataOrganization = set + percentage;
+			var reg = ["North America", "Caribbean Islands", "Mesoamerica", "South America", "Europe", "North Africa", "Sub-Saharan Africa", "Antarctic", "North Asia", "West & Central Asia", "East Asia", "South & Southeast Asia", "Oceania"];
 
-		var bars = d3.select("#chart").selectAll("g");
+			for( j = 0; j < reg.length; j++ ){
+				bars = self.svg.selectAll("g")
+					.filter(function (d) {
+						return d.CC != "N/A" && d.Region == reg[j];
+					});
 
-		// organize based on selected set and percentage
-		if (self.dataOrganization == "extincttrue") {
-			bars.sort(function (a, b) {
-				return d3.descending((parseFloat(a.EX) + parseFloat(a.EW)) / a.SP, (parseFloat(b.EX) + parseFloat(b.EW)) / b.SP)
-			});
-			bars.filter(function (d) {
-				return parseFloat(d.EX) + parseFloat(d.EW) == 0;
-			})
-				.sort(function (a, b) {
-					return d3.descending((parseFloat(a.CR) + parseFloat(a.EN) + parseFloat(a.VU)) / a.SP, (parseFloat(b.CR) + parseFloat(b.EN) + parseFloat(b.VU)) / b.SP)
+				// organize based on selected order and percentage
+				if (self.percentage == true) {
+					if (order == "extinct") {
+						bars.sort(function (a, b) {
+							return d3.descending((parseFloat(a[self.set + "EX"]) + parseFloat(a[self.set + "EW"])) / a[self.set + "SP"], (parseFloat(b[self.set + "EX"]) + parseFloat(b[self.set + "EW"])) / b[self.set + "SP"])
+						});
+						bars.filter(function (d) {
+								return parseFloat(d[self.set + "EX"]) + parseFloat(d[self.set + "EW"]) == 0;
+							})
+							.sort(function (a, b) {
+								return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
+							});
+					}
+					else if (order == "redList") {
+						bars.sort(function (a, b) {
+							return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
+						});
+					}
+					else if (order == "unthreatened") {
+						bars.sort(function (a, b) {
+							return d3.descending((parseFloat(a[self.set + "LC"]) + parseFloat(a[self.set + "NT"])) / a[self.set + "SP"], (parseFloat(b[self.set + "LC"]) + parseFloat(b[self.set + "NT"])) / b[self.set + "SP"])
+						});
+					}
+					else if (order == "dataDeficient") {
+						bars.sort(function (a, b) {
+							return d3.descending(a[self.set + "DD"] / a[self.set + "SP"], b[self.set + "DD"] / b[self.set + "SP"])
+						});
+						bars.filter(function (d) {
+								return parseFloat(d[self.set + "DD"]) == 0;
+							})
+							.sort(function (a, b) {
+								return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
+							});
+					}
+				}
+				else {
+					if (order == "extinct") {
+						bars.sort(function (a, b) {
+							return d3.descending(parseInt(a[self.set + "EX"]) + parseInt(a[self.set + "EW"]), parseInt(b[self.set + "EX"]) + parseInt(b[self.set + "EW"]))
+						});
+						bars.filter(function (d) {
+								return parseFloat(d[self.set + "EX"]) + parseFloat(d[self.set + "EW"]) == 0;
+							})
+							.sort(function (a, b) {
+								return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
+							});
+					}
+					else if (order == "redList") {
+						bars.sort(function (a, b) {
+							return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
+						});
+					}
+					else if (order == "unthreatened") {
+						bars.sort(function (a, b) {
+							return d3.descending(parseInt(a[self.set + "LC"]) + parseInt(a[self.set + "NT"]), parseInt(b[self.set + "LC"]) + parseInt(b[self.set + "NT"]))
+						});
+					}
+					else if (order == "dataDeficient") {
+						bars.sort(function (a, b) {
+							return d3.descending(parseInt(a[self.set + "DD"]), parseInt(b[self.set + "DD"]))
+						});
+						bars.filter(function (d) {
+								return parseFloat(d[self.set + "DD"]) == 0;
+							})
+							.sort(function (a, b) {
+								return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
+							});
+					}
+				}
+
+			}
+
+			var regionReorder = self.svg.selectAll("g");
+
+			regionReorder = regionReorder.filter(function (d) {
+					return d[self.set + "SP"] != "?";
+				});
+
+			regionReorder.transition()
+				.duration(2000)
+				.attr("transform", function (d, i) {
+					return "translate(" + (i * (self.barWidth + self.barSpace) + self.margin) + ",0)";
+				});
+
+		}
+		else {
+
+			bars = self.svg.selectAll("g")
+				.filter(function (d) {
+					return d.CC != "N/A";
+				});
+
+			// organize based on selected order and percentage
+			if (self.percentage == true) {
+				if (order == "extinct") {
+					bars.sort(function (a, b) {
+						return d3.descending((parseFloat(a[self.set + "EX"]) + parseFloat(a[self.set + "EW"])) / a[self.set + "SP"], (parseFloat(b[self.set + "EX"]) + parseFloat(b[self.set + "EW"])) / b[self.set + "SP"])
+					});
+					bars.filter(function (d) {
+							return parseFloat(d[self.set + "EX"]) + parseFloat(d[self.set + "EW"]) == 0;
+						})
+						.sort(function (a, b) {
+							return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
+						});
+				}
+				else if (order == "redList") {
+					bars.sort(function (a, b) {
+						return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
+					});
+				}
+				else if (order == "unthreatened") {
+					bars.sort(function (a, b) {
+						return d3.descending((parseFloat(a[self.set + "LC"]) + parseFloat(a[self.set + "NT"])) / a[self.set + "SP"], (parseFloat(b[self.set + "LC"]) + parseFloat(b[self.set + "NT"])) / b[self.set + "SP"])
+					});
+				}
+				else if (order == "dataDeficient") {
+					bars.sort(function (a, b) {
+						return d3.descending(a[self.set + "DD"] / a[self.set + "SP"], b[self.set + "DD"] / b[self.set + "SP"])
+					});
+					bars.filter(function (d) {
+							return parseFloat(d[self.set + "DD"]) == 0;
+						})
+						.sort(function (a, b) {
+							return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
+						});
+				}
+			}
+			else{
+				if (order == "extinct") {
+					bars.sort(function (a, b) {
+						return d3.descending(parseInt(a[self.set + "EX"]) + parseInt(a[self.set + "EW"]), parseInt(b[self.set + "EX"]) + parseInt(b[self.set + "EW"]))
+					});
+					bars.filter(function (d) {
+							return parseFloat(d[self.set + "EX"]) + parseFloat(d[self.set + "EW"]) == 0;
+						})
+						.sort(function (a, b) {
+							return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
+						});
+				}
+				else if (order == "redList") {
+					bars.sort(function (a, b) {
+						return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
+					});
+				}
+				else if (order == "unthreatened") {
+					bars.sort(function (a, b) {
+						return d3.descending(parseInt(a[self.set + "LC"]) + parseInt(a[self.set + "NT"]), parseInt(b[self.set + "LC"]) + parseInt(b[self.set + "NT"]))
+					});
+				}
+				else if (order == "dataDeficient") {
+					bars.sort(function (a, b) {
+						return d3.descending(parseInt(a[self.set + "DD"]), parseInt(b[self.set + "DD"]))
+					});
+					bars.filter(function (d) {
+							return parseFloat(d[self.set + "DD"]) == 0;
+						})
+						.sort(function (a, b) {
+							return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
+						});
+				}
+			}
+
+			var reorder = self.svg.selectAll("g")
+
+			reorder = reorder.filter(function (d) {
+					return d.CC != "N/A" && d[self.set + "SP"] != "?";
+				})
+
+			reorder.transition()
+				.duration(2000)
+				.attr("transform", function (d, i) {
+					return "translate(" + (i * (self.barWidth + self.barSpace) + self.margin) + ",0)";
 				});
 		}
-		else if (self.dataOrganization == "redListtrue") {
-			bars.sort(function (a, b) {
-				return d3.descending((parseFloat(a.CR) + parseFloat(a.EN) + parseFloat(a.VU)) / a.SP, (parseFloat(b.CR) + parseFloat(b.EN) + parseFloat(b.VU)) / b.SP)
-			});
-		}
-		else if (self.dataOrganization == "unthreatenedtrue") {
-			bars.sort(function (a, b) {
-				return d3.descending((parseFloat(a.LC) + parseFloat(a.NT)) / a.SP, (parseFloat(b.LC) + parseFloat(b.NT)) / b.SP)
-			});
-		}
-		else if (self.dataOrganization == "dataDeficienttrue") {
-			bars.sort(function (a, b) {
-				return d3.descending(a.DD / a.SP, b.DD / b.SP)
-			});
-		}
-		else if (self.dataOrganization == "extinctfalse") {
-			bars.sort(function (a, b) {
-				return d3.descending(parseInt(a.EX) + parseInt(a.EW), parseInt(b.EX) + parseInt(b.EW))
-			});
-		}
-		else if (self.dataOrganization == "redListfalse") {
-			bars.sort(function (a, b) {
-				return d3.descending(parseInt(a.CR) + parseInt(a.EN) + parseInt(a.VU), parseInt(b.CR) + parseInt(b.EN) + parseInt(a.VU))
-			});
-		}
-		else if (self.dataOrganization == "unthreatenedfalse") {
-			bars.sort(function (a, b) {
-				return d3.descending(parseInt(a.LC) + parseInt(a.NT), parseInt(b.LC) + parseInt(b.NT))
-			});
-		}
-		else if (self.dataOrganization == "dataDeficientfalse") {
-			bars.sort(function (a, b) {
-				return d3.descending(parseInt(a.DD), parseInt(b.DD))
-			});
-		}
-		else if (self.dataOrganization == "regionstrue" || self.dataOrganization == "regionsfalse"){
-			d3.select("#regions").attr("class", "selectedButton");
-			// TODO need to add an index number to data in order to go back to original regional order
-		}
-
-
-		d3.select("#chart").selectAll("g")
-			.transition()
-			.duration(3000)
-			.attr("transform", function (d, i) {
-				return "translate(" + (i * (self.barWidth + self.barSpace) + self.margin) + ",0)";
-			});
 	}
 
+	self.combine(true);
 
 }
 
@@ -407,7 +934,7 @@ Chart.prototype.drawAxis = function(){
 	axis.append("line")
 		.attr("class", "axis")
 		.attr("y1", self.margin)
-		.attr("y2", axis.attr("height") - self.margin)
+		.attr("y2", axis.attr("height") - self.labelHeight - self.margin)
 		.attr("x1", axis.attr("width") - 1)
 		.attr("x2", axis.attr("width") - 1);
 
@@ -612,69 +1139,69 @@ Chart.prototype.drawKey = function() {
 
 	// method for updating data to reflect sorting values
 	key.append("rect")
-		.attr("class", "sort")
+		.attr("class", "unselectedButton")
 		.attr("x", 0)
 		.attr("y", 0)
 		.attr("width", (key.attr("width")*2)/c.length)
 		.attr("height", key.attr("height") - axisHeight)
 		.on("mouseover", function(){
 			d3.select(this).style("cursor", "pointer");
-			d3.select(this).attr("class", "sortSelect");
+			d3.select(this).attr("class", "selectedButton");
 		})
 		.on("mouseout", function(){
 			d3.select(this).style("cursor", "default");
-			d3.select(this).attr("class", "sort");
+			d3.select(this).attr("class", "unselectedButton");
 		})
 		.on("click", function(){
 			self.sort("extinct");
 		});
 	key.append("rect")
-		.attr("class", "sort")
+		.attr("class", "unselectedButton")
 		.attr("x", (key.attr("width")*2)/c.length)
 		.attr("y", 0)
 		.attr("width", (key.attr("width")*3)/c.length)
 		.attr("height", key.attr("height") - axisHeight)
 		.on("mouseover", function(){
 			d3.select(this).style("cursor", "pointer");
-			d3.select(this).attr("class", "sortSelect");
+			d3.select(this).attr("class", "selectedButton");
 		})
 		.on("mouseout", function(){
 			d3.select(this).style("cursor", "default");
-			d3.select(this).attr("class", "sort");
+			d3.select(this).attr("class", "unselectedButton");
 		})
 		.on("click", function(){
 			self.sort("redList");
 		});
 	key.append("rect")
-		.attr("class", "sort")
+		.attr("class", "unselectedButton")
 		.attr("x", (key.attr("width")*5)/c.length)
 		.attr("y", 0)
 		.attr("width", (key.attr("width")*2)/c.length)
 		.attr("height", key.attr("height") - axisHeight)
 		.on("mouseover", function(){
 			d3.select(this).style("cursor", "pointer");
-			d3.select(this).attr("class", "sortSelect");
+			d3.select(this).attr("class", "selectedButton");
 		})
 		.on("mouseout", function(){
 			d3.select(this).style("cursor", "default")
-			d3.select(this).attr("class", "sort");
+			d3.select(this).attr("class", "unselectedButton");
 		})
 		.on("click", function(){
 			self.sort("unthreatened");
 		});
 	key.append("rect")
-		.attr("class", "sort")
+		.attr("class", "unselectedButton")
 		.attr("x", (key.attr("width")*7)/c.length)
 		.attr("y", 0)
 		.attr("width", (key.attr("width"))/c.length)
 		.attr("height", key.attr("height") - axisHeight)
 		.on("mouseover", function(){
 			d3.select(this).style("cursor", "pointer");
-			d3.select(this).attr("class", "sortSelect");
+			d3.select(this).attr("class", "selectedButton");
 		})
 		.on("mouseout", function(){
 			d3.select(this).style("cursor", "default");
-			d3.select(this).attr("class", "sort");
+			d3.select(this).attr("class", "unselectedButton");
 		})
 		.on("click", function(){
 			self.sort("dataDeficient");
@@ -742,9 +1269,12 @@ Chart.prototype.drawFilters = function(file){
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 64)
 		.attr("height", boxHeight)
-		.on("click", function(){
-			changeData("summary");
-		});;
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+		});
 	filters.append("rect")
 		.attr("id", "mammals")
 		.attr("class", "unselectedButton")
@@ -752,9 +1282,12 @@ Chart.prototype.drawFilters = function(file){
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 66)
 		.attr("height", boxHeight)
-		.on("click", function(){
-			changeData("mammals");
-		});;
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+		})
 	filters.append("rect")
 		.attr("id", "amphibians")
 		.attr("class", "unselectedButton")
@@ -762,9 +1295,12 @@ Chart.prototype.drawFilters = function(file){
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 78)
 		.attr("height", boxHeight)
-		.on("click", function(){
-			changeData("amphibians");
-		});
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+		})
 	filters.append("rect")
 		.attr("id", "percentage")
 		.attr("class", "unselectedButton")
@@ -772,6 +1308,12 @@ Chart.prototype.drawFilters = function(file){
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 71)
 		.attr("height", boxHeight)
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+		})
 		.on("click", function(){
 			self.percentChange();
 		});
@@ -781,7 +1323,13 @@ Chart.prototype.drawFilters = function(file){
 		.attr("x", (filters.attr("width")*4)/filterLength + textWidth - margin)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 62)
-		.attr("height", boxHeight);
+		.attr("height", boxHeight)
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+		});
 	filters.append("rect")
 		.attr("id", "regions")
 		.attr("class", "selectedButton")
@@ -789,12 +1337,65 @@ Chart.prototype.drawFilters = function(file){
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 58)
 		.attr("height", boxHeight)
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+		})
 		.on("click", function(){
-			self.sort("regions")
+			self.regionChange()
 		});
 
 	filters.select("#"+file)
 		.attr("class", "selectedButton");
 
+
+}
+
+Chart.prototype.separate = function(){
+	var bars = self.svg.selectAll("g");
+
+	bars.selectAll(".highlight")
+		.style("opacity", 1)
+}
+
+Chart.prototype.combine = function(transition){
+
+	var bars = self.svg.selectAll("g");
+
+	var deleteRight = bars.filter(function (d, i, nodes){
+			return (d3.select(this).attr("class") == "selectedBars") && (d3.select(nodes[i+1]).attr("class") == "selectedBars")
+		});
+	if (transition == true) {
+		deleteRight.select(".right")
+			.transition()
+			.duration(2000)
+			.style("opacity", 0);
+	}
+	else{
+		deleteRight.select(".right")
+			.style("opacity", 0);
+	}
+
+	bars = self.svg.selectAll("g");
+
+	console.log(deleteRight)
+
+	var deleteLeft = bars.filter(function (d, i, nodes){
+		return (d3.select(this).attr("class") == "selectedBars") && (d3.select(nodes[i-1]).attr("class") == "selectedBars")
+	});
+	if (transition == true) {
+		deleteLeft.select(".left")
+			.transition()
+			.duration(2000)
+			.style("opacity", 0);
+	}
+	else{
+		deleteLeft.select(".left")
+			.style("opacity", 0);
+	}
+
+	console.log(deleteLeft)
 
 }
