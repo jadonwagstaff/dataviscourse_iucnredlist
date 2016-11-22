@@ -17,6 +17,7 @@ function changeData(organize) {
         var map = new Map(data);
         var chart = new Chart(data, percentage);
         var list = new List(map, chart, data);
+		var stat = new Stat(data);
     });
 
 }
