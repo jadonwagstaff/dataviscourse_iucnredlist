@@ -12,6 +12,7 @@ function Chart(data){
 	self.percentage = false;
 	self.regions = true;
 	self.previousSet = "T_";
+	self.compare = false;
 
 	self.svg = d3.select("#chart");
 
@@ -55,13 +56,51 @@ Chart.prototype.init = function(){
 
 
 	var percentage = false;
-	/*if (d3.select("#percentage").attr("class") == "selectedButton") {
-		percentage = true;
-	}*/
 
-	// self.svg.selectAll("g").remove();
+	//creating tool tip functionality
+	var tip = d3.tip().attr("class", "d3-tip")
+		.direction(function (){
+			if (event.clientX > 1400){ return 'w'}
+			return 'e'
+		})
+		.offset(function(){
+			if (event.clientX > 1400){ return [-100,-30]}
+			return [-100,30];
+		})
+		.html(function(d){
+			var category = ["EX", "EW", "CR", "EN", "VU", "NT", "LC", "DD"];
+			var tooltip_data = [];
+
+			tooltip_data[0] = d.Country;
+
+			if (self.percentage == true){
+
+				for (var j = 0; j < category.length; j++){
+					var number = (d[self.set+category[j]] / d[self.set+"SP"]) * 100;
+					number = +number.toFixed(1);
+					tooltip_data[j+1] = number + "%";
+				}
+			}
+			else{
+				for (var j = 0; j < category.length; j++){
+					tooltip_data[j+1] = d[self.set+category[j]];
+				}
+			}
+
+			var c = ["#262626", "#666666", "#b22222", "#de5454", "#f3bfbf", "#a3c2db", "#4682b4", "#A59688"];
+
+			var text = "<span style = 'font:12pt'>" + tooltip_data[0]
+			for (var j = 1; j < tooltip_data.length; j++){
+				text += "<br><span style = 'color:" + c[j-1] + "'>" + tooltip_data[j] + "</span>"
+			}
+			text += "</span>"
+			return text;
+		})
+
+	d3.select("#chart").call(tip);
 
 
+	//grouping bars
 	var g = self.svg.selectAll(".bars")
 		.data(self.data, function(d){
 			return d.Index;
@@ -112,6 +151,38 @@ Chart.prototype.init = function(){
 	bars = bars.filter(function(d){
 		return d.CC != "N/A";
 	});
+
+	// make bars to tool-tip interaction
+	bars.append("rect")
+		.attr("class", "tipBar")
+		.attr("x", self.barSpace)
+		.attr("y", 0)
+		.attr("width", self.barWidth)
+		.attr("height", self.svgHeight)
+		.style("fill", "#b6cee2")
+		.style("opacity", 0)
+
+	//tool tip events
+	bars.on("mouseover", function(d){
+			if(d[self.set + "SP"] != "?"){
+				var send = d3.select(this).select(".tipBar")
+					.style("opacity", 1);
+				d3.select(this)
+					.style("opacity", .9)
+				tip.show(d, send)
+			}
+		})
+		.on("hover", function(d){
+			return tip.show(d);
+		})
+		.on("mouseout", function(){
+			d3.select(this).select(".tipBar")
+				.style("opacity", 0);
+			d3.select(this)
+				.style("opacity", 1)
+			tip.hide();
+		})
+
 
 	// create data deficient bars
 	bars.append("rect")
@@ -184,8 +255,7 @@ Chart.prototype.init = function(){
 
 };
 
-
-
+// highlights or un-highlights bars based on country codes
 Chart.prototype.update = function(countryCode) {
 	var self = this;
 
@@ -196,8 +266,9 @@ Chart.prototype.update = function(countryCode) {
 	bars = bars.filter(function (d){
 		for (j = 0; j < countryCode.length; j++)
 		{
-			return d.CC == countryCode[j];
+			if(d.CC == countryCode[j]) {return true;}
 		}
+		return false;
 	});
 
 	var selected = bars.filter(function (){
@@ -236,15 +307,18 @@ Chart.prototype.update = function(countryCode) {
 		.attr("y2", self.svgHeight - 1)
 		.attr("x2", self.barSpace*2 + self.barWidth);
 
-	deselect.attr("class", "bars")
-		.selectAll(".highlight")
-		.remove();
+	if (selected.data().length == 0) {
+		deselect.attr("class", "bars")
+			.selectAll(".highlight")
+			.remove();
+	}
 
 	self.combine(false);
 
 
 }
 
+// function for percent button
 Chart.prototype.percentChange = function() {
 	var self = this;
 
@@ -323,6 +397,7 @@ Chart.prototype.percentChange = function() {
 
 }
 
+// function for region button
 Chart.prototype.regionChange = function() {
 
 	self.separate();
@@ -392,7 +467,7 @@ Chart.prototype.regionChange = function() {
 
 }
 
-
+// function for summary, mammals, amphibians buttons
 Chart.prototype.dataChange = function (file) {
 
 	self.separate();
@@ -652,73 +727,7 @@ Chart.prototype.dataChange = function (file) {
 	self.combine(true);
 }
 
-
-// updates the chart based on data from countryList
-/*Chart.prototype.update = function(index){
-	var self = this;
-	
-	var cClass = ".index" + index; 
-	d3.selectAll(cClass)
-		.attr("height", "15"); //expands selection
-	
-	for(var i = parseInt(index)+1; i < self.data.length; i++){
-		cClass = ".index" + i;
-		//shifts rest of chart down
-		d3.selectAll(cClass)
-			.attr("y", function(){
-				//console.log(this.getAttribute("y"));
-				return parseInt(this.getAttribute("y")) + 15;
-			});
-	}
-	
-	//needed for reuse in text
-	cClass = ".index" + index; 
-	//add country label
-	d3.select("#chart")
-		.append("text")
-		.attr("x", function(){
-			var x = d3.selectAll(cClass);
-			x = x["_groups"][0][0].getAttribute("x");
-			return x;
-		})
-		.attr("y", function(){
-			var y = d3.selectAll(cClass);
-			//console.log(y["_groups"]);
-			y = y["_groups"][0][0].getAttribute("y");
-			return parseInt(y) +15;
-		})
-		.attr("font-size", "10")
-		.text(self.data[index].Country)
-		.attr("class", ("index" + index))
-		.classed(("textIndex" + index), true);
-};
-
-// deselects bars in chart
-Chart.prototype.unselect = function(index){
-	var self = this;
-	
-	var cClass = ".index" + index; 
-	d3.selectAll(cClass)
-		.attr("height", "3"); //selection returned to normal bar width
-	
-	for(var i = parseInt(index)+1; i < self.data.length; i++){
-		cClass = ".index" + i;
-		//shifts rest of chart down
-		d3.selectAll(cClass)
-			.attr("y", function(){
-				//console.log(this.getAttribute("y"));
-				return parseInt(this.getAttribute("y")) - 15;
-			});
-	}
-	
-	//needed for reuse in text
-	cClass = ".textIndex" + index; 
-	//removes text
-	d3.select(cClass).remove();
-
-};*/
-
-
+// function for key buttons
 Chart.prototype.sort = function(order) {
 	var bars;
 	self.separate();
@@ -918,7 +927,7 @@ Chart.prototype.sort = function(order) {
 
 }
 
-
+// draws the axis for each data set
 Chart.prototype.drawAxis = function(){
 
 	var self = this;
@@ -1020,6 +1029,7 @@ Chart.prototype.drawAxis = function(){
 	}
 }
 
+// draws the key and creates sorting buttons
 Chart.prototype.drawKey = function() {
 	var self = this;
 	var axisHeight = 5;
@@ -1211,6 +1221,7 @@ Chart.prototype.drawKey = function() {
 
 }
 
+// draws the filters and creates buttons
 Chart.prototype.drawFilters = function(file){
 	var self = this;
 	var textHeight = 20;
@@ -1329,6 +1340,9 @@ Chart.prototype.drawFilters = function(file){
 		})
 		.on("mouseout", function(){
 			d3.select(this).style("cursor", "default");
+		})
+		.on("click", function(){
+			//self.compareChange();
 		});
 	filters.append("rect")
 		.attr("id", "regions")
@@ -1353,6 +1367,7 @@ Chart.prototype.drawFilters = function(file){
 
 }
 
+// separates rectangles highlighting bars
 Chart.prototype.separate = function(){
 	var bars = self.svg.selectAll("g");
 
@@ -1360,12 +1375,16 @@ Chart.prototype.separate = function(){
 		.style("opacity", 1)
 }
 
+// combines rectangles highlighting bars
 Chart.prototype.combine = function(transition){
 
 	var bars = self.svg.selectAll("g");
 
 	var deleteRight = bars.filter(function (d, i, nodes){
-			return (d3.select(this).attr("class") == "selectedBars") && (d3.select(nodes[i+1]).attr("class") == "selectedBars")
+		if (i < nodes.length - 1) {
+			return (d3.select(this).attr("class") == "selectedBars") && (d3.select(nodes[i + 1]).attr("class") == "selectedBars")
+		}
+		return false;
 		});
 	if (transition == true) {
 		deleteRight.select(".right")
@@ -1379,8 +1398,6 @@ Chart.prototype.combine = function(transition){
 	}
 
 	bars = self.svg.selectAll("g");
-
-	console.log(deleteRight)
 
 	var deleteLeft = bars.filter(function (d, i, nodes){
 		return (d3.select(this).attr("class") == "selectedBars") && (d3.select(nodes[i-1]).attr("class") == "selectedBars")
@@ -1396,6 +1413,5 @@ Chart.prototype.combine = function(transition){
 			.style("opacity", 0);
 	}
 
-	console.log(deleteLeft)
 
 }

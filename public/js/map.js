@@ -6,33 +6,14 @@ function Map(data){
 Map.prototype.update = function (countryCode){
     var self = this;
 
-    var paths = d3.select("#map").selectAll("path");
-
-    /*select.attr("class", function (d){
-        for (j = 0; j < countryCode.length; j++)
-        {
-            if (d.id == countryCode[j]){
-                return "selectedCountries";
-            }
-        }
-        return "countries";
-    });
-
-    deselect.attr("class", function (d){
-        for (j = 0; j < countryCode.length; j++)
-        {
-            if (d.id == countryCode[j]){
-                return "countries";
-            }
-        }
-        return "selectedCountries";
-    });*/
+    var paths = d3.select("#map").selectAll("path").on("click", function(d){console.log(d.id)});
 
     paths = paths.filter(function (d){
             for (j = 0; j < countryCode.length; j++)
             {
-                return d.id == countryCode[j];
+                if(d.id == countryCode[j]) {return true;}
             }
+            return false;
         });
 
     var selected = paths.filter(function (){
@@ -42,8 +23,11 @@ Map.prototype.update = function (countryCode){
         return d3.select(this).attr("class") == "selectedCountries"
     });
 
+
     selected.attr("class", "selectedCountries");
-    deselect.attr("class", "countries");
+    if (selected.data().length == 0){
+        deselect.attr("class", "countries");
+    }
 };
 
 
@@ -65,7 +49,6 @@ function drawMap(world) {
 
     d3.json("data/world.json", function(json) {
 
-        console.log(json);
         svg.selectAll("path")
             .data(topojson.feature(json, json.objects.countries).features)
             .enter()

@@ -9,7 +9,7 @@ function List(map, chart, data) {
     self.data = data;
 
     self.init();
-	self.changingChart();
+	self.change_OnChart_orMap();
 }
 
 
@@ -17,7 +17,6 @@ function List(map, chart, data) {
 List.prototype.init = function(){
     var self = this;
 
-    d3.select("#countryList").selectAll("li").remove();
 
     var list = d3.select("#countryList").selectAll("li");
     list.data(self.data)
@@ -30,30 +29,63 @@ List.prototype.init = function(){
 		});
 
 	d3.select("#countryList").selectAll(".listTitle")
-		.style("cursor", "default")
-		.text(function(d) {return d.Region;});
+		.style("cursor", "pointer")
+		.text(function(d) {return d.Region;})
+		.on("click", function(d){
+			var send = []
+			for(var j = 0; j < self.data.length; j++){
+				if (d.Region == self.data[j].Region && self.data[j].Country != "N/A"){
+					send.push(self.data[j].CC)
+				}
+			}
+			self.chart.update(send);
+			self.map.update(send);
+			self.update(send);
+		});
 
 	d3.select("#countryList").selectAll(".list")
 		.style("cursor", "pointer")
 		.text(function(d) {return d.Country;})
 		.on("click", function(d){
-			//console.log(this.innerHTML);
-			if (this.getAttribute("class") == "list"){
-				this.setAttribute("class", "selectedListItem");
-				self.chart.update([d.CC]);
-				self.map.update([d.CC]);
-			}
-			else {
-				this.setAttribute("class", "list");
-				self.chart.update([d.CC]);
-				self.map.update([d.CC]);
-			}
+			self.chart.update([d.CC]);
+			self.map.update([d.CC]);
+			self.update([d.CC]);
 		})
 }
 
-List.prototype.changingChart = function(){
+
+List.prototype.update = function(countryCode){
 	var self = this;
 
+	var list = d3.select("#countryList").selectAll("li");
+
+	list = list.filter(function (d){
+		for (j = 0; j < countryCode.length; j++)
+		{
+			if(d.CC == countryCode[j]) {return true;}
+		}
+		return false;
+	});
+
+	var selected = list.filter(function (){
+		return d3.select(this).attr("class") == "list"
+	});
+	var deselect = list.filter(function (){
+		return d3.select(this).attr("class") == "selectedListItem"
+	});
+
+
+	selected.attr("class", "selectedListItem");
+	if (selected.data().length == 0){
+		deselect.attr("class", "list");
+	}
+
+}
+
+List.prototype.change_OnChart_orMap = function(){
+	var self = this;
+
+	// changing data
 	d3.select("#summary")
 		.on("click", function(){
 			self.chart.dataChange("summary");
@@ -71,6 +103,17 @@ List.prototype.changingChart = function(){
 			self.chart.dataChange("amphibians");
 			self.dataChange("A_")
 		});
+
+	// clicking on chart
+	d3.select("#chart").selectAll("g")
+		.filter(function(d){
+			return d.Country != "N/A"
+		})
+		.on("click", function(d){
+			self.chart.update([d.CC])
+			self.map.update([d.CC])
+			self.update([d.CC])
+		})
 
 }
 
@@ -91,40 +134,3 @@ List.prototype.dataChange = function(set){
 
 }
 
-/*List.prototype.update = function(){
-	var self = this;
-	
-	//allows highlighted list items to move up to the top
-	var items = d3.select("#countryList").selectAll("li");
-	items
-		.on("click", function(){
-			//console.log(this.innerHTML);
-			if (this.getAttribute("class") == ""){
-                this.setAttribute("class", "selectedListItem");
-				var temp = this.getAttribute("id");
-				//console.log(temp);
-				self.chart.update(temp.slice(3));
-				self.map.update([temp.slice(0, 3)]);
-				//move item to top
-				d3.select("#countryList").insert("li", ":first-child")
-					.text(this.innerHTML)
-					.classed("selectedListItem", true)
-					.attr("id", temp);
-				d3.select(this).remove();
-				self.update();	
-            }
-            else {
-                this.setAttribute("class", "");
-				//removes bar selection
-				var temp = this.getAttribute("id");
-				self.chart.unselect(temp.slice(3));
-				
-				//need to update map
-				
-				//updates list
-				self.update();
-            }
-			
-        })
-	
-}*/

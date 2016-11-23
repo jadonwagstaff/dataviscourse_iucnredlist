@@ -23,7 +23,7 @@ h1{
 /*key properties*/
 .keyText{
     text-anchor:start;
-    font-size: 12px;
+    font-size: 14px;
     stroke-width: 0.1px;
 }
 .buttonText{
@@ -63,6 +63,9 @@ line{
 .division{
     fill:white;
 }
+.EX, .EW, .CR, .EN, .VU, .NT, .LC, .DD{
+    pointer-events: none;
+}
 
 /* map properties */
 .countries {
@@ -73,6 +76,15 @@ line{
     stroke: #999999;
     fill: #a3c2db;
 }
+.d3-tip {
+    /*line-height: 5;*/
+    width: 120px;
+    border-style: groove;
+    padding: 10px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    pointer-events: none;
+}
 
 /* list properties */
 .listTitle {
@@ -81,7 +93,7 @@ line{
 .selectedListItem {
     background: #dae7f1;
 }
-ul{
+.countryList{
     list-style:none;
     font-size: 14px;
     max-height:328px;
