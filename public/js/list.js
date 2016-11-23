@@ -1,12 +1,13 @@
 
 
-function List(map, chart, data) {
+function List(map, chart, graphs, data) {
     var self = this;
 	self.svg = d3.select("#countryList");
 
     self.map = map;
     self.chart = chart;
     self.data = data;
+	self.graphs = graphs;
 
     self.init();
 	self.change_OnChart_orMap();
@@ -40,6 +41,7 @@ List.prototype.init = function(){
 			}
 			self.chart.update(send);
 			self.map.update(send);
+			self.graphs.update(send);
 			self.update(send);
 		});
 
@@ -49,6 +51,7 @@ List.prototype.init = function(){
 		.on("click", function(d){
 			self.chart.update([d.CC]);
 			self.map.update([d.CC]);
+			self.graphs.update([d.CC]);
 			self.update([d.CC]);
 		})
 }
@@ -60,7 +63,7 @@ List.prototype.update = function(countryCode){
 	var list = d3.select("#countryList").selectAll("li");
 
 	list = list.filter(function (d){
-		for (j = 0; j < countryCode.length; j++)
+		for (var j = 0; j < countryCode.length; j++)
 		{
 			if(d.CC == countryCode[j]) {return true;}
 		}
@@ -112,6 +115,7 @@ List.prototype.change_OnChart_orMap = function(){
 		.on("click", function(d){
 			self.chart.update([d.CC])
 			self.map.update([d.CC])
+			self.graphs.update([d.CC])
 			self.update([d.CC])
 		})
 

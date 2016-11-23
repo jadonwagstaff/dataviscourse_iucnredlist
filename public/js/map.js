@@ -9,7 +9,7 @@ Map.prototype.update = function (countryCode){
     var paths = d3.select("#map").selectAll("path").on("click", function(d){console.log(d.id)});
 
     paths = paths.filter(function (d){
-            for (j = 0; j < countryCode.length; j++)
+            for (var j = 0; j < countryCode.length; j++)
             {
                 if(d.id == countryCode[j]) {return true;}
             }

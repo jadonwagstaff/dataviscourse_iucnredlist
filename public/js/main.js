@@ -14,7 +14,8 @@ function loadData() {
         //create objects
         var map = new Map(data);
         var chart = new Chart(data);
-        var list = new List(map, chart, data);
+        var graphs = new Graphs(data);
+        var list = new List(map, chart, graphs, data);
     });
 
 }

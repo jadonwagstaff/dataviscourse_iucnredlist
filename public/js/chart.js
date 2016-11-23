@@ -1,6 +1,6 @@
 
 function Chart(data){
-	self = this;
+	var self = this;
 	self.data = data;
 
 	self.labelHeight = 55;
@@ -29,6 +29,8 @@ function Chart(data){
 // makes a new scale for the axis
 Chart.prototype.scale = function(){
 
+	var self = this;
+
 	var scaleData = self.data.filter(function(d){
 		return d.CC != "N/A";
 	});
@@ -48,7 +50,6 @@ Chart.prototype.scale = function(){
 
 }
 
-
 // initialises the chart
 Chart.prototype.init = function(){
 
@@ -58,7 +59,7 @@ Chart.prototype.init = function(){
 	var percentage = false;
 
 	//creating tool tip functionality
-	var tip = d3.tip().attr("class", "d3-tip")
+	var tip = d3.tip().attr("class", "chartTip")
 		.direction(function (){
 			if (event.clientX > 1400){ return 'w'}
 			return 'e'
@@ -119,14 +120,6 @@ Chart.prototype.init = function(){
 		return d.CC == "N/A"
 	});
 
-	/*regions.append("rect")
-		.attr("class", "region")
-		.attr("x", self.barWidth/2 + 2)
-		.attr("width", 1)
-		.attr("y", 0)
-		.attr("height", self.svgHeight)
-		.attr("style", "fill:#999999");*/
-
 	regions.append("path")
 		.attr("d", "M"+ (self.barWidth/2 + 2) +" 0 V"+ (self.svgHeight + 5) + "L"+ (self.labelHeight*2) + " " + self.svg.attr("height"))
 		.attr("style", "stroke:#999999; fill:none");
@@ -160,7 +153,14 @@ Chart.prototype.init = function(){
 		.attr("width", self.barWidth)
 		.attr("height", self.svgHeight)
 		.style("fill", "#b6cee2")
+		.style("stroke", "#6d9dc5")
 		.style("opacity", 0)
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+		});
 
 	//tool tip events
 	bars.on("mouseover", function(d){
@@ -169,7 +169,7 @@ Chart.prototype.init = function(){
 					.style("opacity", 1);
 				d3.select(this)
 					.style("opacity", .9)
-				tip.show(d, send)
+				tip.show(d)
 			}
 		})
 		.on("hover", function(d){
@@ -212,12 +212,12 @@ Chart.prototype.init = function(){
 
 	// create all other bars
 	var placeholder = [];
-	for (i = 0; i < self.data.length; i++){
+	for (var i = 0; i < self.data.length; i++){
 		placeholder[i] = 0;
 	}
 	var category = ["LC", "NT", "VU", "EN", "CR", "EW", "EX"];
 	var color = ["#5a91bf", "#a3c2db", "#f7d4d4", "#e77e7e", "#d62929", "#8c8c8c", "#666666"];
-	for (j = 0; j < category.length; j++){
+	for (var j = 0; j < category.length; j++){
 		bars.append("rect")
 			/*.attr("class", function(d,i){
 				return "index" + i;
@@ -264,7 +264,7 @@ Chart.prototype.update = function(countryCode) {
 	var bars = self.svg.selectAll("g");
 
 	bars = bars.filter(function (d){
-		for (j = 0; j < countryCode.length; j++)
+		for (var j = 0; j < countryCode.length; j++)
 		{
 			if(d.CC == countryCode[j]) {return true;}
 		}
@@ -360,11 +360,11 @@ Chart.prototype.percentChange = function() {
 
 	// create all other bars
 	var placeholder = [];
-	for (i = 0; i < self.data.length; i++){
+	for (var i = 0; i < self.data.length; i++){
 		placeholder[i] = 0;
 	}
 	var category = ["LC", "NT", "VU", "EN", "CR", "EW", "EX"];
-	for (j = 0; j < category.length; j++){
+	for (var j = 0; j < category.length; j++){
 		bar = bars.select("." + category[j]);
 		bar.transition()
 			.duration(2000)
@@ -399,6 +399,7 @@ Chart.prototype.percentChange = function() {
 
 // function for region button
 Chart.prototype.regionChange = function() {
+	var self = this;
 
 	self.separate();
 
@@ -469,6 +470,7 @@ Chart.prototype.regionChange = function() {
 
 // function for summary, mammals, amphibians buttons
 Chart.prototype.dataChange = function (file) {
+	var self = this;
 
 	self.separate();
 
@@ -517,7 +519,7 @@ Chart.prototype.dataChange = function (file) {
 	remove.select(".DD")
 		.remove();
 
-	for (j = 0; j < category.length; j++){
+	for (var j = 0; j < category.length; j++){
 		remove.select("."+category[j])
 			.remove();
 	}
@@ -557,10 +559,10 @@ Chart.prototype.dataChange = function (file) {
 
 	// update all other bars
 	var placeholder = [];
-	for (i = 0; i < self.data.length; i++){
+	for (var i = 0; i < self.data.length; i++){
 		placeholder[i] = 0;
 	}
-	for (j = 0; j < category.length; j++){
+	for (var j = 0; j < category.length; j++){
 		bar = bars.select("." + category[j]);
 		bar.transition()
 			.duration(2000)
@@ -651,7 +653,7 @@ Chart.prototype.dataChange = function (file) {
 			})
 			.attr("fill", "#A59688");
 
-		for (j = 0; j < category.length; j++) {
+		for (var j = 0; j < category.length; j++) {
 			enter.append("rect")
 				.attr("class", category[j])
 				.attr("x", self.barSpace)
@@ -691,10 +693,10 @@ Chart.prototype.dataChange = function (file) {
 
 		// update all other bars
 		var placeholder = [];
-		for (i = 0; i < self.data.length; i++) {
+		for (var i = 0; i < self.data.length; i++) {
 			placeholder[i] = 0;
 		}
-		for (j = 0; j < category.length; j++) {
+		for (var j = 0; j < category.length; j++) {
 			bar = enter.select("." + category[j]);
 			bar.transition()
 				.delay(1500)
@@ -729,6 +731,7 @@ Chart.prototype.dataChange = function (file) {
 
 // function for key buttons
 Chart.prototype.sort = function(order) {
+	var self = this;
 	var bars;
 	self.separate();
 
@@ -741,7 +744,7 @@ Chart.prototype.sort = function(order) {
 
 			var reg = ["North America", "Caribbean Islands", "Mesoamerica", "South America", "Europe", "North Africa", "Sub-Saharan Africa", "Antarctic", "North Asia", "West & Central Asia", "East Asia", "South & Southeast Asia", "Oceania"];
 
-			for( j = 0; j < reg.length; j++ ){
+			for(var j = 0; j < reg.length; j++ ){
 				bars = self.svg.selectAll("g")
 					.filter(function (d) {
 						return d.CC != "N/A" && d.Region == reg[j];
@@ -948,7 +951,7 @@ Chart.prototype.drawAxis = function(){
 		.attr("x2", axis.attr("width") - 1);
 
 	if(percentage == true){
-		for (j = 0; j <= 2; j = j + .5){
+		for (var j = 0; j <= 2; j = j + .5){
 			axis.append("line")
 				.attr("class", "axis")
 				.attr("y1", self.barScaleP(j) + self.margin)
@@ -998,7 +1001,7 @@ Chart.prototype.drawAxis = function(){
 			.attr("x", axis.attr("width") - 13)
 			.text("0")
 
-		for(j = 1; j <= self.DDmax/increment; j++){
+		for(var j = 1; j <= self.DDmax/increment; j++){
 			axis.append("line")
 				.attr("class", "axis")
 				.attr("y1", self.barScale(self.SPmax + increment*j) + self.margin)
@@ -1012,7 +1015,7 @@ Chart.prototype.drawAxis = function(){
 				.text(increment*j)
 		}
 
-		for(j = 1; j <= self.SPmax/increment; j++){
+		for(var j = 1; j <= self.SPmax/increment; j++){
 			axis.append("line")
 				.attr("class", "axis")
 				.attr("y1", self.barScale(self.SPmax - increment*j) + self.margin)
@@ -1369,6 +1372,8 @@ Chart.prototype.drawFilters = function(file){
 
 // separates rectangles highlighting bars
 Chart.prototype.separate = function(){
+	var self = this;
+
 	var bars = self.svg.selectAll("g");
 
 	bars.selectAll(".highlight")
@@ -1377,6 +1382,7 @@ Chart.prototype.separate = function(){
 
 // combines rectangles highlighting bars
 Chart.prototype.combine = function(transition){
+	var self = this;
 
 	var bars = self.svg.selectAll("g");
 

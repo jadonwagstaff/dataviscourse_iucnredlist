@@ -27,7 +27,7 @@ h1{
     stroke-width: 0.1px;
 }
 .buttonText{
-    text-anchor:center;
+    text-anchor:start;
     font-size: 14px;
 }
 .selectedButton{
@@ -76,8 +76,7 @@ line{
     stroke: #999999;
     fill: #a3c2db;
 }
-.d3-tip {
-    /*line-height: 5;*/
+.chartTip {
     width: 120px;
     border-style: groove;
     padding: 10px;
@@ -101,4 +100,38 @@ line{
     margin:0;
     overflow-y: scroll;
     padding:0;
+}
+
+/* graph properties */
+.graphTip {
+    border-style: groove;
+    padding: 10px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    pointer-events: none;
+}
+.border{
+    fill: #edf3f8;
+    stroke: #708090;
+}
+.graphText{
+    fill: #708090;
+    text-anchor:middle;
+    font-size: 10pt;
+    pointer-events: none;
+}
+.graphTitle{
+    text-anchor:middle;
+    font-size: 14pt;
+    pointer-events: none;
+}
+.graphLine{
+    stroke: #d9d9d9;
+    pointer-events: none;
+}
+.graphPath{
+    stroke: #811818;
+    fill: #da3e3e;
+    opacity: .8;
+    pointer-events: none;
 }
