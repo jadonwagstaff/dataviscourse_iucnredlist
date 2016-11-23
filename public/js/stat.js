@@ -32,32 +32,62 @@ Stat.prototype.init = function(){
 	self.nt = [];
 	self.dd = [];
 	
+	//sorting versions
+	var tempEX = self.countryData.sort(function (a, b) {
+		return parseFloat(a.EX) - parseFloat(b.EX);
+	});
+	var tempEW = self.countryData.sort(function (a, b) {
+		return parseFloat(a.EW) - parseFloat(b.EW);
+	});
+	var tempCR = self.countryData.sort(function (a, b) {
+		return parseFloat(a.CR) - parseFloat(b.CR);
+	});
+	var tempEN = self.countryData.sort(function (a, b) {
+		return parseFloat(a.EN) - parseFloat(b.EN);
+	});
+	var tempVU = self.countryData.sort(function (a, b) {
+		return parseFloat(a.VU) - parseFloat(b.VU);
+	});
+	var tempNT = self.countryData.sort(function (a, b) {
+		return parseFloat(a.NT) - parseFloat(b.NT);
+	});
+	var tempDD = self.countryData.sort(function (a, b) {
+		return parseFloat(a.DD) - parseFloat(b.DD);
+	});
 	
-	//ranks data input, using binary search
-	function insertRank(category, value, index){
-		//category.push({cc: self.countryData[index].Country, val: value, rank: value});
-		//checks if the object is a country
-		if(self.countryData[index].CC > ""){
-			//mid point
-			var mid = Math.floor(category.length / 2);
-			
-			
-			
-		}
-		//returns updated array
-		return category;
-	}
+	//rank holders
+	var rankEX = 1;
+	var rankEW = 1;
+	var rankCR = 1;
+	var rankEN = 1;
+	var rankVU = 1;
+	var rankNT = 1;
+	var rankDD = 1;	
 	
-	
+	//assigns rank
 	for(var i = 0; i < self.countryData.length; i++){
-			self.ex = insertRank(self.ex, self.countryData[i].EX, i);
-			//insertRank(self.ew, self.countryData[i].EW, i);
-			//insertRank(self.cr, self.countryData[i].CR, i);
-			//insertRank(self.en, self.countryData[i].EN, i);
-			//insertRank(self.vu, self.countryData[i].VU, i);
-			//insertRank(self.nt, self.countryData[i].NT, i);
-			//insertRank(self.dd, self.countryData[i].DD, i);
+			if(tempEX[i].CC > ""){
+				self.ex.push({cc: tempEX[i].CC, rank: rankEX});
+			}
+			if(tempEW[i].CC > ""){
+				self.ew.push({cc: tempEW[i].CC, rank: rankEW});
+			}
+			if(tempCR[i].CC > ""){
+				self.cr.push({cc: tempCR[i].CC, rank: rankCR});
+			}
+			if(tempEN[i].CC > ""){
+				self.en.push({cc: tempEN[i].CC, rank: rankEN});
+			}
+			if(tempVU[i].CC > ""){
+				self.vu.push({cc: tempVU[i].CC, rank: rankVU});
+			}
+			if(tempNT[i].CC > ""){
+				self.nt.push({cc: tempNT[i].CC, rank: rankNT});
+			}
+			if(tempDD[i].CC > ""){
+				self.dd.push({cc: tempDD[i].CC, rank: rankDD});
+			}
 	}
-	console.log(self.ex);
-
+	//console.log(self.ex);
+	
 }
