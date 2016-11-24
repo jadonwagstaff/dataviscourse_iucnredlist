@@ -100,7 +100,6 @@ Chart.prototype.init = function(){
 
 	d3.select("#chart").call(tip);
 
-
 	//grouping bars
 	var g = self.svg.selectAll(".bars")
 		.data(self.data, function(d){
@@ -250,9 +249,6 @@ Chart.prototype.init = function(){
 	// make axis
 	self.drawAxis();
 
-
-
-
 };
 
 // highlights or un-highlights bars based on country codes
@@ -315,7 +311,75 @@ Chart.prototype.update = function(countryCode) {
 
 	self.combine(false);
 
+	//setting up brush --- relied on example https://bl.ocks.org/mbostock/4349545
+	var brush = d3.brushX()
+		.extent([[0, 0], [1800, self.svgHeight]])
+		.on("start brush end", brushSelect);
+	
+	var groupBrush = d3.select("#chart").append("g")
+		.attr("class", "brush")
+		.call(brush);
+	
+	var handle = groupBrush.selectAll(".brushed")
+		.data([{type: "w"}, {type: "e"}])
+		.enter().append("path")
+		.attr("class", "brushed")
+		.attr("fill", "#666")
+		.attr("fill-opacity", 0.8)
+		.attr("stroke", "#000")
+		.attr("stroke-width", 1.5)
+		.attr("cursor", "ew-resize");
 
+		groupBrush.call(brush);
+
+	//provides selection update for brush
+	function brushSelect() {
+		var chartSelect = d3.event.selection;
+		var countryBars = d3.selectAll(".bars");//.selectAll("rect");
+		countryBars = countryBars["_groups"];
+		
+		//console.log(countryBars);
+		var selectList = [];
+		
+		countryBars[0]
+			.forEach(function(d){
+				//console.log(d3.select(d).attr("transform"));
+				var sTemp = d3.select(d).attr("transform")
+				sTemp = parseInt(sTemp.slice(10, -3));
+				//console.log(sTemp)
+				if (chartSelect[0] < sTemp) {
+					if (chartSelect[1] > sTemp){
+						selectList.push(d);
+					};
+				};
+				
+			});
+		console.log(selectList); //to do: implement selection
+		
+	}
+	
+	/* old version
+	//using self.svgHeight, 1800 width
+	var brush = d3.brushX().extent([[0,self.svgHeight],[1800, self.svgHeight]]).on("end", function(){
+		var chartSelect = d3.event.selection;
+		var countryBars = d3.selectAll(".bars").selectAll("rect");
+		countryBars = countryBars["_parents"];
+		
+		var selectList = [];
+
+		countryBars.forEach(function(d,i){
+			if (chartSelect[0] < d3.select(d).attr("x")) {
+				if (chartSelect[1] > d3.select(d).attr("x")){
+					selectList.push(d3.select(d).data());
+				};
+			};
+		});
+		console.log(selectList);
+		//self.shiftChart.update(selectList);
+	});
+	d3.select("#chart")
+		.append("g").attr("class", "brush").call(brush);
+	*/
 }
 
 // function for percent button
