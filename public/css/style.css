@@ -13,6 +13,15 @@ h1{
     text-align: left;
     overflow:auto;
 }
+
+#search {
+    width: 194px; /* Full-width */
+    font-size: 14px; /* Increase font-size */
+    padding: 8px 8px 8px 8px; /* Add some padding */
+    border: 2px solid #999999; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+}
+
 .padded{
     padding:2px;
 }
