@@ -32,10 +32,12 @@
 			<svg id = "key" width = "685" height = "50"></svg>
 			<svg id = "filters" class = "container" y = "50" x = "45" width = "595" height = "30"></svg>
 		</svg>
-		<div class = "views padded">
-			<input type = "text" Value = "Type in Country" style = "width:148px">
-			<button type="button">Search</button>
-			<ul id = "countryList" class = "countryList"></ul>
+		<div class = "views" width = "250px">
+			<!-- the old version
+			<input id = "search" type = "text" Value = "Type in Country">
+			<button id = "searchB" type="button">Search</button> -->
+			<input type="text" id="search" onkeyup="searchFunction()" placeholder="Search for Countries.">
+			<ul id = "countryList" class = "countryList container"></ul>
 		</div>
 		<div class = "padded">
 			<svg id = "map" width = "685" height = "350"></svg>
