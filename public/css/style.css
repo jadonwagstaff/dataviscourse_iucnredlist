@@ -72,7 +72,7 @@ line{
 .division{
     fill:white;
 }
-.EX, .EW, .CR, .EN, .VU, .NT, .LC, .DD{
+.EX, .EW, .CR, .EN, .VU, .NT, .LC, .DD, .highlight{
     pointer-events: none;
 }
 

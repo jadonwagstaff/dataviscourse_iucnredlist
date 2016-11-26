@@ -257,7 +257,9 @@ Chart.prototype.update = function(countryCode) {
 
 	self.separate();
 
-	var bars = self.svg.selectAll("g");
+	var bars = self.svg.selectAll("g").filter(function (d){
+			return d3.select(this).attr("class") != "brush"
+		});
 
 	bars = bars.filter(function (d){
 		for (var j = 0; j < countryCode.length; j++)
@@ -399,7 +401,9 @@ Chart.prototype.percentChange = function() {
 
 
 
-	var bars = self.svg.selectAll("g");
+	var bars = self.svg.selectAll("g").filter(function (d){
+			return d3.select(this).attr("class") != "brush"
+		});
 
 	// create data deficient bars
 	var bar = bars.select(".DD");
@@ -474,7 +478,7 @@ Chart.prototype.regionChange = function() {
 
 		// remove region lines
 		var removeLines = self.svg.selectAll("g").filter(function (d) {
-			return d.CC == "N/A"
+			return d.CC == "N/A" && d3.select(this).attr("class") != "brush"
 		});
 
 		removeLines.transition()
@@ -485,7 +489,7 @@ Chart.prototype.regionChange = function() {
 		// reorder lines
 		var closeSpaces = self.svg.selectAll("g")
 			.filter(function (d) {
-				return d.CC != "N/A" && d[self.set + "SP"] != "?";
+				return d.CC != "N/A" && d[self.set + "SP"] != "?" && d3.select(this).attr("class") != "brush";
 			});
 
 		closeSpaces.transition()
@@ -503,13 +507,15 @@ Chart.prototype.regionChange = function() {
 
 		// add the region lines back
 		var lines = self.svg.selectAll("g").filter(function (d) {
-			return d.CC == "N/A"
+			return d.CC == "N/A" && d3.select(this).attr("class") != "brush"
 		});
 
 		lines.style("opacity", 1);
 
 		// reorder lines
-		var resort = self.svg.selectAll("g");
+		var resort = self.svg.selectAll("g").filter(function (d){
+				return d3.select(this).attr("class") != "brush"
+			});
 
 		resort.sort(function (a, b) {
 				return parseInt(a.Index) - parseInt(b.Index);
@@ -517,7 +523,7 @@ Chart.prototype.regionChange = function() {
 
 		var reorder = self.svg.selectAll("g")
 			.filter(function (d) {
-				return d[self.set + "SP"] != "?";
+				return d[self.set + "SP"] != "?" && d3.select(this).attr("class") != "brush";
 			});
 
 		reorder.transition()
@@ -569,7 +575,9 @@ Chart.prototype.dataChange = function (file) {
 	}
 
 
-	var bars = self.svg.selectAll("g");
+	var bars = self.svg.selectAll("g").filter(function (d){
+			return d3.select(this).attr("class") != "brush"
+		});
 
 
 
@@ -587,6 +595,11 @@ Chart.prototype.dataChange = function (file) {
 		remove.select("."+category[j])
 			.remove();
 	}
+
+	remove.selectAll(".tipBar")
+		.style("pointer-events", "none");
+
+
 
 	bars = bars.filter(function(d){
 		return d.CC != "N/A" && d[self.set+"SP"] != "?";
@@ -655,7 +668,7 @@ Chart.prototype.dataChange = function (file) {
 	if (self.regions == true) {
 		var reorder = self.svg.selectAll("g")
 			.filter(function (d) {
-				return d[self.set + "SP"] != "?";
+				return d3.select(this).attr("class") != "brush" && d[self.set + "SP"] != "?";
 			})
 
 		reorder.transition()
@@ -667,7 +680,7 @@ Chart.prototype.dataChange = function (file) {
 	else {
 		var reorder = self.svg.selectAll("g")
 			.filter(function (d) {
-				return d.CC != "N/A" && d[self.set + "SP"] != "?";
+				return d3.select(this).attr("class") != "brush" && d.CC != "N/A" && d[self.set + "SP"] != "?";
 			})
 
 		reorder.transition()
@@ -784,9 +797,12 @@ Chart.prototype.dataChange = function (file) {
 						return self.barScale(parseFloat(d[self.set + category[j]]));
 					}
 				});
-
-			enter.style("opacity", 1);
 		}
+
+		enter.style("opacity", 1);
+
+		enter.selectAll(".tipBar")
+			.style("pointer-events", "auto")
 	}
 
 	self.previousSet = self.set;
@@ -811,7 +827,7 @@ Chart.prototype.sort = function(order) {
 			for(var j = 0; j < reg.length; j++ ){
 				bars = self.svg.selectAll("g")
 					.filter(function (d) {
-						return d.CC != "N/A" && d.Region == reg[j];
+						return d3.select(this).attr("class") != "brush" && d.CC != "N/A" && d.Region == reg[j];
 					});
 
 				// organize based on selected order and percentage
@@ -886,7 +902,9 @@ Chart.prototype.sort = function(order) {
 
 			}
 
-			var regionReorder = self.svg.selectAll("g");
+			var regionReorder = self.svg.selectAll("g").filter(function (d){
+					return d3.select(this).attr("class") != "brush"
+				});
 
 			regionReorder = regionReorder.filter(function (d) {
 					return d[self.set + "SP"] != "?";
@@ -903,7 +921,7 @@ Chart.prototype.sort = function(order) {
 
 			bars = self.svg.selectAll("g")
 				.filter(function (d) {
-					return d.CC != "N/A";
+					return d.CC != "N/A" && d3.select(this).attr("class") != "brush";
 				});
 
 			// organize based on selected order and percentage
@@ -976,7 +994,9 @@ Chart.prototype.sort = function(order) {
 				}
 			}
 
-			var reorder = self.svg.selectAll("g")
+			var reorder = self.svg.selectAll("g").filter(function (d){
+					return d3.select(this).attr("class") != "brush"
+				});
 
 			reorder = reorder.filter(function (d) {
 					return d.CC != "N/A" && d[self.set + "SP"] != "?";
@@ -1438,7 +1458,9 @@ Chart.prototype.drawFilters = function(file){
 Chart.prototype.separate = function(){
 	var self = this;
 
-	var bars = self.svg.selectAll("g");
+	var bars = self.svg.selectAll("g").filter(function (d){
+			return d3.select(this).attr("class") != "brush"
+		});
 
 	bars.selectAll(".highlight")
 		.style("opacity", 1)
@@ -1448,7 +1470,9 @@ Chart.prototype.separate = function(){
 Chart.prototype.combine = function(transition){
 	var self = this;
 
-	var bars = self.svg.selectAll("g");
+	var bars = self.svg.selectAll("g").filter(function (d){
+			return d3.select(this).attr("class") != "brush"
+		});
 
 	var deleteRight = bars.filter(function (d, i, nodes){
 		if (i < nodes.length - 1) {
@@ -1467,7 +1491,9 @@ Chart.prototype.combine = function(transition){
 			.style("opacity", 0);
 	}
 
-	bars = self.svg.selectAll("g");
+	bars = self.svg.selectAll("g").filter(function (d){
+			return d3.select(this).attr("class") != "brush"
+		});
 
 	var deleteLeft = bars.filter(function (d, i, nodes){
 		return (d3.select(this).attr("class") == "selectedBars") && (d3.select(nodes[i-1]).attr("class") == "selectedBars")
