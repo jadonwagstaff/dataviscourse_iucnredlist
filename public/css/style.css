@@ -27,6 +27,15 @@ h1{
     margin-bottom: 12px; /* Add some space below the input */
 }
 
+#details {
+	max-width: 685px;
+	max-height: 270px;
+    	font-size: 14px;
+    	margin:0;
+    	overflow-x: scroll;
+    	padding:0;
+}
+
 .padded{
     padding:2px;
 }
