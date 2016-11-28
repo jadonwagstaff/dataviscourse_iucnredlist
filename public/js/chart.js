@@ -18,7 +18,6 @@ function Chart(data){
 
 	self.svgHeight = self.svg.attr("height") - self.labelHeight
 
-
 	self.scale();
 	self.drawKey();
 	self.drawFilters("summary");
@@ -54,9 +53,15 @@ Chart.prototype.scale = function(){
 Chart.prototype.init = function(){
 
 	var self = this;
-
-
 	var percentage = false;
+	
+	// resize div based on windo size	
+	var resize = Math.min(window.innerWidth - 100, 1700)
+	document.getElementById("chartDiv").setAttribute("style", "width:"+ resize +"px");
+	window.onresize = function(){
+			resize = Math.min(window.innerWidth - 100, 1700)
+			document.getElementById("chartDiv").setAttribute("style", "width:"+ resize +"px");
+		}
 
 	//creating tool tip functionality
 	var tip = d3.tip().attr("class", "chartTip")
@@ -540,6 +545,9 @@ Chart.prototype.dataChange = function (file) {
 		amphibians.attr("class", "unselectedButton");
 
 		self.set = "T_";
+		self.svg.transition()
+			.duration(3000)
+			.attr("width", 1600)
 	}
 	if (file == "mammals" && mammals.attr("class") == "unselectedButton"){
 		summary.attr("class", "unselectedButton");
@@ -547,6 +555,9 @@ Chart.prototype.dataChange = function (file) {
 		amphibians.attr("class", "unselectedButton");
 
 		self.set = "M_";
+		self.svg.transition()
+			.duration(3000)
+			.attr("width", 1550)
 	}
 	if (file == "amphibians" && amphibians.attr("class") == "unselectedButton"){
 		summary.attr("class", "unselectedButton");
@@ -554,6 +565,9 @@ Chart.prototype.dataChange = function (file) {
 		amphibians.attr("class", "selectedButton");
 
 		self.set = "A_";
+		self.svg.transition()
+			.duration(3000)
+			.attr("width", 1250)
 	}
 
 

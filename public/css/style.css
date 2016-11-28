@@ -1,9 +1,14 @@
-/* title properties */
+/* html properties */
 .title{
-    text-align: center;
+    margin-left: 100px;
 }
 h1{
 	color: #db2525;
+}
+.description{
+	margin-left:100px;
+	margin-bottom:300px;
+	max-width:800px;
 }
 
 /* div properties */

@@ -56,6 +56,7 @@ Graphs.prototype.init = function(){
 
 Graphs.prototype.update = function(countryCode){
     var self = this;
+    self.rowSize = Math.min(Math.floor((window.innerWidth - 100)/self.graphSize), Math.ceil(1600/self.graphSize))
 
     // find selected country code g elements
     var selected = self.g.filter(function(d){
@@ -184,16 +185,13 @@ Graphs.prototype.update = function(countryCode){
             return "translate("+ (row * self.graphSize) +","+ (column * self.gHeight) + ")";
         });
 
+
     // make svg bigger
-    if (self.maxHeight < Math.ceil(2 + currentGraphs.data().length/self.rowSize) * self.graphSize){
-        self.maxHeight = Math.ceil(2 + currentGraphs.data().length/self.rowSize) * self.graphSize
-        self.svg
-            .attr("height", self.maxHeight)
-    }
-    if (self.maxWidth < self.rowSize * self.gHeight){
-        self.maxWidth = self.rowSize * self.gHeight;
-        self.svg
-            .attr("width", self.maxWidth)
-    }
+    self.maxHeight = Math.ceil(1 + currentGraphs.data().length/self.rowSize) * self.gHeight
+    self.svg
+        .attr("height", self.maxHeight)
+    self.maxWidth = self.rowSize * self.graphSize;
+    self.svg
+        .attr("width", self.maxWidth)
 
 }

@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="public/css/style.css"/>
 	<script src="https://d3js.org/d3-geo-projection.v1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
-
 	<script type="text/javascript" src="bower_components/d3/d3.js"></script>
 	<script type="text/javascript" src="bower_components/d3-tip/index.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
@@ -19,29 +18,57 @@
 		<h1>IUNC Red List of Threatened Animal Species</h1>
 	</div>
 	<!--Div containing graph elements -->
-	<div class = "views " style = "width:1870px">
-		<svg id = "axis" width = "60" height = "470"></svg>
-		<svg id = "chart" width = "1800" height="470" ></svg>
+	<div class = "views ">
+		<div class = "views">
+			<svg id = "axis" width = "60" height = "470"></svg>
+		</div>
+		<div class = "views" id = "chartDiv">
+			<svg id = "chart" width = "1600" height="470" ></svg>
+		</div>
 	</div>
 	<!--Div containing map and list elements -->
-	<div class = "views padded" style = "width:1870px; padding-left:60px">
-		<!--Filters svg just a concept at this point-->
+	<div class = "views padded" style = "padding-left:60px">
 		<svg class = "views padded" width = "685" height = "350">
 			<svg id = "key" width = "685" height = "50"></svg>
 			<svg id = "filters" class = "container" y = "50" x = "45" width = "595" height = "30"></svg>
 		</svg>
-		<div class = "views" width = "250px">
-			<!-- the old version
-			<input id = "search" type = "text" Value = "Type in Country">
-			<button id = "searchB" type="button">Search</button> -->
-			<input type="text" id="search" onkeyup="searchFunction()" placeholder="Search for Countries.">
-			<ul id = "countryList" class = "countryList container"></ul>
-		</div>
-		<div class = "padded">
-			<svg id = "map" width = "685" height = "350"></svg>
+		<div class = "views" style = "width:900px">
+			<div class = "views">
+				<input type="text" id="search" onkeyup="searchFunction()" placeholder="Search for Countries.">
+				<ul id = "countryList" class = "countryList container"></ul>
+			</div>
+			<div class = "views">
+				<svg id = "map" width = "685" height = "350"></svg>
+			</div>
 		</div>
 	</div>
-	<svg id = "graphs" style = "margin-left:20px"></svg>
+	<div>
+		<svg id = "graphs" style = "margin-left:20px"></svg>
+	</div>
+	<div class = "description">
+		<p><b>Introduction</b><br>
+			This page provides a visual for summary statistics by country for animals assessed by the International Union for Conservation of Nature (IUCN). The visual consists of a bar chart with a key in the bottom left, a window providing details of a selection, a list of countries to select, and a map which highlights selected countries. Below all of that there is an area that populates with graphs for selected countries that describes the distribution of types of animals on the red list for that country. It is the hope that this visual will allow anyone to quickly and easily view the status of animal species in their country and compare their country with others, thereby increasing awareness of the important work of the IUCN.
+		</p>
+		<p><b>Bar Chart</b><br>
+			Each bar of the bar chart is divided into four categories: extinct, Red List, unthreatened, and data-deficient (black, red, blue, and brown respectively). Clicking on any of these categories in the key will sort the bars in descending order based on the values in that category. The extinct category is subdivided into two subcategories, extinct and extinct in the wild. Critically endangered, endangered, and vulnerable together make up what is called the Red List. Species on the red list are considered to be most in need of conservation efforts. Unthreatened is composed of two subcategories, near threatened and least concerned. Species in the data-deficient category could be placed within one of the other categories upon better investigation of that specie. Taking this into consideration, the choice was made to keep the data-deficient portion of the bar below the zero axis. Hovering over a bar will display that bars associated country and the values for each portion of the bar.
+		</p>
+		<p>
+			There are two additional datasets that are available for examination: data for assessed mammals and assessed amphibians. Both of these types of animals are part of special initiatives of the IUCN. It is important to monitor mammals since they are often the subject of over-utilization and over-hunting. Studying amphibians provides insight into the levels of pollution in an environment, as they are sensitive to any changes in their environment. These datasets can be changed by using the summary, mammals, or amphibian buttons found under the key.
+		</p>
+		<p>
+			In addition to the aforementioned dataset buttons, there is a percentage button and a regions button. The percentage button changes the bars from reflecting number of species to a percentage. All of the species assessed in an individual country represents a value of 100%, where the bar is again divided up into separate categories. The regions button allows the user to toggle between comparing countries within separate regions, or on a worldwide basis.
+		</p>
+		<p><b>List and Map</b><br>
+			The list displays countries grouped in alphabetical order by region. Selecting a country will highlight the country name on the list and place on the map. Selecting a region will do the same for all countries in that region. Bars on the bar chart correlating with selected countries will appear highlighted with a box allowing you to track your selections as you reorder the bars.
+		</p>
+		<p><b>Graphs</b><br>
+			Upon selection, a graph corresponding to that country will be rendered below the main visual. The graph consists of seven axes corresponding to different subsets of animals on the Red List for that country. The categories are mammals, birds, reptiles, amphibians, fish, molluscs, and other invertebrates. The position of a point corresponds to the relative percentage of species on the Red List for that category, with the end of an axis representing the length associated with 50%. Each point is connected by a line and filled with red. This allows quick comparison of composition between two or more countries. Clicking on a graph displays details about the Red List for that country.
+		</p>
+		<p><b>Developers</b><br>
+			Jadon Wagstaff<br>
+			Dart Risley II
+		</p>
+	</div>
 
 <script type="application/javascript" src="public/js/main.js"></script>
 <script type="application/javascript" src="public/js/chart.js"></script>
