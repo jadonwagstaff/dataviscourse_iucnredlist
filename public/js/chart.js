@@ -61,11 +61,11 @@ Chart.prototype.init = function(){
 	//creating tool tip functionality
 	var tip = d3.tip().attr("class", "chartTip")
 		.direction(function (){
-			if (event.clientX > 1400){ return 'w'}
+			if (d3.event.clientX > 1400){ return 'w'}
 			return 'e'
 		})
 		.offset(function(){
-			if (event.clientX > 1400){ return [-100,-30]}
+			if (d3.event.clientX > 1400){ return [-100,-30]}
 			return [-100,30];
 		})
 		.html(function(d){
@@ -312,14 +312,14 @@ Chart.prototype.update = function(countryCode) {
 	self.combine(false);
 
 	//setting up brush --- relied on example https://bl.ocks.org/mbostock/4349545
-	var brush = d3.brushX()
+	/*var brush = d3.brushX()
 		.extent([[0, 0], [1800, self.svgHeight]])
 		.on("start brush end", brushSelect);
-	
+
 	var groupBrush = d3.select("#chart").append("g")
 		.attr("class", "brush")
 		.call(brush);
-	
+
 	var handle = groupBrush.selectAll(".brushed")
 		.data([{type: "w"}, {type: "e"}])
 		.enter().append("path")
@@ -337,10 +337,10 @@ Chart.prototype.update = function(countryCode) {
 		var chartSelect = d3.event.selection;
 		var countryBars = d3.selectAll(".bars");//.selectAll("rect");
 		countryBars = countryBars["_groups"];
-		
+
 		//console.log(countryBars);
 		var selectList = [];
-		
+
 		countryBars[0]
 			.forEach(function(d){
 				//console.log(d3.select(d).attr("transform"));
@@ -353,21 +353,21 @@ Chart.prototype.update = function(countryCode) {
 					groupBrush
 							.clear()
 							.event(d3.select(".brush"));
-					*/
+					*//*
 				} else {
 					if (chartSelect[0] < sTemp) {
 						if (chartSelect[1] > sTemp){
 							selectList.push(d);
 						};
-					};				
+					};
 				};
-				
-				
+
+
 			});
 		console.log(selectList); //to do: implement selection
-		
-	}
-	
+
+	}*/
+
 }
 
 // function for percent button
@@ -576,6 +576,9 @@ Chart.prototype.dataChange = function (file) {
 			.remove();
 	}
 
+	remove.selectAll(".tipBar")
+		.style("pointer-events", "none");
+
 	bars = bars.filter(function(d){
 		return d.CC != "N/A" && d[self.set+"SP"] != "?";
 	});
@@ -774,6 +777,9 @@ Chart.prototype.dataChange = function (file) {
 				});
 
 			enter.style("opacity", 1);
+
+			enter.selectAll(".tipBar")
+				.style("pointer-events", "auto")
 		}
 	}
 
@@ -799,8 +805,8 @@ Chart.prototype.sort = function(order) {
 			for(var j = 0; j < reg.length; j++ ){
 				bars = self.svg.selectAll("g")
 					.filter(function (d) {
-						return d.CC != "N/A" && d.Region == reg[j];
-					});
+						return d.CC != "N/A" && d.Region == reg[j] && d[self.set + "SP"] != "?";
+					})
 
 				// organize based on selected order and percentage
 				if (self.percentage == true) {
@@ -808,12 +814,6 @@ Chart.prototype.sort = function(order) {
 						bars.sort(function (a, b) {
 							return d3.descending((parseFloat(a[self.set + "EX"]) + parseFloat(a[self.set + "EW"])) / a[self.set + "SP"], (parseFloat(b[self.set + "EX"]) + parseFloat(b[self.set + "EW"])) / b[self.set + "SP"])
 						});
-						bars.filter(function (d) {
-								return parseFloat(d[self.set + "EX"]) + parseFloat(d[self.set + "EW"]) == 0;
-							})
-							.sort(function (a, b) {
-								return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
-							});
 					}
 					else if (order == "redList") {
 						bars.sort(function (a, b) {
@@ -829,12 +829,6 @@ Chart.prototype.sort = function(order) {
 						bars.sort(function (a, b) {
 							return d3.descending(a[self.set + "DD"] / a[self.set + "SP"], b[self.set + "DD"] / b[self.set + "SP"])
 						});
-						bars.filter(function (d) {
-								return parseFloat(d[self.set + "DD"]) == 0;
-							})
-							.sort(function (a, b) {
-								return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
-							});
 					}
 				}
 				else {
@@ -842,12 +836,6 @@ Chart.prototype.sort = function(order) {
 						bars.sort(function (a, b) {
 							return d3.descending(parseInt(a[self.set + "EX"]) + parseInt(a[self.set + "EW"]), parseInt(b[self.set + "EX"]) + parseInt(b[self.set + "EW"]))
 						});
-						bars.filter(function (d) {
-								return parseFloat(d[self.set + "EX"]) + parseFloat(d[self.set + "EW"]) == 0;
-							})
-							.sort(function (a, b) {
-								return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
-							});
 					}
 					else if (order == "redList") {
 						bars.sort(function (a, b) {
@@ -863,12 +851,6 @@ Chart.prototype.sort = function(order) {
 						bars.sort(function (a, b) {
 							return d3.descending(parseInt(a[self.set + "DD"]), parseInt(b[self.set + "DD"]))
 						});
-						bars.filter(function (d) {
-								return parseFloat(d[self.set + "DD"]) == 0;
-							})
-							.sort(function (a, b) {
-								return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
-							});
 					}
 				}
 
@@ -891,7 +873,7 @@ Chart.prototype.sort = function(order) {
 
 			bars = self.svg.selectAll("g")
 				.filter(function (d) {
-					return d.CC != "N/A";
+					return d.CC != "N/A" && d[self.set + "SP"] != "?";
 				});
 
 			// organize based on selected order and percentage
@@ -900,12 +882,6 @@ Chart.prototype.sort = function(order) {
 					bars.sort(function (a, b) {
 						return d3.descending((parseFloat(a[self.set + "EX"]) + parseFloat(a[self.set + "EW"])) / a[self.set + "SP"], (parseFloat(b[self.set + "EX"]) + parseFloat(b[self.set + "EW"])) / b[self.set + "SP"])
 					});
-					bars.filter(function (d) {
-							return parseFloat(d[self.set + "EX"]) + parseFloat(d[self.set + "EW"]) == 0;
-						})
-						.sort(function (a, b) {
-							return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
-						});
 				}
 				else if (order == "redList") {
 					bars.sort(function (a, b) {
@@ -921,12 +897,6 @@ Chart.prototype.sort = function(order) {
 					bars.sort(function (a, b) {
 						return d3.descending(a[self.set + "DD"] / a[self.set + "SP"], b[self.set + "DD"] / b[self.set + "SP"])
 					});
-					bars.filter(function (d) {
-							return parseFloat(d[self.set + "DD"]) == 0;
-						})
-						.sort(function (a, b) {
-							return d3.descending((parseFloat(a[self.set + "CR"]) + parseFloat(a[self.set + "EN"]) + parseFloat(a[self.set + "VU"])) / a[self.set + "SP"], (parseFloat(b[self.set + "CR"]) + parseFloat(b[self.set + "EN"]) + parseFloat(b[self.set + "VU"])) / b[self.set + "SP"])
-						});
 				}
 			}
 			else{
@@ -934,16 +904,10 @@ Chart.prototype.sort = function(order) {
 					bars.sort(function (a, b) {
 						return d3.descending(parseInt(a[self.set + "EX"]) + parseInt(a[self.set + "EW"]), parseInt(b[self.set + "EX"]) + parseInt(b[self.set + "EW"]))
 					});
-					bars.filter(function (d) {
-							return parseFloat(d[self.set + "EX"]) + parseFloat(d[self.set + "EW"]) == 0;
-						})
-						.sort(function (a, b) {
-							return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
-						});
 				}
 				else if (order == "redList") {
 					bars.sort(function (a, b) {
-						return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
+						return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(b[self.set + "VU"]))
 					});
 				}
 				else if (order == "unthreatened") {
@@ -955,12 +919,6 @@ Chart.prototype.sort = function(order) {
 					bars.sort(function (a, b) {
 						return d3.descending(parseInt(a[self.set + "DD"]), parseInt(b[self.set + "DD"]))
 					});
-					bars.filter(function (d) {
-							return parseFloat(d[self.set + "DD"]) == 0;
-						})
-						.sort(function (a, b) {
-							return d3.descending(parseInt(a[self.set + "CR"]) + parseInt(a[self.set + "EN"]) + parseInt(a[self.set + "VU"]), parseInt(b[self.set + "CR"]) + parseInt(b[self.set + "EN"]) + parseInt(a[self.set + "VU"]))
-						});
 				}
 			}
 

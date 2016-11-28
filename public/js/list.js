@@ -119,6 +119,24 @@ List.prototype.change_OnChart_orMap = function(){
 			self.update([d.CC])
 		})
 
+	d3.select("#chart").selectAll("g")
+		.filter(function(d){
+			return d.Country == "N/A"
+		})
+		.style("cursor", "pointer")
+		.on("click", function(d){
+			var send = []
+			for(var j = 0; j < self.data.length; j++){
+				if (d.Region == self.data[j].Region && self.data[j].Country != "N/A"){
+					send.push(self.data[j].CC)
+				}
+			}
+			self.chart.update(send);
+			self.map.update(send);
+			self.graphs.update(send);
+			self.update(send);
+		});
+
 }
 
 List.prototype.dataChange = function(set){

@@ -34,10 +34,12 @@ h1{
     text-anchor:start;
     font-size: 14px;
     stroke-width: 0.1px;
+    font-family: "times new roman";
 }
 .buttonText{
     text-anchor:start;
     font-size: 14px;
+    font-family: "times new roman";
 }
 .selectedButton{
     fill:#dbe4f0;
@@ -51,6 +53,7 @@ h1{
 .axis{
     font-size:12px;
     text-anchor:end;
+    font-family: "times new roman";
 }
 .sort{
     fill:white;
@@ -75,6 +78,15 @@ line{
 .EX, .EW, .CR, .EN, .VU, .NT, .LC, .DD, .highlight{
     pointer-events: none;
 }
+.chartTip {
+    width: 120px;
+    border-style: groove;
+    padding: 10px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    pointer-events: none;
+    font-family: "times new roman";
+}
 
 /* map properties */
 .countries {
@@ -84,14 +96,6 @@ line{
 .selectedCountries {
     stroke: #999999;
     fill: #a3c2db;
-}
-.chartTip {
-    width: 120px;
-    border-style: groove;
-    padding: 10px;
-    background: #FFFFFF;
-    border-radius: 10px;
-    pointer-events: none;
 }
 
 /* list properties */
@@ -109,6 +113,7 @@ line{
     margin:0;
     overflow-y: scroll;
     padding:0;
+    font-family: "times new roman";
 }
 
 /* graph properties */
@@ -128,11 +133,13 @@ line{
     text-anchor:middle;
     font-size: 10pt;
     pointer-events: none;
+    font-family: "times new roman";
 }
 .graphTitle{
     text-anchor:middle;
     font-size: 14pt;
     pointer-events: none;
+    font-family: "times new roman";
 }
 .graphLine{
     stroke: #d9d9d9;
