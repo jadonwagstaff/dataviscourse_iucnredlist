@@ -16,6 +16,7 @@ function loadData() {
         var chart = new Chart(data);
         var graphs = new Graphs(data);
         var list = new List(map, chart, graphs, data);
+	var stat = new Stat(data);
     });
 
 }
