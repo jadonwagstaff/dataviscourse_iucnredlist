@@ -4,9 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Red List: Animals</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="public/css/style.css"/>
 	<script src="https://d3js.org/d3-geo-projection.v1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="bower_components/d3/d3.js"></script>
 	<script type="text/javascript" src="bower_components/d3-tip/index.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
@@ -28,10 +31,16 @@
 	</div>
 	<!--Div containing map and list elements -->
 	<div class = "views padded" style = "padding-left:60px">
-		<svg class = "views padded" width = "685" height = "350">
-			<svg id = "key" width = "685" height = "50"></svg>
-			<svg id = "filters" class = "container" y = "50" x = "45" width = "595" height = "30"></svg>
-		</svg>
+		<div class = "views" width = "685" height = "350">
+			<svg class = "views padded" width = "685" height = "80">
+				<svg id = "key" width = "685" height = "50"></svg>
+				<svg id = "filters" class = "container" y = "50" x = "45" width = "595" height = "30"></svg>
+			</svg>
+			<br/>
+			<br/>
+			<div id = "details" class = "views">
+			</div>
+		</div>
 		<div class = "views" style = "width:900px">
 			<div class = "views">
 				<input type="text" id="search" onkeyup="searchFunction()" placeholder="Search for Countries.">
