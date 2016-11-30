@@ -1,6 +1,6 @@
 
 
-function List(map, chart, graphs, data) {
+function List(map, chart, graphs, stat, data) {
     var self = this;
 	self.svg = d3.select("#countryList");
 
@@ -8,6 +8,7 @@ function List(map, chart, graphs, data) {
     self.chart = chart;
     self.data = data;
 	self.graphs = graphs;
+	self.stat = stat;
 
     self.init();
 	self.change_OnChart_orMap();
@@ -42,6 +43,7 @@ List.prototype.init = function(){
 			self.chart.update(send);
 			self.map.update(send);
 			self.graphs.update(send);
+			self.stat.update(send);
 			self.update(send);
 		});
 
@@ -52,6 +54,7 @@ List.prototype.init = function(){
 			self.chart.update([d.CC]);
 			self.map.update([d.CC]);
 			self.graphs.update([d.CC]);
+			self.stat.update(d.CC);
 			self.update([d.CC]);
 		})
 }
@@ -116,6 +119,7 @@ List.prototype.change_OnChart_orMap = function(){
 			self.chart.update([d.CC])
 			self.map.update([d.CC])
 			self.graphs.update([d.CC])
+			self.stat.update(d.CC);
 			self.update([d.CC])
 		})
 
@@ -134,6 +138,7 @@ List.prototype.change_OnChart_orMap = function(){
 			self.chart.update(send);
 			self.map.update(send);
 			self.graphs.update(send);
+			self.stat.update(send);
 			self.update(send);
 		});
 
