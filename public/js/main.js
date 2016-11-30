@@ -1,9 +1,6 @@
 //loads and initializes data
 
-loadData("summary");
-
-//used for switching compare key
-var globalCompare = false;
+loadData();
 
 function loadData() {
     
@@ -17,7 +14,7 @@ function loadData() {
         //create objects
         var map = new Map(data);
 		var stat = new Stat(data);
-        var chart = new Chart(data, stat);
+        var chart = new Chart(data);
         var graphs = new Graphs(data);
         var list = new List(map, chart, graphs, stat, data);
 		

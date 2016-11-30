@@ -18,7 +18,7 @@
 <body>
 	<!--title information -->
 	<div class = "title">
-		<h1>IUNC Red List of Threatened Animal Species</h1>
+		<h1>IUNC Red List of Threatened Animal Species<br><span style="font-size:20px">A Visualization of Summary Statistics for Animal Species Assessed by the IUCN</span></h1>
 	</div>
 	<!--Div containing graph elements -->
 	<div class = "views ">
@@ -31,24 +31,25 @@
 	</div>
 	<!--Div containing map and list elements -->
 	<div class = "views padded" style = "padding-left:60px">
-		<div class = "views" width = "685" height = "350">
-			<svg class = "views padded" width = "685" height = "80">
-				<svg id = "key" width = "685" height = "50"></svg>
-				<svg id = "filters" class = "container" y = "50" x = "45" width = "595" height = "30"></svg>
-			</svg>
-			<br/>
-			<br/>
-			<div id = "details" class = "views">
+		<div class = "views" style = "width:900px">
+			<div class = "views" style= "width:685px; height:400px">
+				<svg class = "views padded" width = "685" height = "80">
+					<svg id = "key" width = "685" height = "50"></svg>
+					<svg id = "filters" class = "container" y = "50" x = "45" width = "595" height = "30"></svg>
+				</svg>
+				<div id = "details" class = "views" style="width:685px; height:295px">
+				</div>
+				<svg width = "685" height = "1">
+					<line x1="0" x2="685" y1="0" y2="0"></line>
+				</svg>
 			</div>
-		</div>
-		<div class = "views" style = "width:700px">
-			<div class = "views">
-				<input type="text" id="search" onkeyup="searchFunction()" placeholder="Search for Countries.">
+			<div class = "views padded">
+				<input type="text" id="search" onkeyup="searchFunction()" placeholder="Search for Countries." style="width:210px">
 				<ul id = "countryList" class = "countryList container"></ul>
 			</div>
-			<div class = "views">
-				<svg id = "map" width = "685" height = "350"></svg>
-			</div>
+		</div>
+		<div class = "views">
+			<svg id = "map" width = "685" height = "380"></svg>
 		</div>
 	</div>
 	<div>
@@ -56,22 +57,58 @@
 	</div>
 	<div class = "description">
 		<p><b>Introduction</b><br>
-			This page provides a visual for summary statistics by country for animals assessed by the International Union for Conservation of Nature (IUCN). The visual consists of a bar chart with a key in the bottom left, a window providing details of a selection, a list of countries to select, and a map which highlights selected countries. Below all of that there is an area that populates with graphs for selected countries that describes the distribution of types of animals on the red list for that country. It is the hope that this visual will allow anyone to quickly and easily view the status of animal species in their country and compare their country with others, thereby increasing awareness of the important work of the IUCN.
+			This page provides a visual for summary statistics by country for animals assessed by the <a href="http://www.iucnredlist.org/" target="_blank">International Union for Conservation of Nature</a> (IUCN).
+			(See <a href="http://www.iucnredlist.org/about/summary-statistics" target="_blank">here</a> for more information on summary statistics by country, dataset was obtained from table 6a.)
+			The visual consists of a bar chart with a key in the bottom left, a window providing details of a selection, a list of countries to select, and a map which highlights selected countries.
+			Below all of that there is an area that populates with graphs for selected countries that describes the distribution of types of animals on the red list for that country.
+			It is the hope that this visual will allow anyone to quickly and easily view the status of animal species in their country and compare their country with others, thereby increasing awareness of the important work of the IUCN.
 		</p>
 		<p><b>Bar Chart</b><br>
-			Each bar of the bar chart is divided into four categories: extinct, Red List, unthreatened, and data-deficient (black, red, blue, and brown respectively). Clicking on any of these categories in the key will sort the bars in descending order based on the values in that category. The extinct category is subdivided into two subcategories, extinct and extinct in the wild. Critically endangered, endangered, and vulnerable together make up what is called the Red List. Species on the red list are considered to be most in need of conservation efforts. Unthreatened is composed of two subcategories, near threatened and least concerned. Species in the data-deficient category could be placed within one of the other categories upon better investigation of that specie. Taking this into consideration, the choice was made to keep the data-deficient portion of the bar below the zero axis. Hovering over a bar will display that bars associated country and the values for each portion of the bar.
+			Each bar of the bar chart is divided into four categories: extinct, Red List, unthreatened, and data-deficient (black, red, blue, and brown respectively).
+			Clicking on any of these categories in the key will sort the bars in descending order based on the values in that category.
+			The extinct category is subdivided into two subcategories, extinct and extinct in the wild. Critically endangered, endangered, and vulnerable together make up what is called the Red List.
+			Species on the red list are considered to be most in need of conservation efforts. Unthreatened is composed of two subcategories, near threatened and least concerned.
+			Species in the data-deficient category could be placed within one of the other categories upon better investigation of that specie.
+			Taking this into consideration, the choice was made to keep the data-deficient portion of the bar below the zero axis.
+			Hovering over a bar will display that bars associated country and the values for each portion of the bar.
 		</p>
 		<p>
-			There are two additional datasets that are available for examination: data for assessed mammals and assessed amphibians. Both of these types of animals are part of special initiatives of the IUCN. It is important to monitor mammals since they are often the subject of over-utilization and over-hunting. Studying amphibians provides insight into the levels of pollution in an environment, as they are sensitive to any changes in their environment. These datasets can be changed by using the summary, mammals, or amphibian buttons found under the key.
+			There are two additional datasets that are available for examination: data for assessed <a href="http://www.iucnredlist.org/initiatives/mammals/analysis/geographic-patterns" target="_blank">mammals</a> and assessed <a href="http://www.iucnredlist.org/initiatives/amphibians/analysis/geographic-patterns" target="_blank">amphibians</a>.
+			Comprehensive assessments were performed on each of these groups in 2008 and 2004 respectively (as a result data in these sets may not reflect data in graphs and summary set).
+			Both of these types of animals are part of special initiatives of the IUCN.
+			It is important to monitor mammals since they are often the subject of over-utilization and over-hunting.
+			Studying amphibians provides insight into the levels of pollution in an environment, as they are sensitive to any changes in their environment (IUCN 2016).
+			These datasets can be changed by using the summary, mammals, or amphibian buttons found under the key.
 		</p>
 		<p>
-			In addition to the aforementioned dataset buttons, there is a percentage button and a regions button. The percentage button changes the bars from reflecting number of species to a percentage. All of the species assessed in an individual country represents a value of 100%, where the bar is again divided up into separate categories. The regions button allows the user to toggle between comparing countries within separate regions, or on a worldwide basis.
+			In addition to the aforementioned dataset buttons, there is a percentage button, a details button, and a regions button.
+			The percentage button changes the bars from reflecting number of species to a percentage.
+			All of the species assessed in an individual country represents a value of 100%, where the bar is again divided up into separate categories.
+			Below the buttons there is a set of descriptions for the key.
+			If the details button is pressed, the details of each selected country will be presented in place of the aforementioned description.
+			The regions button allows the user to toggle between comparing countries within separate regions, or on a worldwide basis.
 		</p>
 		<p><b>List and Map</b><br>
-			The list displays countries grouped in alphabetical order by region. Selecting a country will highlight the country name on the list and place on the map. Selecting a region will do the same for all countries in that region. Bars on the bar chart correlating with selected countries will appear highlighted with a box allowing you to track your selections as you reorder the bars.
+			The list displays countries grouped in alphabetical order by region.
+			Selecting a country will highlight the country name on the list and place on the map.
+			Selecting a region will do the same for all countries in that region.
+			Bars on the bar chart correlating with selected countries will appear highlighted with a box allowing you to track your selections as you reorder the bars.
 		</p>
 		<p><b>Graphs</b><br>
-			Upon selection, a graph corresponding to that country will be rendered below the main visual. The graph consists of seven axes corresponding to different subsets of animals on the Red List for that country. The categories are mammals, birds, reptiles, amphibians, fish, molluscs, and other invertebrates. The position of a point corresponds to the relative percentage of species on the Red List for that category, with the end of an axis representing the length associated with 50%. Each point is connected by a line and filled with red. This allows quick comparison of composition between two or more countries. Clicking on a graph displays details about the Red List for that country.
+			Upon selection, a graph corresponding to that country will be rendered below the main visual.
+			The graph consists of seven axes corresponding to different subsets of animals on the Red List for that country.
+			(See <a href="http://www.iucnredlist.org/about/summary-statistics" target="_blank">here</a> table 5 for more information on red list composition by country, dataset was obtained from table 5.)
+			The categories are mammals, birds, reptiles, amphibians, fish, molluscs, and other invertebrates.
+			The position of a point corresponds to the relative percentage of species on the Red List for that category, with the end of an axis representing the length associated with 50%.
+			Each point is connected by a line and filled with red.
+			This allows quick comparison of composition between two or more countries.
+			Clicking on a graph displays details about the Red List for that country.
+		</p>
+		<p><b>References</b><br>
+			IUCN 2016. The IUCN Red List of Threatened Species. Version 2016-2. <a href="http://www.iucnredlist.org" target="_blank">http://www.iucnredlist.org</a>. 1 November 2016.
+		</p>
+		<p>
+			Click to download data used for this visualization <a href="data/data.csv" download>data.csv</a>.
 		</p>
 		<p><b>Developers</b><br>
 			Jadon Wagstaff<br>

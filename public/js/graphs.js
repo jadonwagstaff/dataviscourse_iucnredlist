@@ -6,6 +6,7 @@ function Graphs(data){
     self.graphSize = 200;
     self.gHeight = 240;
     self.lineLength = 60;
+    self.titleHeight = 60;
 
     self.maxWidth = 0;
     self.maxHeight = 0;
@@ -49,7 +50,18 @@ Graphs.prototype.init = function(){
             return text;
         })
 
-    d3.select("#graphs").call(self.tip);
+    self.svg.call(self.tip);
+
+    self.svg.append("text")
+        .attr("id", "graphsTitle")
+        .attr("x", 60)
+        .attr("y", 55)
+        .style("font-weight", "bold")
+        .text("Red List Composition:")
+        .style("opacity", 0);
+
+
+
 
 }
 
@@ -57,6 +69,9 @@ Graphs.prototype.init = function(){
 Graphs.prototype.update = function(countryCode){
     var self = this;
     self.rowSize = Math.min(Math.floor((window.innerWidth - 100)/self.graphSize), Math.ceil(1600/self.graphSize))
+
+    self.svg.select("#graphsTitle")
+        .style("opacity", 1);
 
     // find selected country code g elements
     var selected = self.g.filter(function(d){
@@ -182,7 +197,7 @@ Graphs.prototype.update = function(countryCode){
         .attr("transform", function(d, i){
             var column = Math.floor(i/self.rowSize);
             var row = i%self.rowSize;
-            return "translate("+ (row * self.graphSize) +","+ (column * self.gHeight) + ")";
+            return "translate("+ (row * self.graphSize) +","+ (column * self.gHeight + self.titleHeight) + ")";
         });
 
 
@@ -193,5 +208,11 @@ Graphs.prototype.update = function(countryCode){
     self.maxWidth = self.rowSize * self.graphSize;
     self.svg
         .attr("width", self.maxWidth)
+
+    // delete title if none selected
+    if (currentGraphs.data().length == 0) {
+        self.svg.select("#graphsTitle")
+            .style("opacity", 0)
+    }
 
 }
