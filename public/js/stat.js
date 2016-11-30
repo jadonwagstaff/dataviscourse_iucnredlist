@@ -1,5 +1,5 @@
 
-//script will build interactive 
+//script adds details section
 
 function Stat(countryData) {
     var self = this;
@@ -29,6 +29,120 @@ Stat.prototype.init = function(){
 	
 }
 
+Stat.prototype.update = function(cc){
+	var self = this;
+	
+	//checks if cc is an array
+	if(cc instanceof Array){
+		//check selection
+		var temp = self.selected.length;
+		
+		for(var i = 0; i < cc.length; i++){
+			if(self.selected.indexOf(cc[i]) == -1){
+				self.selected.push(cc[i]);
+			}
+		}
+		if(self.selected.length == temp){
+			for(var i = 0; i < cc.length; i++){
+				self.selected.splice(self.selected.indexOf(cc[i]), 1);
+			}			
+		}
+	//for single selection
+	} else {
+		if(self.selected.indexOf(cc) == -1){
+			self.selected.push(cc);
+		} else {
+			self.selected.splice(self.selected.indexOf(cc), 1);
+		}
+	}
+	
+	//console.log(self.selected);
+	
+	//check if compare is on
+	self.compare();	
+	
+
+}
+
+Stat.prototype.compare = function(){
+	var self = this;
+	//console.log(self.countryData);
+	
+	
+	if(globalCompare){
+		self.details();
+	} else{
+		self.category();
+	}
+	
+}
+
+//adds details
+Stat.prototype.details = function(){
+	var self = this;
+	
+	//selecting container and adding inital data
+	var details = d3.select("#details");
+	
+	//clears div
+	details.selectAll("*").remove();
+	
+	//add title
+	details
+		.append("h3")
+		.text("Country Details:");
+	
+	//add countries
+	details.selectAll("ul")
+		.data(self.countryData.filter(function(d){
+			if(self.selected.indexOf(d.CC) != -1){
+				return d;
+			}
+		}))
+		.enter()
+		.append("ul")
+		.attr("class", "viewsD")
+		.append("li")
+		.text(function(d){
+			return d.Country;
+		})
+		.append("li")
+		.text(function(d){
+			return "Extinct: " + d.T_EX;
+		})
+		.append("li")
+		.text(function(d){
+			return "Extinct in Wild: " + d.T_EW;
+		})
+		.append("li")
+		.text(function(d){
+			return "Critically Endangered: " + d.T_CR;
+		})
+		.append("li")
+		.text(function(d){
+			return "Endangered: " + d.T_EN;
+		})
+		.append("li")
+		.text(function(d){
+			return "Threatened: " + d.T_VU;
+		})
+		.append("li")
+		.text(function(d){
+			return "Near Threatened: " + d.T_NT;
+		})
+		.append("li")
+		.text(function(d){
+			return "Least Concern: " + d.T_LC;
+		})
+		.append("li")
+		.text(function(d){
+			return "Data Deficient: " + d.T_DD;
+		});
+
+}
+
+
+//default text, defining categories
 Stat.prototype.category = function(){
 	
 	//selecting container and adding inital data
