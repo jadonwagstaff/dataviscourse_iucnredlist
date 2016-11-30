@@ -19,6 +19,17 @@ h1{
     overflow:auto;
 }
 
+.viewsD{
+	display:inline-block;
+	float: left;
+    text-align: left;
+    overflow:auto;
+	border:2px solid #999999;
+	list-style:none;
+	
+}
+
+
 #search {
     width: 194px; /* Full-width */
     font-size: 14px; /* Increase font-size */
@@ -28,12 +39,12 @@ h1{
 }
 
 #details {
-	max-width: 685px;
-	max-height: 270px;
-    	font-size: 14px;
-    	margin:0;
-    	overflow-x: scroll;
-    	padding:0;
+	width: 685px;
+	height: 270px;
+    font-size: 14px;
+    margin:0;
+    overflow-x: scroll;
+    padding:0;
 }
 
 .padded{
