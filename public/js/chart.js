@@ -1,8 +1,11 @@
 
-function Chart(data){
+function Chart(data, stat){
 	var self = this;
 	self.data = data;
-
+	self.stat = stat
+	//used for switching compare key
+	//self.compareSwitch = false; //may not need
+	
 	self.labelHeight = 55;
 	self.barWidth = 5;
 	self.margin = 4;
@@ -1370,6 +1373,14 @@ Chart.prototype.drawFilters = function(file){
 		})
 		.on("click", function(){
 			//self.compareChange();
+			if(globalCompare){
+				globalCompare = false;
+				self.stat.compare();
+			}else{
+				globalCompare = true;
+				self.stat.compare();
+			}
+			
 		});
 	filters.append("rect")
 		.attr("id", "regions")
