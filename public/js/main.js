@@ -2,6 +2,9 @@
 
 loadData("summary");
 
+//used for switching compare key
+var globalCompare = false;
+
 function loadData() {
     
     //needed to clear chart for each selection
@@ -13,10 +16,11 @@ function loadData() {
 
         //create objects
         var map = new Map(data);
-        var chart = new Chart(data);
+		var stat = new Stat(data);
+        var chart = new Chart(data, stat);
         var graphs = new Graphs(data);
-        var list = new List(map, chart, graphs, data);
-	var stat = new Stat(data);
+        var list = new List(map, chart, graphs, stat, data);
+		
     });
 
 }
