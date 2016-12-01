@@ -2,21 +2,21 @@
 
 Handing in:
 
-Code: main.html, public/
+  Code: main.html, public/
 
-Libraries: bower-components, data/world.json
+  Libraries: bower-components, data/world.json
 
-Data: data/data.csv, data/data.key
+  Data: data/data.csv, data/data.key
 
-Process book: ProcessBook-Final.pdf
+  Process book: ProcessBook-Final.pdf
 
-Website: https://jadonwagstaff.github.io/big_data/visualization.html
+  Website: https://jadonwagstaff.github.io/big_data/visualization.html
 
-Screencast:
+  Screencast:
 
 
 
-Overview of possible non-obvious features (also uncluded un the duscussion part of the website under the visual).
+Overview of possible non-obvious features (also uncluded un the duscussion part of the website under the visual):
 
 Introduction
 
