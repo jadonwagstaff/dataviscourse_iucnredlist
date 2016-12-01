@@ -21,6 +21,12 @@ h5{
 body{
     padding-left: 40px;
 }
+caption{
+    color:black;
+    font-size:18px;
+    padding:0px;
+    font-weight:bold;
+}
 
 /* div properties */
 .views{
@@ -32,9 +38,9 @@ body{
 
 .viewsD{
 	display:inline-block;
+    padding-bottom:40px;
 	float: left;
     text-align: left;
-	border:2px solid #999999;
 	list-style:none;
 
 }

@@ -57,64 +57,185 @@ Stat.prototype.compare = function(){
 //adds details
 Stat.prototype.details = function(){
 	var self = this;
-	
+	var categories = ["EX", "EW", "CR", "EN", "VU", "NT", "LC"]
+	var labels = ["Extinct", "Extinct in the Wild", "Critically Endangered", "Endangered", "Vulnerable", "Near Threatened", "Least Concern"]
+	var color = ["#262626", "#666666", "#b22222", "#de5454", "#f3bfbf", "#a3c2db", "#4682b4", "#A59688"];
+	var prefixes = ["T_", "M_", "A_"]
 	//selecting container and adding inital data
 	var details = d3.select("#details");
 	
 	//clears div
 	details.selectAll("*").remove();
 	
-	//add title
-	details
-		.append("h3")
-		.text("Country Details:");
-	
 	//add countries
-	details.selectAll("ul")
+	var tables = details.selectAll("table")
 		.data(self.countryData.filter(function(d){
 			if(self.selected.indexOf(d.CC) != -1){
 				return d;
 			}
 		}))
 		.enter()
-		.append("ul")
+		.append("table")
 		.attr("class", "viewsD")
-		.append("li")
+	tables.append("caption")
 		.text(function(d){
 			return d.Country;
 		})
-		.append("li")
+
+	// add heads
+	var row = tables.append("tr")
+	row.append("td")
+	row.append("td")
+		.text("Summary")
+		.style("font-weight", "bold")
+		.style("text-decoration", "underline")
+	row.append("td")
+	row.append("td")
 		.text(function(d){
-			return "Extinct: " + d.T_EX;
+			if (d.M_SP != "?") { return "Mammals"; }
+			else { return ""}
 		})
-		.append("li")
+		.style("font-weight", "bold")
+		.style("text-decoration", "underline")
+	row.append("td")
+	row.append("td")
 		.text(function(d){
-			return "Extinct in Wild: " + d.T_EW;
+			if (d.A_SP != "?") { return "Amphibians"; }
+			else { return "" }
 		})
-		.append("li")
-		.text(function(d){
-			return "Critically Endangered: " + d.T_CR;
-		})
-		.append("li")
-		.text(function(d){
-			return "Endangered: " + d.T_EN;
-		})
-		.append("li")
-		.text(function(d){
-			return "Threatened: " + d.T_VU;
-		})
-		.append("li")
-		.text(function(d){
-			return "Near Threatened: " + d.T_NT;
-		})
-		.append("li")
-		.text(function(d){
-			return "Least Concern: " + d.T_LC;
-		})
-		.append("li")
-		.text(function(d){
-			return "Data Deficient: " + d.T_DD;
-		});
+		.style("font-weight", "bold")
+		.style("text-decoration", "underline")
+
+	row.append("td")
+
+
+
+	// add numbers for each category
+	for(var j = 0; j < categories.length; j++){
+		if(j == 0){
+			row = tables.append("tr")
+				.style("font-weight", "bold")
+			row.append("td")
+				.text("Extinct Total")
+				.attr("width", 130)
+			for(var k = 0; k < prefixes.length; k++){
+				row.append("td")
+					.style("color", color[0])
+					.text(function(d){
+						if (d[prefixes[k] + "SP"] != "?") {
+							return parseInt(d[prefixes[k] + "EX"]) + parseInt(d[prefixes[k] + "EW"]);
+						}
+					})
+				row.append("td")
+					.style("color", color[0])
+					.text(function(d){
+						if (d[prefixes[k] + "SP"] != "?") {
+							var percent = ((parseInt(d[prefixes[k] + "EX"]) + parseInt(d[prefixes[k] + "EW"])) / d[prefixes[k] + "SP"]) * 100;
+							percent = +percent.toFixed(1);
+							return "(" + percent + "%)"
+						}
+					})
+					.attr("width", 110)
+			}
+		}
+		else if(j == 2){
+			row = tables.append("tr")
+				.style("font-weight", "bold")
+			row.append("td")
+				.text("Red List")
+			for(var k = 0; k < prefixes.length; k++){
+				row.append("td")
+					.style("color", color[2])
+					.text(function(d){
+						if (d[prefixes[k] + "SP"] != "?") {
+							return parseInt(d[prefixes[k] + "CR"]) + parseInt(d[prefixes[k] + "EN"]) + parseInt(d[prefixes[k] + "VU"]);
+						}
+					})
+				row.append("td")
+					.style("color", color[2])
+					.text(function(d){
+						if (d[prefixes[k] + "SP"] != "?") {
+							var percent = ((parseInt(d[prefixes[k] + "CR"]) + parseInt(d[prefixes[k] + "EN"]) + parseInt(d[prefixes[k] + "VU"])) / d[prefixes[k] + "SP"]) * 100;
+							percent = +percent.toFixed(1);
+							return "(" + percent + "%)"
+						}
+					})
+			}
+		}
+		else if(j == 5){
+			row = tables.append("tr")
+				.style("font-weight", "bold")
+			row.append("td")
+				.text("Unthreatened")
+			for(var k = 0; k < prefixes.length; k++){
+				row.append("td")
+					.style("color", color[6])
+					.text(function(d){
+						if (d[prefixes[k] + "SP"] != "?") {
+							return parseInt(d[prefixes[k] + "NT"]) + parseInt(d[prefixes[k] + "LC"]);
+						}
+					})
+				row.append("td")
+					.style("color", color[6])
+					.text(function(d){
+						if (d[prefixes[k] + "SP"] != "?") {
+							var percent = ((parseInt(d[prefixes[k] + "NT"]) + parseInt(d[prefixes[k] + "LC"])) / d[prefixes[k] + "SP"]) * 100;
+							percent = +percent.toFixed(1);
+							return "(" + percent + "%)"
+						}
+					})
+			}
+		}
+
+
+		row = tables.append("tr")
+		row.append("td")
+			.text(labels[j])
+
+		for(var k = 0; k < prefixes.length; k++){
+
+			row.append("td")
+				.style("color", color[j])
+				.text(function(d){
+					if (d[prefixes[k] + "SP"] != "?") {
+						return d[prefixes[k] + categories[j]];
+					}
+				})
+			row.append("td")
+				.style("color", color[j])
+				.text(function(d){
+					if (d[prefixes[k] + "SP"] != "?") {
+						var percent = (d[prefixes[k] + categories[j]] / d[prefixes[k] + "SP"]) * 100;
+						percent = +percent.toFixed(1);
+						return "(" + percent + "%)"
+					}
+				})
+
+		}
+	}
+
+	row = tables.append("tr")
+		.style("font-weight", "bold")
+	row.append("td")
+		.text("Data Deficient")
+	for(var k = 0; k < prefixes.length; k++){
+		row.append("td")
+			.style("color", color[7])
+			.text(function(d){
+				if (d[prefixes[k] + "SP"] != "?") {
+					return parseInt(d[prefixes[k] + "DD"]);
+				}
+			})
+		row.append("td")
+			.style("color", color[7])
+			.text(function(d){
+				if (d[prefixes[k] + "SP"] != "?") {
+					var percent = (parseInt(d[prefixes[k] + "DD"]) / d[prefixes[k] + "SP"]) * 100;
+					percent = +percent.toFixed(1);
+					return "(" + percent + "%)"
+				}
+			})
+	}
 
 }
 
