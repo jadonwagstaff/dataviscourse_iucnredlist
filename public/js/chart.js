@@ -1267,8 +1267,8 @@ Chart.prototype.drawFilters = function(file){
 	var axisHeight = 5;
 	var boxHeight = 20;
 	var margin = 5;
-	var filterLength = 6;
-	var filterText = ["Summary", "Mammals", "Amphibians", "Percentage", "Details", "Regions"]
+	var filterLength = 7;
+	var filterText = ["Summary", "Mammals", "Amphibians", "Percentage", "Regions", "Details", "Clear"]
 
 	var filters = d3.select("#filters");
 
@@ -1285,10 +1285,15 @@ Chart.prototype.drawFilters = function(file){
 		.attr("y2", filters.attr("height")  - axisHeight)
 		.attr("x2", (filters.attr("width") * 4) / filterLength + 23)
 	filters.append("line")
-		.attr("x1", (filters.attr("width") * 5) / filterLength + 5)
+		.attr("x1", (filters.attr("width") * 5) / filterLength + 16)
 		.attr("y1", axisHeight)
 		.attr("y2", filters.attr("height")  - axisHeight)
-		.attr("x2", (filters.attr("width") * 5) / filterLength + 5)
+		.attr("x2", (filters.attr("width") * 5) / filterLength + 16)
+	filters.append("line")
+		.attr("x1", (filters.attr("width") * 6) / filterLength + 2)
+		.attr("y1", axisHeight)
+		.attr("y2", filters.attr("height")  - axisHeight)
+		.attr("x2", (filters.attr("width") * 6) / filterLength + 2)
 
 	filters.append("line")
 		.attr("x1", 0)
@@ -1362,9 +1367,27 @@ Chart.prototype.drawFilters = function(file){
 		.attr("rx", 4)
 		.attr("ry", 4);
 	filters.append("rect")
+		.attr("id", "regions")
+		.attr("class", "selectedButton")
+		.attr("x", (filters.attr("width")*4)/filterLength + textWidth - margin + 20)
+		.attr("y", textHeight - boxHeight/2 - axisHeight)
+		.attr("width", 58)
+		.attr("height", boxHeight)
+		.on("mouseover", function(){
+			d3.select(this).style("cursor", "pointer");
+		})
+		.on("mouseout", function(){
+			d3.select(this).style("cursor", "default");
+		})
+		.on("click", function(){
+			self.regionChange()
+		})
+		.attr("rx", 4)
+		.attr("ry", 4);
+	filters.append("rect")
 		.attr("id", "compare")
 		.attr("class", "unselectedButton")
-		.attr("x", (filters.attr("width")*4)/filterLength + textWidth - margin + 20)
+		.attr("x", (filters.attr("width")*5)/filterLength + textWidth - margin + 12)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
 		.attr("width", 50)
 		.attr("height", boxHeight)
@@ -1377,20 +1400,17 @@ Chart.prototype.drawFilters = function(file){
 		.attr("rx", 4)
 		.attr("ry", 4);
 	filters.append("rect")
-		.attr("id", "regions")
-		.attr("class", "selectedButton")
-		.attr("x", (filters.attr("width")*5)/filterLength + textWidth - margin)
+		.attr("id", "clear")
+		.attr("class", "unselectedButton")
+		.attr("x", (filters.attr("width")*6)/filterLength + textWidth - margin)
 		.attr("y", textHeight - boxHeight/2 - axisHeight)
-		.attr("width", 58)
+		.attr("width", 42)
 		.attr("height", boxHeight)
 		.on("mouseover", function(){
 			d3.select(this).style("cursor", "pointer");
 		})
 		.on("mouseout", function(){
 			d3.select(this).style("cursor", "default");
-		})
-		.on("click", function(){
-			self.regionChange()
 		})
 		.attr("rx", 4)
 		.attr("ry", 4);
@@ -1407,7 +1427,9 @@ Chart.prototype.drawFilters = function(file){
 		.attr("x", function(d, i){
 			var x = (filters.attr("width")*i)/filterLength + textWidth;
 			if (d == "Percentage"){x += 15}
-			if (d == "Details"){x += 20}
+			if (d == "Regions"){x += 20}
+			if (d == "Details"){x += 12}
+
 			return x;
 		})
 		.attr("y", textHeight)

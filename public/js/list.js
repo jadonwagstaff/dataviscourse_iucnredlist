@@ -233,6 +233,29 @@ List.prototype.change_OnChart_orMap = function(){
 			self.update(send);
 		});
 
+	d3.select("#clear")
+		.on("click", function(){
+			d3.select(this).attr("class", "selectedButton")
+
+			var send = [];
+
+			self.svg.selectAll(".selectedListItem")
+				.attr("class", function(d){
+					send.push(d.CC)
+					return "list"
+				})
+
+			self.chart.update(send);
+			self.map.update(send);
+			self.graphs.update(send);
+			self.stat.update(send);
+
+			setTimeout(function(){
+				d3.select("#clear").attr("class", "unselectedButton")
+			}, 200)
+		})
+
+
 }
 
 List.prototype.dataChange = function(set){

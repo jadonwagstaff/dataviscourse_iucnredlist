@@ -203,7 +203,7 @@ line{
     font-family: "times new roman";
 }
 .graphTitle{
-    text-anchor:middle;
+    text-align: center;
     font-size: 14pt;
     pointer-events: none;
     font-family: "times new roman";

@@ -36,7 +36,6 @@ Stat.prototype.update = function(cc){
 		}
 	}
 
-	//console.log(self.selected);
 
 	//check if compare is on
 	self.compare();

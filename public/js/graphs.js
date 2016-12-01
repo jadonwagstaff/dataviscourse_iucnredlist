@@ -180,10 +180,14 @@ Graphs.prototype.update = function(countryCode){
     }
 
     // country
-    enter.append("text")
-        .attr("class", "graphTitle")
+    enter.append("foreignObject")
         .attr("y", self.graphSize + self.buffer)
-        .attr("x", self.graphSize/2)
+        .attr("x", 0)
+        .attr("width", self.graphSize)
+        .attr("height", 30)
+        .append("xhtml:div")
+        .append("div")
+        .attr("class", "graphTitle")
         .text(function(d){
             return d.Country;
         })
