@@ -1,4 +1,4 @@
-# dataviscourse_iucnredlist
+#IUCN RED LIST
 
 Introduction
 This page provides a visual for summary statistics by country for animals assessed by the International Union for Conservation of Nature (IUCN). The visual consists of a bar chart with a key in the bottom left, a window providing details of a selection, a list of countries to select, and a map which highlights selected countries. Below all of that there is an area that populates with graphs for selected countries that describes the distribution of types of animals on the red list for that country. It is the hope that this visual will allow anyone to quickly and easily view the status of animal species in their country and compare their country with others, thereby increasing awareness of the important work of the IUCN.
