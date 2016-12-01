@@ -108,14 +108,11 @@ Graphs.prototype.update = function(countryCode){
 
     // create incoming groups
     enter.append("g")
-        .on("click", function(d){
+        .on("mouseover", function(d){
             d3.select(this).selectAll(".graphText").style("opacity", 1);
             d3.select(this).select(".border").style("opacity", 1);
             self.tip.show(d)
         })
-        .on("mouseover", function(){
-                d3.select(this).style("cursor", "pointer");
-            })
         .on("hover", function(d){
             self.tip.show(d)
         })

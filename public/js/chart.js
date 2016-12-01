@@ -3,7 +3,7 @@ function Chart(data){
 	var self = this;
 	self.data = data;
 	
-	self.labelHeight = 55;
+	self.labelHeight = 60;
 	self.barWidth = 5;
 	self.margin = 4;
 	self.barSpace = 1;
@@ -66,11 +66,11 @@ Chart.prototype.init = function(){
 	//creating tool tip functionality
 	var tip = d3.tip().attr("class", "chartTip")
 		.direction(function (){
-			if (d3.event.clientX > 1400){ return 'w'}
+			if (d3.event.clientX > Math.min(window.innerWidth - 300, 1400)){ return 'w'}
 			return 'e'
 		})
 		.offset(function(){
-			if (d3.event.clientX > 1400){ return [-100,-30]}
+			if (d3.event.clientX > Math.min(window.innerWidth - 300, 1400)){ return [-100,-30]}
 			return [-100,30];
 		})
 		.html(function(d){
@@ -109,11 +109,11 @@ Chart.prototype.init = function(){
 
 			var text = "<span style = 'font:12pt'><b>" + tooltip_data[0] + "</b><br><table>";
 			for (var j = 1; j < tooltip_data.length; j++){
-				text += "<tr><td><span style = 'color:" + c[j-1] + "'>" + tooltip_data[j] + "</span></td>";
-				if(j == 1) {text += "<td>Extinct: "+ extinct +"</td>";}
-				else if(j == 3) {text += "<td>Red List: "+ redList +"</td>";}
+				text += "<tr><td width='30'><span style = 'color:" + c[j-1] + "'>" + tooltip_data[j] + "</span></td>";
+				if(j == 1) {text += "<td>Extinct: <span style = 'color:" + c[0] + "'><b>"+ extinct +"</b></span></td>";}
+				else if(j == 3) {text += "<td>Red List: <span style = 'color:" + c[2] + "'><b>"+ redList +"</b></span></td>";}
 				else if(j == 6) {text += "<td>Unthreatened:</td>";}
-				else if(j == 7) {text += "<td style = 'text-align:right'>"+ unthreatened +"</td>";}
+				else if(j == 7) {text += "<td style = 'text-align:right'><span style = 'color:" + c[6] + "'><b>"+ unthreatened +"</b></span></td>";}
 				text += "</tr>"
 			}
 			text += "</table></span>"
@@ -562,7 +562,6 @@ Chart.prototype.dataChange = function (file) {
 		amphibians.attr("class", "unselectedButton");
 
 		self.set = "T_";
-		self.svg.attr("width", 1600)
 	}
 	if (file == "mammals" && mammals.attr("class") == "unselectedButton"){
 		summary.attr("class", "unselectedButton");
@@ -570,7 +569,6 @@ Chart.prototype.dataChange = function (file) {
 		amphibians.attr("class", "unselectedButton");
 
 		self.set = "M_";
-		self.svg.attr("width", 1550)
 	}
 	if (file == "amphibians" && amphibians.attr("class") == "unselectedButton"){
 		summary.attr("class", "unselectedButton");
@@ -578,7 +576,6 @@ Chart.prototype.dataChange = function (file) {
 		amphibians.attr("class", "selectedButton");
 
 		self.set = "A_";
-		self.svg.attr("width", 1250)
 	}
 
 

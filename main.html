@@ -20,7 +20,7 @@
 	<div class = "title">
 		<h1>IUNC Red List of Threatened Animal Species<br><span style="font-size:20px">A Visualization of Summary Statistics for Animal Species Assessed by the IUCN</span></h1>
 	</div>
-	<!--Div containing graph elements -->
+	<!--Chart-->
 	<div class = "views ">
 		<div class = "views">
 			<svg id = "axis" width = "60" height = "470"></svg>
@@ -29,32 +29,38 @@
 			<svg id = "chart" width = "1600" height="470" ></svg>
 		</div>
 	</div>
-	<!--Div containing map and list elements -->
+	<!--Div containing map, key, details, and list elements -->
 	<div class = "views padded" style = "padding-left:60px">
 		<div class = "views" style = "width:900px">
 			<div class = "views" style= "width:685px; height:400px">
+				<!--Key-->
 				<svg class = "views padded" width = "685" height = "80">
 					<svg id = "key" width = "685" height = "50"></svg>
 					<svg id = "filters" class = "container" y = "50" x = "0" width = "685" height = "30"></svg>
 				</svg>
+				<!--Details -->
 				<div id = "details" class = "views" style="width:685px; height:295px">
 				</div>
 				<svg width = "685" height = "1">
 					<line x1="0" x2="685" y1="0" y2="0"></line>
 				</svg>
 			</div>
+			<!--List-->
 			<div class = "views padded">
 				<input type="text" id="search" onkeyup="searchFunction()" placeholder="Search for Countries." style="width:210px">
 				<ul id = "countryList" class = "countryList container"></ul>
 			</div>
 		</div>
+		<!--Map-->
 		<div class = "views">
 			<svg id = "map" width = "685" height = "380"></svg>
 		</div>
 	</div>
+	<!--Graphs-->
 	<div>
 		<svg id = "graphs" style = "margin-left:20px"></svg>
 	</div>
+	<!--Description-->
 	<div class = "description">
 		<p><b>Introduction</b><br>
 			This page provides a visual for summary statistics by country for animals assessed by the <a href="http://www.iucnredlist.org/" target="_blank">International Union for Conservation of Nature</a> (IUCN).

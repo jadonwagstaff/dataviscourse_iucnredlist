@@ -116,7 +116,7 @@ Stat.prototype.details = function(){
 				.style("font-weight", "bold")
 			row.append("td")
 				.text("Extinct Total")
-				.attr("width", 130)
+				.attr("width", 150)
 			for(var k = 0; k < prefixes.length; k++){
 				row.append("td")
 					.style("color", color[0])
@@ -304,8 +304,14 @@ Stat.prototype.category = function(){
 		.append("div")
 		.attr("id", "collapse3")
 		.attr("class", "panel-collapse collapse")
-		.append("p")
-		.text("A taxon is Critically Endangered when the best available evidence indicates that it meets any  of  the  criteria  A  to  E  for  Critically  Endangered  (see  Section  V),  and  it  is  therefore considered to be facing an extremely high risk of extinction in the wild. (IUCN 2016)");
+		.append("text")
+		.text("A taxon is Critically Endangered when the best available evidence indicates that it meets any  of  the  criteria  A  to  E  for  Critically  Endangered ")
+	callap.append("a")
+		.attr("href", "http://www.iucnredlist.org/static/categories_criteria_3_1")
+		.attr("target", "_blank")
+		.text("(see  Section  V)")
+	callap.append("text")
+		.text(",  and  it  is  therefore considered to be facing an extremely high risk of extinction in the wild. (IUCN 2016)");
 
 	head = details
 		.append("h5")
@@ -319,7 +325,13 @@ Stat.prototype.category = function(){
 		.attr("id", "collapse4")
 		.attr("class", "panel-collapse collapse")
 		.append("p")
-		.text("A taxon is Endangered when the best available evidence indicates that it meets any of the criteria A to E for Endangered (see Section V), and it is therefore considered to be facing a very high risk of extinction in the wild. (IUCN 2016)");
+		.text("A taxon is Endangered when the best available evidence indicates that it meets any of the criteria A to E for Endangered");
+	callap.append("a")
+		.attr("href", "http://www.iucnredlist.org/static/categories_criteria_3_1")
+		.attr("target", "_blank")
+		.text("(see  Section  V)")
+	callap.append("text")
+		.text(",and it is therefore considered to be facing a very high risk of extinction in the wild. (IUCN 2016)")
 
 	head = details
 		.append("h5")
@@ -333,7 +345,13 @@ Stat.prototype.category = function(){
 		.attr("id", "collapse5")
 		.attr("class", "panel-collapse collapse")
 		.append("p")
-		.text("A taxon is Vulnerable/threatened when the best available evidence indicates that it meets any of the criteria A to E for Vulnerable (see Section V), and it is therefore considered to be facing a high risk of extinction in the wild. (IUCN 2016)");
+		.text("A taxon is Vulnerable/threatened when the best available evidence indicates that it meets any of the criteria A to E for Vulnerable");
+	callap.append("a")
+		.attr("href", "http://www.iucnredlist.org/static/categories_criteria_3_1")
+		.attr("target", "_blank")
+		.text("(see  Section  V)")
+	callap.append("text")
+		.text(", and it is therefore considered to be facing a high risk of extinction in the wild. (IUCN 2016)")
 
 	details
 		.append("h5")

@@ -145,6 +145,7 @@ List.prototype.change_OnChart_orMap = function(){
 			})
 			.on("mouseover", function(d){
 				d3.select(this).style("opacity", 1)
+				d3.select(this).style("cursor", "pointer");
 				self.tip.show(d, target);
 				d3.select("#chart").selectAll("g").filter(function(b){
 					return d.id == b.CC;
@@ -155,6 +156,7 @@ List.prototype.change_OnChart_orMap = function(){
 			})
 			.on("mouseout", function(d){
 				d3.select(this).style("opacity", .8)
+				d3.select(this).style("cursor", "default");
 				self.tip.hide();
 				d3.select("#chart").selectAll("g").filter(function(b){
 					return d.id == b.CC;
