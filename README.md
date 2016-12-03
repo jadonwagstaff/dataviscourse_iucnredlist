@@ -12,7 +12,8 @@ Handing in:
 
   Website: https://jadonwagstaff.github.io/big_data/visualization.html
 
-  Screencast: https://www.youtube.com/watch?v=YnMnD4rHfDQ&feature=youtu.be
+  Screencast: https://www.youtube.com/watch?v=VaVVO_-FLsc
+  Full version: https://www.youtube.com/watch?v=YnMnD4rHfDQ&feature=youtu.be
 
 
 
